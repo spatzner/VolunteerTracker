@@ -7,6 +7,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VolunteerTracker.Repository
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VolunteerTracker.Migrations.Local", "VolunteerTracker.Migrations.Local\VolunteerTracker.Migrations.Local.csproj", "{6A02818E-BAE5-4242-94AE-61934D27CA78}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sql", "Sql", "{22598606-3E37-4030-8FE7-74A5A5A8043A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DbSetup", "DbSetup", "{3EF122A7-2629-4771-9747-580F40176897}"
+	ProjectSection(SolutionItems) = preProject
+		1_postgres.sql = 1_postgres.sql
+		2_VolunteerTracker.sql = 2_VolunteerTracker.sql
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,6 +32,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{3EF122A7-2629-4771-9747-580F40176897} = {22598606-3E37-4030-8FE7-74A5A5A8043A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8A5C66D5-B231-4575-B9FD-38D81D90C03D}
