@@ -1,8 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
-using Microsoft.Extensions.Options;
 using VolunteerTracker.Repository;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace VolunteerTracker.Migrations.Local;
 
