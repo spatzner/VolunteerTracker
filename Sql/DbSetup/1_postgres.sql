@@ -38,3 +38,8 @@ GRANT DELETE, INSERT, SELECT, UPDATE ON TABLE public."__EFMigrationsHistory" TO 
 
 GRANT CREATE, CONNECT ON DATABASE "VolunteerTracker" TO efmigrations;
 GRANT ALL PRIVILEGES ON SCHEMA public TO efmigrations;
+
+GRANT DELETE, INSERT, SELECT, UPDATE ON TABLE public."__EFMigrationsHistory" TO "aspnet_volunteertracker";
+
+GRANT CREATE, CONNECT ON DATABASE "aspnet-VolunteerTracker" TO "aspnet_volunteertracker";
+GRANT ALL PRIVILEGES ON SCHEMA public TO "aspnet_volunteertracker";
