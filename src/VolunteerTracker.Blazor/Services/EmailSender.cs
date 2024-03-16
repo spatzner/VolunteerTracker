@@ -1,10 +1,10 @@
 using System.Net;
 using System.Net.Mail;
-using System.Security;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Options;
 using VolunteerTracker.Blazor.Data;
+using VolunteerTracker.Blazor.Settings;
 
 namespace VolunteerTracker.Blazor.Services;
 
@@ -57,13 +57,4 @@ public class EmailSender(IOptions<SmtpSettings> smtpSettingsOptions, ILogger<Ema
         await SendEmailAsync(email, "Reset your password", $"Please reset your password using the following code: {resetCode}");
       
     }
-}
-
-public class SmtpSettings()
-{
-    public string Host { get; set; } 
-    public int Port { get; set; } = 25;
-    public string SenderEmail { get; set; }
-    public SecureString? Password { get; set; }
-    public bool UseSsl { get; set; }
 }

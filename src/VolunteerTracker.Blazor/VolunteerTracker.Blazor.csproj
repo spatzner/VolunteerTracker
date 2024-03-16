@@ -15,8 +15,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Components\Account\Pages\Donations\" />
     <Folder Include="Data\Migrations\" />
     <Folder Include="Services\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\VolunteerTracker.Repository\VolunteerTracker.Repository.csproj" />
   </ItemGroup>
 
 </Project>

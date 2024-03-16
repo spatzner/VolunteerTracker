@@ -6,37 +6,40 @@ using VolunteerTracker.Blazor.Components;
 using VolunteerTracker.Blazor.Components.Account;
 using VolunteerTracker.Blazor.Data;
 using VolunteerTracker.Blazor.Services;
+using VolunteerTracker.Blazor.Settings;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpSettings"));
 
-
 // Add services to the container.
-builder.Services.AddRazorComponents()
-    .AddInteractiveServerComponents();
+builder.Services.AddRazorComponents().AddInteractiveServerComponents();
 
 builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<IdentityUserAccessor>();
 builder.Services.AddScoped<IdentityRedirectManager>();
-builder.Services.AddScoped<AuthenticationStateProvider, IdentityRevalidatingAuthenticationStateProvider>(); 
+builder.Services.AddScoped<AuthenticationStateProvider, IdentityRevalidatingAuthenticationStateProvider>();
 builder.Services.AddTransient<IEmailSender, EmailSender>();
 
-builder.Services.AddAuthentication(options =>
+builder
+   .Services.AddAuthentication(options =>
     {
         options.DefaultScheme = IdentityConstants.ApplicationScheme;
         options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
     })
-    .AddIdentityCookies();
+   .AddIdentityCookies();
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseNpgsql(connectionString));
+var databaseSettings = new VolunteerDatabaseSettings();
+builder
+   .Configuration.GetSection("VolunteerDatabaseSettings")
+   .Bind(databaseSettings, options => options.ErrorOnUnknownConfiguration = true);
+builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(databaseSettings.ConnectionString));
 
-builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<ApplicationDbContext>()
-    .AddSignInManager()
-    .AddDefaultTokenProviders();
+builder
+   .Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+   .AddEntityFrameworkStores<ApplicationDbContext>()
+   .AddSignInManager()
+   .AddDefaultTokenProviders();
 
 builder.Services.AddSingleton<IEmailSender<ApplicationUser>, EmailSender>();
 
@@ -64,8 +67,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseAntiforgery();
 
-app.MapRazorComponents<App>()
-    .AddInteractiveServerRenderMode();
+app.MapRazorComponents<App>().AddInteractiveServerRenderMode();
 
 // Add additional endpoints required by the Identity /Account Razor components.
 app.MapAdditionalIdentityEndpoints();

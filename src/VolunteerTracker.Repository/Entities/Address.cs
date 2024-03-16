@@ -6,7 +6,7 @@ using VolunteerTracker.Repository.Attributes;
 
 namespace VolunteerTracker.Repository.Entities;
 
-[Table("Addresses", Schema = "Entity")]
+[Table("Addresses", Schema = "Entities")]
 public class Address
 {
     [Key]
@@ -14,27 +14,27 @@ public class Address
     public Guid Id { get; set; }
 
     [Required]
-    [MaxLength(50)]
     [NotWhitespace]
+    [MaxLength(50)]
     public string Line1 { get; set; }
 
-    [MaxLength(50)]
     [NotWhitespace]
+    [MaxLength(50)]
     public string? Line2 { get; set; }
 
     [Required]
-    [MaxLength(50)]
     [NotWhitespace]
+    [MaxLength(50)]
     public string City { get; set; }
 
     [Required]
-    [MaxLength(50)]
     [NotWhitespace]
+    [MaxLength(50)]
     public string State { get; set; }
 
     [Required]
-    [MaxLength(10)]
     [NotWhitespace]
+    [MaxLength(10)]
     public string Zip { get; set; }
 
     public Guid? PersonId { get; set; }

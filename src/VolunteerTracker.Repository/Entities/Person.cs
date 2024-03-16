@@ -17,23 +17,27 @@ public class Person
     [MaxLength(10)]
     public string? Title { get; set; }
 
-    [MaxLength(50)]
+    [Required]
     [NotWhitespace]
+    [MaxLength(50)]
     public string FirstName { get; set; }
 
-    [MaxLength(50)]
     [NotWhitespace]
+    [MaxLength(50)]
     public string? MiddleName { get; set; }
 
-    [MaxLength(50)]
+    [Required]
     [NotWhitespace]
+    [MaxLength(50)]
     public string LastName { get; set; }
 
-    [MaxLength(10)]
     [NotWhitespace]
+    [MaxLength(10)]
     public string? Suffix { get; set; }
 
-    [MaxLength(1000)]
     [NotWhitespace]
+    [MaxLength(1000)]
     public string? Notes { get; set; }
+    
+    public virtual ICollection<Address> Addresses { get; set; }
 }
