@@ -1,0 +1,47 @@
+﻿@page "/Persons"
+@using VolunteerTracker.Repository
+@using VolunteerTracker.Repository.Entities
+@using Microsoft.EntityFrameworkCore
+
+@inject VolunteerContext VolunteerContext
+
+<h3>Individuals</h3>
+
+<table class="table">
+    <thead>
+    <tr>
+            <th>Title</th>
+            <th>FirstName</th>
+            <th>MiddleName</th>
+            <th>LastName</th>
+            <th>LastName</th>
+            <th>Suffix</th>
+    </tr>
+    </thead>
+    <tbody>
+        @if (_persons?.Count() > 0)
+        {
+            @foreach (var person in _persons)
+            {
+                <tr>
+                    <td>@person.Title</td>
+                    <td>@person.FirstName</td>
+                    <td>@person.MiddleName</td>
+                    <td>@person.LastName</td>
+                    <td>@person.Suffix</td>
+                </tr>
+            }
+        }
+        </tbody>
+</table>
+
+
+@code {
+
+    private IEnumerable<Person>? _persons;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _persons = await VolunteerContext.Persons.AsNoTracking().Take(50).ToListAsync();
+    }
+}

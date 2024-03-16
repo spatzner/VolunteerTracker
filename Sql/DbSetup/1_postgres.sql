@@ -32,6 +32,28 @@ CREATE ROLE efmigrations WITH
 	NOREPLICATION
 	CONNECTION LIMIT -1
 	PASSWORD --insert password'';
+		
+CREATE ROLE aspnet_volunteertracker WITH
+	LOGIN
+	NOSUPERUSER
+	NOCREATEDB
+	NOCREATEROLE
+	INHERIT
+	NOREPLICATION
+	CONNECTION LIMIT -1
+	PASSWORD --insert password'';
+	
+	CREATE ROLE data_access WITH
+	LOGIN
+	NOSUPERUSER
+	NOCREATEDB
+	NOCREATEROLE
+	INHERIT
+	NOREPLICATION
+	CONNECTION LIMIT -1
+	PASSWORD --insert password'';
+
+GRANT pg_read_all_data, pg_write_all_data TO data_access;
 	
 
 GRANT DELETE, INSERT, SELECT, UPDATE ON TABLE public."__EFMigrationsHistory" TO efmigrations;

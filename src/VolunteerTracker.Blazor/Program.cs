@@ -7,6 +7,7 @@ using VolunteerTracker.Blazor.Components.Account;
 using VolunteerTracker.Blazor.Data;
 using VolunteerTracker.Blazor.Services;
 using VolunteerTracker.Blazor.Settings;
+using VolunteerTracker.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,11 +30,18 @@ builder
     })
    .AddIdentityCookies();
 
-var databaseSettings = new VolunteerDatabaseSettings();
+var volunteerDatabaseSettings = new VolunteerDatabaseSettings();
 builder
    .Configuration.GetSection("VolunteerDatabaseSettings")
-   .Bind(databaseSettings, options => options.ErrorOnUnknownConfiguration = true);
-builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(databaseSettings.ConnectionString));
+   .Bind(volunteerDatabaseSettings, options => options.ErrorOnUnknownConfiguration = true);
+
+var aspNetDatabaseSettings = new AspNetDatabaseSettings();
+builder
+   .Configuration.GetSection("AspNetDatabaseSettings")
+   .Bind(aspNetDatabaseSettings, options => options.ErrorOnUnknownConfiguration = true);
+
+builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(aspNetDatabaseSettings.ConnectionString));
+builder.Services.AddDbContext<VolunteerContext>(options => options.UseNpgsql(volunteerDatabaseSettings.ConnectionString));
 
 builder
    .Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
