@@ -49,7 +49,10 @@ builder
    .AddSignInManager()
    .AddDefaultTokenProviders();
 
+builder.Services.AddBlazorBootstrap();
+
 builder.Services.AddSingleton<IEmailSender<ApplicationUser>, EmailSender>();
+builder.Services.AddTransient<PersonsProvider>();
 
 if (builder.Environment.IsDevelopment())
 {

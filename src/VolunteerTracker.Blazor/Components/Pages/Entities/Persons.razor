@@ -1,47 +1,18 @@
 ﻿@page "/Persons"
-@using VolunteerTracker.Repository
+@layout VolunteerTracker.Blazor.Components.Layout.MainLayout
 @using VolunteerTracker.Repository.Entities
-@using Microsoft.EntityFrameworkCore
+@using BlazorBootstrap
+@using VolunteerTracker.Blazor.Services
 
-@inject VolunteerContext VolunteerContext
+@inject PersonsProvider PersonsProvider
 
 <h3>Individuals</h3>
 
-<table class="table">
-    <thead>
-    <tr>
-            <th>Title</th>
-            <th>FirstName</th>
-            <th>MiddleName</th>
-            <th>LastName</th>
-            <th>LastName</th>
-            <th>Suffix</th>
-    </tr>
-    </thead>
-    <tbody>
-        @if (_persons?.Count() > 0)
-        {
-            @foreach (var person in _persons)
-            {
-                <tr>
-                    <td>@person.Title</td>
-                    <td>@person.FirstName</td>
-                    <td>@person.MiddleName</td>
-                    <td>@person.LastName</td>
-                    <td>@person.Suffix</td>
-                </tr>
-            }
-        }
-        </tbody>
-</table>
-
-
-@code {
-
-    private IEnumerable<Person>? _persons;
-
-    protected override async Task OnInitializedAsync()
-    {
-        _persons = await VolunteerContext.Persons.AsNoTracking().Take(50).ToListAsync();
-    }
-}
+<Grid TItem="Person" AllowFiltering="true" AllowPaging="true"
+      Class="table table-hover table-bordered table-striped" DataProvider="PersonsProvider.PersonsDataProvider">
+    <GridColumn TItem="Person" PropertyName="@nameof(Person.Title)" HeaderText="Title" FilterOperator="FilterOperator.StartsWith">@context.Title</GridColumn>
+    <GridColumn TItem="Person" PropertyName="@nameof(Person.FirstName)" HeaderText="First Name" FilterOperator="FilterOperator.StartsWith">@context.FirstName</GridColumn>
+    <GridColumn TItem="Person" PropertyName="@nameof(Person.MiddleName)" HeaderText="Middle Name" FilterOperator="FilterOperator.StartsWith">@context.MiddleName</GridColumn>
+    <GridColumn TItem="Person" PropertyName="@nameof(Person.LastName)" HeaderText="Last Name" FilterOperator="FilterOperator.StartsWith">@context.LastName</GridColumn>
+    <GridColumn TItem="Person" PropertyName="@nameof(Person.Suffix)" HeaderText="Suffix" FilterOperator="FilterOperator.StartsWith">@context.Suffix</GridColumn>
+</Grid>
