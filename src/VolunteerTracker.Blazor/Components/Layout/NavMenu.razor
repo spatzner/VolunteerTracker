@@ -2,9 +2,9 @@
 
 @inject NavigationManager NavigationManager
 
-<div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="">VolunteerTracker</a>
+<div class="navbar navbar-dark navbar-header">
+    <div class="flex-column">
+        <a class="navbar-brand" href=""><i class="bi bi-brightness-alt-high"></i>Volunteer Tracker</a>
     </div>
 </div>
 
@@ -14,25 +14,31 @@
     <nav class="flex-column">
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
+                <span class="bi bi-house-door-fill" aria-hidden="true"></span> Home
+            </NavLink>
+        </div>
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="individuals">
+                <i class="bi bi-person-fill" aria-hidden="true"></i> Individuals
             </NavLink>
         </div>
 
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="counter">
-                <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Counter
+                <i class="bi bi-plus-square-fill" aria-hidden="true"></i> Counter
             </NavLink>
         </div>
 
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="weather">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Weather
+                <i class="bi bi-list-nested" aria-hidden="true"></i> Weather
             </NavLink>
         </div>
 
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="auth">
-                <span class="bi bi-lock-nav-menu" aria-hidden="true"></span> Auth Required
+                <i class="bi bi-lock" aria-hidden="true"></i> Auth Required
             </NavLink>
         </div>
 
@@ -40,7 +46,7 @@
             <Authorized>
                 <div class="nav-item px-3">
                     <NavLink class="nav-link" href="Account/Manage">
-                        <span class="bi bi-person-fill-nav-menu" aria-hidden="true"></span> @context.User.Identity?.Name
+                        <i class="bi bi-person-fill" aria-hidden="true"></i> @context.User.Identity?.Name
                     </NavLink>
                 </div>
                 <div class="nav-item px-3">
@@ -48,7 +54,7 @@
                         <AntiforgeryToken />
                         <input type="hidden" name="ReturnUrl" value="@currentUrl" />
                         <button type="submit" class="nav-link">
-                            <span class="bi bi-arrow-bar-left-nav-menu" aria-hidden="true"></span> Logout
+                            <i class="bi bi-arrow-bar-left" aria-hidden="true"></i> Logout
                         </button>
                     </form>
                 </div>
@@ -56,12 +62,12 @@
             <NotAuthorized>
                 <div class="nav-item px-3">
                     <NavLink class="nav-link" href="Account/Register">
-                        <span class="bi bi-person-nav-menu" aria-hidden="true"></span> Register
+                        <i class="bi bi-person" aria-hidden="true"></i> Register
                     </NavLink>
                 </div>
                 <div class="nav-item px-3">
                     <NavLink class="nav-link" href="Account/Login">
-                        <span class="bi bi-person-badge-nav-menu" aria-hidden="true"></span> Login
+                        <i class="bi bi-person-badge" aria-hidden="true"></i> Login
                     </NavLink>
                 </div>
             </NotAuthorized>
