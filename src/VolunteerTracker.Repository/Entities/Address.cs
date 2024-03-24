@@ -37,9 +37,9 @@ public class Address
     [MaxLength(10)]
     public string Zip { get; set; }
 
-    public Guid? PersonId { get; set; }
-    public Person? Person { get; set; }
+    [ForeignKey("PersonId")]
+    public virtual Person? Person { get; set; }
 
-    public Guid? OrganizationId { get; set; }
-    public Organization? Organization { get; set; }
+    [ForeignKey("OrganizationId")]
+    public virtual Organization? Organization { get; set; }
 }

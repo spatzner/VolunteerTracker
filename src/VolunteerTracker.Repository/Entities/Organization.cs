@@ -19,8 +19,13 @@ public class Organization
     [MaxLength(50)]
     public string Name { get; set; }
 
+    [ForeignKey("AddressId")]
+    public Guid AddressId { get; set; }
+    [Required]
+    public Address Address { get; set; } 
+
     public Guid ContactId { get; set; }
 
     [ForeignKey("ContactId")]
-    public required Person Contact { get; set; }
+    public virtual Person Contact { get; set; }
 }

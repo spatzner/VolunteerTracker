@@ -1,5 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq.Expressions;
+using System.Security.Cryptography.X509Certificates;
+using VolunteerTracker.Common.DataAnnotations;
 using VolunteerTracker.Repository.Attributes;
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
@@ -38,6 +41,12 @@ public class Person
     [NotWhitespace]
     [MaxLength(1000)]
     public string? Notes { get; set; }
-    
-    public virtual ICollection<Address> Addresses { get; set; }
+
+    public virtual Address Address { get; set; }
+
+    [ExactlyOneMember<Phone>(nameof(Phone.IsPrimary), true)]
+    public virtual ICollection<Phone> Phones { get; set; }
+
+    [ExactlyOneMember<Email>(nameof(Email.IsPrimary), true)]
+    public virtual ICollection<Email> Emails { get; set; }
 }

@@ -14,7 +14,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpSettings"));
 
 // Add services to the container.
-builder.Services.AddRazorComponents().AddInteractiveServerComponents();
+builder.Services.AddRazorComponents(options =>
+    options.DetailedErrors = builder.Environment.IsDevelopment()).AddInteractiveServerComponents();
 
 builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<IdentityUserAccessor>();

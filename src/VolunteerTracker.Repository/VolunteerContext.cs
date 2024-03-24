@@ -15,6 +15,9 @@ public class VolunteerContext(DbContextOptions<VolunteerContext> options) : DbCo
     public DbSet<Person> Persons { get; set; }
     public DbSet<Organization> Organizations { get; set; }
     public DbSet<Address> Addresses { get; set; }
+    public DbSet<Phone> Phones { get; set; }
+    public DbSet<Email> Emails { get; set; }
+    
 
     // Donations
     public DbSet<Donation> Donations { get; set; }
