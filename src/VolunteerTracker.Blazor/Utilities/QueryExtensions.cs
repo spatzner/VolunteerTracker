@@ -110,8 +110,22 @@ public static class QueryExtensions
 
     private static IQueryable<T> FilterString<T>(IQueryable<T> query, FilterItem filter)
     {
+        bool ignoreCase = filter.StringComparison switch
+        {
+            StringComparison.CurrentCultureIgnoreCase => true,
+            StringComparison.InvariantCultureIgnoreCase => true,
+            StringComparison.OrdinalIgnoreCase => true,
+            _ => false
+        };
+        
         return filter.Operator switch
         {
+            FilterOperator.Equals when ignoreCase => query.Where(p => p != null && EF.Functions.ILike(EF.Property<string>(p, filter.PropertyName), filter.Value)),
+            FilterOperator.NotEquals when ignoreCase => query.Where(p => p != null && !EF.Functions.ILike(EF.Property<string>(p, filter.PropertyName), filter.Value)),
+            FilterOperator.Contains when ignoreCase => query.Where(p => p != null && EF.Functions.ILike(EF.Property<string>(p, filter.PropertyName), $"%{filter.Value}%")),
+            FilterOperator.StartsWith when ignoreCase => query.Where(p => p != null && EF.Functions.ILike(EF.Property<string>(p, filter.PropertyName), $"{filter.Value}%")),
+            FilterOperator.EndsWith when ignoreCase => query.Where(p => p != null && EF.Functions.ILike(EF.Property<string>(p, filter.PropertyName), $"%{filter.Value}")),
+            FilterOperator.DoesNotContain when ignoreCase => query.Where(p => p != null && !EF.Functions.ILike(EF.Property<string>(p, filter.PropertyName), $"%{filter.Value}%")),
             FilterOperator.Equals => query.Where(p => p != null && EF.Property<string>(p, filter.PropertyName).Equals(filter.Value)),
             FilterOperator.NotEquals => query.Where(p => p != null && !EF.Property<string>(p, filter.PropertyName).Equals(filter.Value)),
             FilterOperator.Contains => query.Where(p => p != null && EF.Property<string>(p, filter.PropertyName).Contains(filter.Value)),
