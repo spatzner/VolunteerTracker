@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using BlazorBootstrap;
 using Microsoft.EntityFrameworkCore;
+using VolunteerTracker.Repository.Entities;
 
 namespace VolunteerTracker.Blazor.Utilities;
 
@@ -23,7 +24,6 @@ public static class QueryExtensions
             _ => query
         };
     }
-
     private static IQueryable<T> FilterDecimal<T>(IQueryable<T> query, FilterItem filter)
     {
         return filter.Operator switch
@@ -107,7 +107,6 @@ public static class QueryExtensions
             _ => throw new ArgumentOutOfRangeException(nameof(filter.Operator), filter.Operator, null)
         };
     }
-
     private static IQueryable<T> FilterString<T>(IQueryable<T> query, FilterItem filter)
     {
         bool ignoreCase = filter.StringComparison switch
@@ -138,5 +137,40 @@ public static class QueryExtensions
             FilterOperator.IsNotEmpty => query.Where(p => p != null && EF.Property<string>(p, filter.PropertyName).Length > 0),
             _ => throw new ArgumentOutOfRangeException(nameof(filter.Operator), filter.Operator, null)
         };
+    }
+    public static IQueryable<T> BootstrapSortEF<T>(this IQueryable<T> query, IEnumerable<SortingItem<T>> sorting)
+    {
+        var filteredSorts = sorting.Where(s => s.SortDirection != SortDirection.None).ToList();
+
+        IOrderedQueryable<T> sortedQuery = null!;
+        
+        foreach (var sort in filteredSorts)
+            sortedQuery = sortedQuery == null ? query.BootstrapSortEF(sort) : sortedQuery.BootstrapSortEF(sort);
+        
+        return sortedQuery;
+    }
+    private static IOrderedQueryable<T> BootstrapSortEF<T>(this IQueryable<T> query, SortingItem<T> sort)
+    {
+        return sort.SortDirection switch
+        {
+            SortDirection.Ascending => query.OrderBy(sort.SortKeySelector),
+            SortDirection.Descending => query.OrderByDescending(sort.SortKeySelector),
+            _ => throw new ArgumentOutOfRangeException(nameof(sort.SortDirection), sort.SortDirection, null)
+        };
+    }
+
+    private static IOrderedQueryable<T> BootstrapSortEF<T>(this IOrderedQueryable<T> query, SortingItem<T> sort)
+    {
+        return sort.SortDirection switch
+        {
+            SortDirection.Ascending => query.ThenBy(sort.SortKeySelector),
+            SortDirection.Descending => query.ThenByDescending(sort.SortKeySelector),
+            _ => throw new ArgumentOutOfRangeException(nameof(sort.SortDirection), sort.SortDirection, null)
+        };
+    }
+
+    public static IQueryable<Person> BootstrapPaginateEF(this IQueryable<Person> query, GridDataProviderRequest<Person> request)
+    {
+        return query.Skip((request.PageNumber - 1) * request.PageSize).Take(request.PageSize);
     }
 }

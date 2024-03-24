@@ -11,20 +11,21 @@
       Class="table table-hover table-bordered table-striped"
       DataProvider="PersonsProvider.PersonsDataProvider"
       AllowFiltering="true"
-      AllowPaging="true">
-    <GridColumn TItem="Person" PropertyName="@nameof(Person.Title)" HeaderText="Title" FilterOperator="FilterOperator.StartsWith">
+      AllowPaging="true"
+      AllowSorting="true">
+    <GridColumn TItem="Person" PropertyName="@nameof(Person.Title)" SortKeySelector="p => p.Title"  HeaderText="Title" FilterOperator="FilterOperator.StartsWith">
         @context.Title
     </GridColumn>
-    <GridColumn TItem="Person" PropertyName="@nameof(Person.FirstName)" HeaderText="First Name" FilterOperator="FilterOperator.StartsWith">
+    <GridColumn TItem="Person" PropertyName="@nameof(Person.FirstName)" SortKeySelector="p => p.FirstName" HeaderText="First Name" FilterOperator="FilterOperator.StartsWith">
         @context.FirstName
     </GridColumn>
-    <GridColumn TItem="Person" PropertyName="@nameof(Person.MiddleName)" HeaderText="Middle Name" FilterOperator="FilterOperator.StartsWith">
+    <GridColumn TItem="Person" PropertyName="@nameof(Person.MiddleName)" SortKeySelector="p => p.MiddleName" HeaderText="Middle Name" FilterOperator="FilterOperator.StartsWith">
         @context.MiddleName
     </GridColumn>
-    <GridColumn TItem="Person" PropertyName="@nameof(Person.LastName)" HeaderText="Last Name" FilterOperator="FilterOperator.StartsWith">
+    <GridColumn TItem="Person" PropertyName="@nameof(Person.LastName)" SortKeySelector="p => p.LastName" HeaderText="Last Name" FilterOperator="FilterOperator.StartsWith">
         @context.LastName
     </GridColumn>
-    <GridColumn TItem="Person" PropertyName="@nameof(Person.Suffix)" HeaderText="Suffix" FilterOperator="FilterOperator.StartsWith">
+    <GridColumn TItem="Person" PropertyName="@nameof(Person.Suffix)" SortKeySelector="p => p.Suffix" HeaderText="Suffix" FilterOperator="FilterOperator.StartsWith">
         @context.Suffix
     </GridColumn>
 </Grid>
