@@ -24,6 +24,7 @@ public class Phone
     public string Number { get; set; }
 
     [ForeignKey("PersonId")]
+    [Required]
     public Guid PersonId { get; set; }
     
     public virtual Person Person { get; set; }

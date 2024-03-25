@@ -20,12 +20,15 @@ public class Organization
     public string Name { get; set; }
 
     [ForeignKey("AddressId")]
+    [Required]
     public Guid AddressId { get; set; }
     [Required]
-    public Address Address { get; set; } 
+    public Address Address { get; set; }
 
+    [Required]
     public Guid ContactId { get; set; }
 
     [ForeignKey("ContactId")]
+    [Required]
     public virtual Person Contact { get; set; }
 }

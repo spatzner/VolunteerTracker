@@ -1,9 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Bogus;
+﻿using Bogus;
 using VolunteerTracker.Repository;
 using VolunteerTracker.Repository.Entities;
 using Person = VolunteerTracker.Repository.Entities.Person;
-using ValidationResult = System.ComponentModel.DataAnnotations.ValidationResult;
 
 namespace VolunteerTracker.Database.DataGen
 {
@@ -18,52 +16,166 @@ namespace VolunteerTracker.Database.DataGen
 
         public async Task GenerateDataToDatabase()
         {
-            Random random = new Random();
             List<Person> persons = [.. new PersonFaker().Generate(100)];
-            List<Address> addresses = [.. new AddressFaker().Generate(97)];
-
             _volunteerContext.Persons.AddRange(persons);
-            await _volunteerContext.SaveChangesAsync();
 
-            foreach (Address address in addresses)
-                address.PersonId = persons[random.Next(0, persons.Count)].Id;
+            await _volunteerContext.SaveChangesAsync();
+        }
+    }
+
+    public sealed class PersonFaker : Faker<Person>
+    {
+        public PersonFaker()
+        {
+            AddressFaker addressFaker = new AddressFaker();
+            PhoneFaker phoneFaker = new PhoneFaker();
+            EmailFaker emailFaker = new EmailFaker();
             
+            RuleFor(p => p.Title, f => f.Name.Prefix().OrNull(f, .8f));
+            RuleFor(p => p.FirstName, f => f.Name.FirstName());
+            RuleFor(p => p.MiddleName,
+                f =>
+                {
+                    var middle = f.Name.FirstName().OrNull(f, .7f);
+                    if (middle is not null)
+                        middle = Random.Shared.Next(0, 5) % 5 == 0 ? middle : middle[..1];
+                    return middle;
+                });
+            RuleFor(p => p.LastName, f => f.Name.LastName());
+            RuleFor(p => p.Suffix, f => f.Name.Suffix().OrNull(f, .95f));
+            RuleFor(p => p.Notes, f => f.Lorem.Sentence().OrNull(f, .8f));
+            RuleFor(p => p.Address, _ => addressFaker.Generate());
+            RuleFor(p => p.Phones,
+                _ =>
+                {
+                    ICollection<Phone> phones = phoneFaker.Generate(1, PhoneFaker.Primary);
 
-            _volunteerContext.Addresses.AddRange(addresses);
+                    if (Random.Shared.Next(0, 100) < 50)
+                        phones.Add(phoneFaker.Generate(PhoneFaker.NonPrimary));
 
-            await _volunteerContext.SaveChangesAsync();
+                    return phones;
+                });
+            RuleFor(p => p.Emails,
+                _ =>
+                {
+                    ICollection<Email> emails = emailFaker.Generate(1, PhoneFaker.Primary);
+
+                    if (Random.Shared.Next(0, 100) < 10)
+                        emails.Add(emailFaker.Generate(PhoneFaker.NonPrimary));
+
+                    return emails;
+                });
         }
+    }
 
-        private sealed class PersonFaker : Faker<Person>
+    public sealed class PhoneFaker : Faker<Phone>
+    {
+        public static readonly string Primary = "Primary";
+        public static readonly string NonPrimary = "NonPrimary";
+        
+        readonly Random _random = new();
+
+        public PhoneFaker()
         {
-            public PersonFaker()
-            {
-                RuleFor(p => p.Title, f => f.Name.Prefix().OrNull(f, .8f));
-                RuleFor(p => p.FirstName, f => f.Name.FirstName());
-                RuleFor(p => p.MiddleName,
-                    f =>
-                    {
-                        var middle = f.Name.FirstName().OrNull(f, .7f);
-                        if (middle is not null)
-                            middle = Random.Shared.Next(0, 5) % 5 == 0 ? middle : middle[..1];
-                        return middle;
-                    });
-                RuleFor(p => p.LastName, f => f.Name.LastName());
-                RuleFor(p => p.Suffix, f => f.Name.Suffix().OrNull(f, .05f));
-                RuleFor(p => p.Notes, f => f.Lorem.Sentence().OrNull(f, .8f));
-            }
+
+
+            RuleSet(Primary,
+                set =>
+                {
+                    set.RuleFor(p => p.IsPrimary, _ => true);
+                    RuleFor(p => p.Number, f => f.Phone.PhoneNumber());
+                    RuleFor(p => p.Type,
+                        _ =>
+                        {
+                            int rand = _random.Next(0, 100);
+
+                            return rand switch
+                            {
+                                < 50 => "Mobile",
+                                < 70 => "Home",
+                                < 99 => "Work",
+                                _ => "Fax"
+                            };
+                        });
+                });
+            RuleSet(NonPrimary,
+                set =>
+                {
+                    set.RuleFor(p => p.IsPrimary, _ => false);
+                    RuleFor(p => p.Number, f => f.Phone.PhoneNumber());
+                    RuleFor(p => p.Type,
+                        _ =>
+                        {
+                            int rand = _random.Next(0, 100);
+
+                            return rand switch
+                            {
+                                < 50 => "Mobile",
+                                < 70 => "Home",
+                                < 99 => "Work",
+                                _ => "Fax"
+                            };
+                        });
+                });
         }
+    }
 
-        private sealed class AddressFaker : Faker<Address>
+    public sealed class AddressFaker : Faker<Address>
+    {
+        public AddressFaker()
         {
-            public AddressFaker()
-            {
-                RuleFor(a => a.Line1, f => f.Address.StreetAddress());
-                RuleFor(a => a.Line2, f => f.Address.SecondaryAddress().OrNull(f, 0.2f));
-                RuleFor(a => a.City, f => f.Address.City());
-                RuleFor(a => a.State, f => f.Address.State());
-                RuleFor(a => a.Zip, f => f.Address.ZipCode());
-            }
+            RuleFor(a => a.Line1, f => f.Address.StreetAddress());
+            RuleFor(a => a.Line2, f => f.Address.SecondaryAddress().OrNull(f, 0.2f));
+            RuleFor(a => a.City, f => f.Address.City());
+            RuleFor(a => a.State, f => f.Address.State());
+            RuleFor(a => a.Zip, f => f.Address.ZipCode());
+        }
+    }
+
+    public sealed class EmailFaker : Faker<Email>
+    {
+        public static readonly string Primary = "Primary";
+        public static readonly string NonPrimary = "NonPrimary";
+        
+        readonly Random _random = new();
+        
+        public EmailFaker()
+        {
+
+            RuleSet(Primary,
+                set =>
+                {
+                    set.RuleFor(p => p.IsPrimary, _ => true);
+                    RuleFor(e => e.Address, f => f.Internet.Email());
+                    RuleFor(p => p.Type,
+                        _ =>
+                        {
+                            int rand = _random.Next(0, 100);
+
+                            return rand switch
+                            {
+                                < 70 => "Home",
+                                _ => "Work",
+                            };
+                        });
+                });
+            RuleSet(NonPrimary,
+                set =>
+                {
+                    set.RuleFor(p => p.IsPrimary, _ => false);
+                    RuleFor(e => e.Address, f => f.Internet.Email());
+                    RuleFor(p => p.Type,
+                        _ =>
+                        {
+                            int rand = _random.Next(0, 100);
+
+                            return rand switch
+                            {
+                                < 70 => "Home",
+                                _ => "Work",
+                            };
+                        });
+                });
         }
     }
 }
