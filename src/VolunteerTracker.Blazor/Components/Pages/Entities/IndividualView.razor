@@ -2,30 +2,26 @@
 @using VolunteerTracker.Repository
 @using Microsoft.EntityFrameworkCore
 
-<h3>Individual</h3>
+<div>
+    test
 
-<InputText DisplayName="Title" @bind="_person.Title"></InputText>
-<InputText DisplayName="First" @bind="_person.FirstName"></InputText>
-<InputText DisplayName="Middle" @bind="_person.MiddleName"></InputText>
-<InputText DisplayName="Last" @bind="_person.LastName"></InputText>
-<InputText DisplayName="Suffix" @bind="_person.Suffix"></InputText>
+    <input type="text" placeholder="First Name" @bind-value="_person.FirstName"/>
+
+</div>
 
 
 @code {
     [Parameter]
     public required Guid PersonGuid { get; set; }
 
-    private Person _person = new();
-    private readonly VolunteerContext _context;
+    [Inject]
+    public required VolunteerContext Context { get; set; }
 
-    // public IndividualView(VolunteerContext context)
-    // {
-    //     _context = context;
-    // }
+    private Person _person = new();
 
     protected override void OnInitialized()
     {
-        // _person = _context.Persons.Include(x => x.Emails).Include(x => x.Phones).Include(x => x.Address).FirstOrDefault(p => p.Id == PersonGuid) ?? new Person();
+        _person = Context.Persons.Include(x => x.Emails).Include(x => x.Phones).Include(x => x.Address).FirstOrDefault(p => p.Id == PersonGuid) ?? new Person();
 
         base.OnInitialized();
     }

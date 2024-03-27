@@ -36,13 +36,12 @@
 </Modal>
 
 @code {
-    private Modal _editModal = null!;
+    private Modal _editModal = default!;
 
     private async Task OpenModal(Guid id)
     {
         var parameters = new Dictionary<string, object> { { "PersonGuid", id } };
-        //await _editModal.ShowAsync<IndividualView>(title: "Employee Details", parameters: parameters);
-        await _editModal.ShowAsync();
+        await _editModal.ShowAsync<IndividualView>(title: "Employee Details", parameters: parameters);
     }
 
 }
