@@ -1,15 +1,15 @@
-﻿@page "/individuals"
+﻿@page "/persons"
 
 @using VolunteerTracker.Repository.Entities
 @using VolunteerTracker.Blazor.Services
 
-@inject PersonsProvider PersonsProvider
+@inject PersonsDataProvider PersonsDataProvider
 
-<h3>Individuals</h3>
+<h3>Persons</h3>
 
 <Grid TItem="Person"
       Class="table table-hover table-bordered table-striped"
-      DataProvider="PersonsProvider.PersonsDataProvider"
+      DataProvider="PersonsDataProvider.Provide"
       AllowFiltering="true"
       AllowPaging="true"
       AllowSorting="true">

@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text;
 using VolunteerTracker.Repository.Attributes;
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
@@ -42,4 +43,18 @@ public class Address
 
     [ForeignKey("OrganizationId")]
     public virtual Organization? Organization { get; set; }
+
+    public override string ToString()
+    {
+        StringBuilder sb = new();
+        sb.Append(Line1);
+        if (!string.IsNullOrWhiteSpace(Line2))
+        {
+            sb.Append($", {Line2}");
+        }
+
+        sb.Append($", {City}, {State} {Zip}");
+
+        return sb.ToString();
+    }
 }

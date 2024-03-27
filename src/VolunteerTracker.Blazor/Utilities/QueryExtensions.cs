@@ -169,8 +169,8 @@ public static class QueryExtensions
         };
     }
 
-    public static IQueryable<Person> BootstrapPaginateEF(this IQueryable<Person> query, GridDataProviderRequest<Person> request)
+    public static IQueryable<Person> BootstrapPaginateEF(this IQueryable<Person> query, int pageSize, int pageNumber)
     {
-        return query.Skip((request.PageNumber - 1) * request.PageSize).Take(request.PageSize);
+        return query.Skip((pageNumber - 1) * pageSize).Take(pageSize);
     }
 }

@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VolunteerTracker.Blazor", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VolunteerTracker.Database.DataGen", "VolunteerTracker.Database.DataGen\VolunteerTracker.Database.DataGen.csproj", "{4C85E933-85BF-442F-A173-960FC5586821}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VolunteerTracker.Common", "VolunteerTracker.Common\VolunteerTracker.Common.csproj", "{51DF17A8-B184-4D08-B0E4-AA0803E8B694}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VolunteerTracker.Common", "VolunteerTracker.Common\VolunteerTracker.Common.csproj", "{51DF17A8-B184-4D08-B0E4-AA0803E8B694}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

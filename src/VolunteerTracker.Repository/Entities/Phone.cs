@@ -28,4 +28,6 @@ public class Phone
     public Guid PersonId { get; set; }
     
     public virtual Person Person { get; set; }
+
+    public override string ToString() => $"{Type}: {Number}";
 }

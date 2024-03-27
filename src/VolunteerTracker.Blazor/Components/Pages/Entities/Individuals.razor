@@ -1,0 +1,48 @@
+﻿@page "/individuals"
+
+@using VolunteerTracker.Blazor.Services
+
+@inject IndividualDataProvider IndividualDataProvider
+
+<h3>Individuals</h3>
+<Button Color="ButtonColor.Primary" Class="my-2"> Add Individual</Button>
+<Grid TItem="Individual"
+      Class="table table-hover table-bordered table-striped"
+      DataProvider="IndividualDataProvider.Provide"
+      AllowFiltering="true"
+      AllowPaging="true">
+    <GridColumn TItem="Individual" HeaderText="Actions" Filterable="false" TextNoWrap="true">
+        <div>
+            <Button ElementId="@context.Id.ToString()" Color="ButtonColor.Primary" @onclick="async () => await OpenModal(context.Id)">View</Button>
+            <Button ElementId="@context.Id.ToString()" Color="ButtonColor.Primary">Edit</Button>
+        </div>
+    </GridColumn>
+    <GridColumn TItem="Individual" PropertyName="@nameof(Individual.FullName)" HeaderText="FullName" FilterOperator="FilterOperator.StartsWith">
+        @context.FullName
+    </GridColumn>
+    <GridColumn TItem="Individual" PropertyName="@nameof(Individual.Location)" HeaderText="Location" FilterOperator="FilterOperator.StartsWith">
+        @context.Location
+    </GridColumn>
+    <GridColumn TItem="Individual" PropertyName="@nameof(Individual.Phone)" HeaderText="Phone" FilterOperator="FilterOperator.StartsWith">
+        @context.Phone
+    </GridColumn>
+    <GridColumn TItem="Individual" PropertyName="@nameof(Individual.Email)" HeaderText="Email" FilterOperator="FilterOperator.StartsWith">
+        @context.Email
+    </GridColumn>
+</Grid>
+
+<Modal @ref="_editModal">
+    <div>tests</div>
+</Modal>
+
+@code {
+    private Modal _editModal = null!;
+
+    private async Task OpenModal(Guid id)
+    {
+        var parameters = new Dictionary<string, object> { { "PersonGuid", id } };
+        //await _editModal.ShowAsync<IndividualView>(title: "Employee Details", parameters: parameters);
+        await _editModal.ShowAsync();
+    }
+
+}

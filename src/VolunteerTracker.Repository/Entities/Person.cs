@@ -1,7 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq.Expressions;
-using System.Security.Cryptography.X509Certificates;
 using VolunteerTracker.Common.DataAnnotations;
 using VolunteerTracker.Repository.Attributes;
 
@@ -49,4 +47,8 @@ public class Person
 
     [ExactlyOneMember<Email>(nameof(Email.IsPrimary), true)]
     public virtual ICollection<Email> Emails { get; set; }
+    
+    public override string ToString() => $"{LastName}, {FirstName}";
+
+
 }

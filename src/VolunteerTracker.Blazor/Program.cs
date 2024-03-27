@@ -34,7 +34,11 @@ builder
 var volunteerDatabaseSettings = new VolunteerDatabaseSettings();
 builder
    .Configuration.GetSection("VolunteerDatabaseSettings")
-   .Bind(volunteerDatabaseSettings, options => options.ErrorOnUnknownConfiguration = true);
+   .Bind(volunteerDatabaseSettings,
+        options =>
+        {
+            options.ErrorOnUnknownConfiguration = true;
+        });
 
 var aspNetDatabaseSettings = new AspNetDatabaseSettings();
 builder
@@ -42,7 +46,7 @@ builder
    .Bind(aspNetDatabaseSettings, options => options.ErrorOnUnknownConfiguration = true);
 
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(aspNetDatabaseSettings.ConnectionString));
-builder.Services.AddDbContext<VolunteerContext>(options => options.UseNpgsql(volunteerDatabaseSettings.ConnectionString));
+builder.Services.AddDbContext<VolunteerContext>(options => options.UseNpgsql(volunteerDatabaseSettings.ConnectionString), ServiceLifetime.Scoped);
 
 builder
    .Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
@@ -53,7 +57,9 @@ builder
 builder.Services.AddBlazorBootstrap();
 
 builder.Services.AddSingleton<IEmailSender<ApplicationUser>, EmailSender>();
-builder.Services.AddTransient<PersonsProvider>();
+builder.Services.AddTransient<PersonsDataProvider>();
+builder.Services.AddTransient<IndividualDataProvider>();
+
 
 if (builder.Environment.IsDevelopment())
 {
