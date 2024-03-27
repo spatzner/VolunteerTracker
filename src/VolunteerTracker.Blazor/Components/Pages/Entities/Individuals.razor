@@ -31,9 +31,7 @@
     </GridColumn>
 </Grid>
 
-<Modal @ref="_editModal">
-    <div>tests</div>
-</Modal>
+<Modal @ref="_editModal" Size="ModalSize.ExtraLarge"/>
 
 @code {
     private Modal _editModal = default!;
@@ -41,7 +39,7 @@
     private async Task OpenModal(Guid id)
     {
         var parameters = new Dictionary<string, object> { { "PersonGuid", id } };
-        await _editModal.ShowAsync<IndividualView>(title: "Employee Details", parameters: parameters);
+        await _editModal.ShowAsync<IndividualView>(title: "Individual Details", parameters: parameters);
     }
 
 }

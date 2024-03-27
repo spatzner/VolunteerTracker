@@ -2,11 +2,31 @@
 @using VolunteerTracker.Repository
 @using Microsoft.EntityFrameworkCore
 
-<div>
-    test
-
-    <input type="text" placeholder="First Name" @bind-value="_person.FirstName"/>
-
+<div class="px-2">
+    <div class="row">
+        <div class="col-md-1 pr-1">
+            <label for="title" class="control-label">Title</label>
+            <input id="title" type="text" class="form-control" @bind-value="_person.Title" />
+        </div>
+        <div class="col-md-3 pr-1">
+            <label for="title" class="control-label">First Name</label>
+            <input id="title" type="text" class="form-control" @bind-value="_person.FirstName" />
+        </div>
+        <div class="col-md-3 pr-1">
+            <label for="title" class="control-label">Middle Name</label>
+            <input id="title" type="text" class="form-control" @bind-value="_person.MiddleName" />
+        </div>
+        <div class="col-md-4 pr-1">
+            <label for="title" class="control-label">Last Name</label>
+            <input id="title" type="text" class="form-control" @bind-value="_person.LastName" />
+        </div>
+        <div class="col-md-1">
+            <label for="title" class="control-label">Suffix</label>
+            <input id="title" type="text" class="form-control" @bind-value="_person.Suffix" />
+        </div>
+    </div>
+    <div class="row"></div>
+    
 </div>
 
 
