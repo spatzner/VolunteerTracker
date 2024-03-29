@@ -13,8 +13,8 @@
       AllowPaging="true">
     <GridColumn TItem="Individual" HeaderText="Actions" Filterable="false" TextNoWrap="true">
         <div>
-            <Button ElementId="@context.Id.ToString()" Color="ButtonColor.Primary" @onclick="async () => await OpenModal(context.Id)">View</Button>
-            <Button ElementId="@context.Id.ToString()" Color="ButtonColor.Primary">Edit</Button>
+            <Button ElementId="@context.Id.ToString()" Color="ButtonColor.Primary" @onclick="async () => await ViewModal(context.Id)">View</Button>
+            <Button ElementId="@context.Id.ToString()" Color="ButtonColor.Primary" @onclick="async () => await EditModal(context.Id)">Edit</Button>
         </div>
     </GridColumn>
     <GridColumn TItem="Individual" PropertyName="@nameof(Individual.FullName)" HeaderText="FullName" FilterOperator="FilterOperator.StartsWith">
@@ -31,15 +31,29 @@
     </GridColumn>
 </Grid>
 
-<Modal @ref="_editModal" Size="ModalSize.ExtraLarge"/>
+<Modal @ref="_editModal" Size="ModalSize.ExtraLarge">
+</Modal>
 
 @code {
     private Modal _editModal = default!;
 
-    private async Task OpenModal(Guid id)
+    private async Task EditModal(Guid id)
     {
-        var parameters = new Dictionary<string, object> { { "PersonGuid", id } };
+        var onCloseCallback = new EventCallback(this, (Func<Task>)CloseModal);
+        var parameters = new Dictionary<string, object> { { "PersonGuid", id }, { "OnClose", onCloseCallback } };
+        await _editModal.ShowAsync<IndividualEdit>(title: "Individual Details", parameters: parameters);
+    }
+
+    private async Task ViewModal(Guid id)
+    {
+        var onCloseCallback = new EventCallback(this, (Func<Task>)CloseModal);
+        var parameters = new Dictionary<string, object> { { "PersonGuid", id }, { "OnClose", onCloseCallback } };
         await _editModal.ShowAsync<IndividualView>(title: "Individual Details", parameters: parameters);
+    }
+
+    private async Task CloseModal()
+    {
+        await _editModal.HideAsync();
     }
 
 }
