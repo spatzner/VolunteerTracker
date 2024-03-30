@@ -5,10 +5,11 @@
 @inject IndividualDataProvider IndividualDataProvider
 
 <h3>Individuals</h3>
-<Button Color="ButtonColor.Primary" Class="my-2"> Add Individual</Button>
+
+<Button Color="ButtonColor.Primary" Class="my-2" @onclick="async () => await EditModal(null)">Add Individual</Button>
 <Grid TItem="Individual"
       Class="table table-hover table-bordered table-striped"
-      DataProvider="IndividualDataProvider.Provide"
+      DataProvider="IndividualProvider"
       AllowFiltering="true"
       AllowPaging="true">
     <GridColumn TItem="Individual" HeaderText="Actions" Filterable="false" TextNoWrap="true">
@@ -35,9 +36,11 @@
 </Modal>
 
 @code {
+    [Inject] protected PreloadService PreloadService { get; set; } = default!;
+
     private Modal _editModal = default!;
 
-    private async Task EditModal(Guid id)
+    private async Task EditModal(Guid? id)
     {
         var onCloseCallback = new EventCallback(this, (Func<Task>)CloseModal);
         var parameters = new Dictionary<string, object> { { "PersonGuid", id }, { "OnClose", onCloseCallback } };
@@ -54,6 +57,12 @@
     private async Task CloseModal()
     {
         await _editModal.HideAsync();
+    }
+
+    private async Task<GridDataProviderResult<Individual>> IndividualProvider(GridDataProviderRequest<Individual> request)
+    {
+        var data = await IndividualDataProvider.Provide(request);
+        return data;
     }
 
 }

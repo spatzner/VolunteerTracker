@@ -1,6 +1,7 @@
 ﻿@using VolunteerTracker.Repository.Entities
 @using VolunteerTracker.Repository
 @using Microsoft.EntityFrameworkCore
+@using System.ComponentModel.DataAnnotations
 
 <div class="px-2">
     <div class="row">
@@ -25,10 +26,54 @@
             <input id="suffix" type="text" class="form-control" @bind-value="_person.Suffix"/>
         </div>
     </div>
-    <div class="row"></div>
-    
-    <div class="row">
-        <button class="btn btn-primary" @onclick="Save">Save</button>
-        <button class="btn btn-primary" @onclick="Close">Close</button>
+
+    <div class="row py-3">
+        <div class="col-lg-6 col-md-12 p-3 mr-lg-2">
+            <div class="col-12">
+                <label for="address1" class="control-label">Address 1</label>
+                <input id="address1" type="text" class="form-control" @bind-value="_person.Address.Line1"/>
+            </div>
+            <div class="col-12">
+                <label for="address2" class="control-label">Address 2</label>
+                <input id="address2" type="text" class="form-control" @bind-value="_person.Address.Line2"/>
+            </div>
         </div>
+        <div class="col-lg-6 col-md-12 p-3 ml-lg-2">
+
+            @foreach (var phone in _person.Phones)
+            {
+                <div class="col-12">
+                    <div class="row">
+                        <div class="col-3">
+                            <label for="@($"ptype{++_phoneIndex}")" class="control-label">Type</label>
+                            <select id="@($"ptype{_phoneIndex}")" type="text" class="form-control " @bind="phone.Type">
+
+                                @foreach (var phoneType in _phoneTypes)
+                                {
+                                    <option value="@phoneType">@phoneType</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-8">
+                            <label for="@($"ph{_phoneIndex}")" class="control-label">Number</label>
+                            <input id="@($"ph{_phoneIndex}")" type="tel" class="form-control" @bind="phone.Number" />
+                        </div>
+                        <div class="col-1">
+                            <label for="@($"php{_phoneIndex}")" class="control-label">P</label>
+                            <input id="@($"php{_phoneIndex}")" type="checkbox" @bind="phone.IsPrimary" />
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="row py-3">
+        <div class="col-md-2 col-lg-1">
+            <button type="submit" class="btn btn-primary" @onclick="Save">Save</button>
+        </div>
+        <div class="col-md-2 col-lg-1">
+            <button type="button" class="btn btn-secondary" @onclick="Close">Close</button>
+        </div>
+    </div>
 </div>
