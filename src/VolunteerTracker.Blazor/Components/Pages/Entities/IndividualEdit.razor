@@ -3,33 +3,41 @@
 
 <div class="px-2">
     <div class="row">
-        <VTTextBox Name="Title" Class="col-md-4 col-lg-1 pr-lg-1" @bind-Value="_person.Title"></VTTextBox>
-        <VTTextBox Name="First Name" Class="col-md-12 col-lg-3 pr-lg-1" @bind-Value="_person.FirstName"></VTTextBox>
-        <VTTextBox Name="Middle Name" Class="col-md-12 col-lg-3 pr-lg-1" @bind-Value="_person.MiddleName"></VTTextBox>
-        <VTTextBox Name="Last Name" Class="col-md-12 col-lg-4 pr-lg-1" @bind-Value="_person.LastName"></VTTextBox>
-        <VTTextBox Name="Suffix" Class="col-md-4 col-lg-1" @bind-Value="_person.Suffix"></VTTextBox>
+        <VTTextBox Label="Title" Class="col-md-4 col-lg-1 pe-lg-1" @bind-Value="_person.Title"></VTTextBox>
+        <VTTextBox Label="First Name" Class="col-md-12 col-lg-2 ps-lg-1 pe-lg-1" @bind-Value="_person.FirstName"></VTTextBox>
+        <VTTextBox Label="Middle Name" Class="col-md-12 col-lg-2 ps-lg-1 pe-lg-1 " @bind-Value="_person.MiddleName"></VTTextBox>
+        <VTTextBox Label="Last Name" Class="col-md-12 col-lg-2 ps-lg-1 pe-lg-1" @bind-Value="_person.LastName"></VTTextBox>
+        <VTTextBox Label="Suffix" Class="col-md-4 col-lg-1 ps-lg-1" @bind-Value="_person.Suffix"></VTTextBox>
+        <div class="col-lg-4"></div>
     </div>
 
     <div class="row py-3">
         <div class="col-lg-6 col-md-12 p-3 mr-lg-2">
-            <VTTextBox Name="Address 1" Class="col-12" @bind-Value="_person.Address.Line1"></VTTextBox>
-            <VTTextBox Name="Address 2" Class="col-12" @bind-Value="_person.Address.Line2"></VTTextBox>
-            <VTTextBox Name="City" Class="col-12" @bind-Value="_person.Address.City"></VTTextBox>
-            <VTTextBox Name="State" Class="col-12" @bind-Value="_person.Address.State"></VTTextBox>
-            <VTTextBox Name="Zip" Class="col-12" @bind-Value="_person.Address.Zip"></VTTextBox>
+            <VTTextBox Label="Address 1" Class="col-12" @bind-Value="_person.Address.Line1"></VTTextBox>
+            <VTTextBox Label="Address 2" Class="col-12" @bind-Value="_person.Address.Line2"></VTTextBox>
+            <VTTextBox Label="City" Class="col-12" @bind-Value="_person.Address.City"></VTTextBox>
+            <VTTextBox Label="State" Class="col-12" @bind-Value="_person.Address.State"></VTTextBox>
+            <VTTextBox Label="Zip" Class="col-12" @bind-Value="_person.Address.Zip"></VTTextBox>
         </div>
         <div class="col-lg-6 col-md-12 p-3 ml-lg-2">
 
             @foreach (Phone phone in _person.Phones)
             {
-                <div class="col-12">
-                    <div class="row">
-                        <VTDropdown Name="Type" Class="col-3" Options="_phoneTypes" @bind-Value="phone.Type"></VTDropdown>
-                        <VTTextBox Name="Number" Class="col-7" @bind-Value="@phone.Number"></VTTextBox>
-                        <VTCheckbox Name="Primary" Class="col-2" @bind-Value="@phone.IsPrimary"></VTCheckbox>
+                <div class="row">
+                    <VTDropdown Label="Type" Class="col-3 pe-1" Options="_phoneTypes" @bind-Value="phone.Type"></VTDropdown>
+                    <VTTextBox Label="Number" Class="col-6 ps-1 pe-1" @bind-Value="@phone.Number"></VTTextBox>
+                    <VTRadio Label="Main" Group="phonePrimary" Class="col-2 ps-1" @bind-Value="@phone.IsPrimary"></VTRadio>
+                    <div class="col-1 mb-1 ps-1 d-flex align-items-center ">
+                        <button type="button" class="btn btn-outline-danger"><i class="bi bi-trash3"></i></button>
                     </div>
                 </div>
-            }
+            }                    
+            <div class="row">
+                <div class="col-11 mb-1 pe-1"></div>
+                <div class="col-1 mb-1 ps-1">
+                    <button type="button" class="btn btn-outline-success"><i class="bi bi-plus-lg"></i></button>
+                </div>
+            </div>
         </div>
     </div>
 

@@ -1,8 +1,8 @@
 ﻿@inherits VTComponentBase
 
-<div class="@Class">
+<div class="@($"d-flex align-items-center {Class}")">
     <div class="form-check">
-        <input id="@Id" type="checkbox" class="form-check-input" @bind="Value"/>
+        <input id="@Id" name="@Group" type="radio" class="form-check-input" @bind="Value" />
         <label for="@Id" class="form-check-label">@Label</label><br>
     </div>
 </div>
@@ -26,5 +26,8 @@
 
     [Parameter]
     public EventCallback<bool> ValueChanged { get; set; }
+
+    [Parameter]
+    public string Group { get; set; }
 
 }

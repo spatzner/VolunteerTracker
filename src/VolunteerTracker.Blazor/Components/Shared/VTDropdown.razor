@@ -1,12 +1,14 @@
 ﻿@inherits VTComponentBase
-<div class="@Class">
-    <label for="@Id" class="control-label">Type</label>
-    <select id="@Id" type="text" class="form-select" @bind="Value">
-        @foreach (var option in Options)
-        {
-            <option value="@option">@option</option>
-        }
-    </select>
+<div class="@($"mb-1 {Class}")">
+    <div class="form-floating">
+        <select id="@Id" type="text" class="form-select" @bind="Value">
+            @foreach (var option in Options)
+            {
+                <option value="@option">@option</option>
+            }
+        </select>
+        <label for="@Id" class="control-label">Type</label>
+    </div>
 </div>
 
 @code {

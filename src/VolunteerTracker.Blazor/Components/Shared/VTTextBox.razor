@@ -1,8 +1,10 @@
 ﻿@inherits VTComponentBase
 
-<div class="@Class">
-    <label for="@Id" class="control-label">@Name</label>
-    <input id="@Id" type="text" class="form-control" @bind-value="Value" />
+<div class="@($"mb-1 {Class}")">
+    <div class="form-floating">
+        <input id="@Id" type="text" class="form-control" @bind-value="Value"/>
+        <label for="@Id" class="control-label">@Label</label>
+    </div>
 </div>
 
 @code {
@@ -16,7 +18,7 @@
         {
             if (_value == value)
                 return;
-            
+
             ValueChanged.InvokeAsync(value);
             _value = value;
         }
