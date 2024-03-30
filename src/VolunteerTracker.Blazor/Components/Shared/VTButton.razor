@@ -1,14 +1,14 @@
 ﻿@inherits VTComponentBase
 
 <div class="@($"mb-1 {Class}")">
-    <button type="@btnType" class="@ButtonClass" title="@Tooltip" @onclick="OnClick">
+    <button type="@BtnType" class="@ButtonClass" title="@Tooltip" @onclick="OnClick">
         @ChildContent
     </button>
 </div>
 
 @code {
 
-    private string btnType => ButtonType.ToString().ToLower();
+    private string BtnType => ButtonType.ToString().ToLower();
 
 
     [Parameter]
@@ -18,15 +18,13 @@
     public string ButtonClass { get; set; } = "btn btn-primary";
 
     [Parameter]
-    public string Tooltip { get; set; }
+    public string? Tooltip { get; set; }
 
     [Parameter]
     public EventCallback<MouseEventArgs> OnClick { get; set; }
 
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
-
-    public enum BtnType { }
 
     public enum BtnActionType
     {

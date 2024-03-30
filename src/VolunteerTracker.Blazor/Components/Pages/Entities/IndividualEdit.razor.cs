@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.EntityFrameworkCore;
-using VolunteerTracker.Common.DataAnnotations;
 using VolunteerTracker.Repository;
 using VolunteerTracker.Repository.Entities;
 
@@ -18,8 +17,6 @@ public partial class IndividualEdit
     public required VolunteerContext Context { get; set; }
 
     private Person _person = new();
-    
-    private readonly List<string> _phoneTypes = typeof(Phone).GetAllowedValues(nameof(Phone.Type));
     protected override void OnInitialized()
     {
         _person = PersonGuid.HasValue
@@ -41,15 +38,5 @@ public partial class IndividualEdit
     private void Close()
     {
         OnClose.InvokeAsync();
-    }
-
-    private void DeletePhone(Guid id)
-    {
-        _person.Phones.Remove(_person.Phones.First(x => x.Id == id));
-    }
-
-    private void AddPhone()
-    {
-        _person.Phones.Add(new Phone { Type = _phoneTypes.First() });
     }
 }

@@ -13,19 +13,21 @@ public class Email
 
     [Required]
     [AllowedValues("Home", "Work")]
-    public string Type { get; set; }
+    [MaxLength(10)]
+    public string Type { get; set; } = null!;
 
     [Required]
     public bool IsPrimary { get; set; }
 
     [Required]
     [EmailAddress]
+    [MaxLength(100)]
     public string Address { get; set; }
 
     [ForeignKey("PersonId")]
     public Guid PersonId { get; set; }
 
-    public virtual Person Person { get; set; }
+    public virtual Person Person { get; set; } = null!;
     
     public override string ToString() => $"{Type}: {Address}";
 }
