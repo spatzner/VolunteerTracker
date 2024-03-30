@@ -1,0 +1,28 @@
+﻿@inherits VTComponentBase
+
+<div class="@Class">
+    <label for="@Id" class="control-label">@Name</label><br>
+    <input id="@Id" type="checkbox" class="form-check-input" @bind="Value"/>
+</div>
+
+@code {
+    private bool _value;
+
+    [Parameter]
+    public bool Value
+    {
+        get => _value;
+        set
+        {
+            if (_value == value)
+                return;
+
+            ValueChanged.InvokeAsync(value);
+            _value = value;
+        }
+    }
+
+    [Parameter]
+    public EventCallback<bool> ValueChanged { get; set; }
+
+}

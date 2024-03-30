@@ -1,0 +1,43 @@
+﻿@inherits VTComponentBase
+<div class="@Class">
+    <label for="@Id" class="control-label">Type</label>
+    <select id="@Id" type="text" class="form-select" @bind="Value">
+        @foreach (var option in Options)
+        {
+            <option value="@option">@option</option>
+        }
+    </select>
+</div>
+
+@code {
+    private string? _value;
+
+    [Parameter]
+    public string? Value
+    {
+        get => _value;
+        set
+        {
+            if (_value == value)
+                return;
+
+            ValueChanged.InvokeAsync(value);
+            _value = value;
+        }
+    }
+
+    [Parameter]
+    public EventCallback<string> ValueChanged { get; set; }
+
+    [Parameter]
+    public List<string> Options { get; set; } = null!;
+
+    protected override void OnInitialized()
+    {
+        if (Options?.Count == 0)
+            throw new ArgumentException("Options must have at least one value");
+
+        base.OnInitialized();
+    }
+
+}

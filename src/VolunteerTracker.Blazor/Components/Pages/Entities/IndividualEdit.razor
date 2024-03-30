@@ -1,67 +1,32 @@
-﻿@using VolunteerTracker.Repository.Entities
-@using VolunteerTracker.Repository
-@using Microsoft.EntityFrameworkCore
-@using System.ComponentModel.DataAnnotations
+﻿@using VolunteerTracker.Blazor.Components.Shared
+@using VolunteerTracker.Repository.Entities
 
 <div class="px-2">
     <div class="row">
-        <div class="col-md-4 col-lg-1 pr-lg-1">
-            <label for="title" class="control-label">Title</label>
-            <input id="title" type="text" class="form-control" @bind-value="_person.Title"/>
-        </div>
-        <div class="col-md-12 col-lg-3 pr-lg-1">
-            <label for="firstname" class="control-label">First Name</label>
-            <input id="firstname" type="text" class="form-control" @bind-value="_person.FirstName"/>
-        </div>
-        <div class="col-md-12 col-lg-3 pr-lg-1">
-            <label for="middlename" class="control-label">Middle Name</label>
-            <input id="middlename" type="text" class="form-control" @bind-value="_person.MiddleName"/>
-        </div>
-        <div class="col-md-12 col-lg-4 pr-lg-1">
-            <label for="lastname" class="control-label">Last Name</label>
-            <input id="lastname" type="text" class="form-control" @bind-value="_person.LastName"/>
-        </div>
-        <div class="col-md-4 col-lg-1">
-            <label for="suffix" class="control-label">Suffix</label>
-            <input id="suffix" type="text" class="form-control" @bind-value="_person.Suffix"/>
-        </div>
+        <VTTextBox Name="Title" Class="col-md-4 col-lg-1 pr-lg-1" @bind-Value="_person.Title"></VTTextBox>
+        <VTTextBox Name="First Name" Class="col-md-12 col-lg-3 pr-lg-1" @bind-Value="_person.FirstName"></VTTextBox>
+        <VTTextBox Name="Middle Name" Class="col-md-12 col-lg-3 pr-lg-1" @bind-Value="_person.MiddleName"></VTTextBox>
+        <VTTextBox Name="Last Name" Class="col-md-12 col-lg-4 pr-lg-1" @bind-Value="_person.LastName"></VTTextBox>
+        <VTTextBox Name="Suffix" Class="col-md-4 col-lg-1" @bind-Value="_person.Suffix"></VTTextBox>
     </div>
 
     <div class="row py-3">
         <div class="col-lg-6 col-md-12 p-3 mr-lg-2">
-            <div class="col-12">
-                <label for="address1" class="control-label">Address 1</label>
-                <input id="address1" type="text" class="form-control" @bind-value="_person.Address.Line1"/>
-            </div>
-            <div class="col-12">
-                <label for="address2" class="control-label">Address 2</label>
-                <input id="address2" type="text" class="form-control" @bind-value="_person.Address.Line2"/>
-            </div>
+            <VTTextBox Name="Address 1" Class="col-12" @bind-Value="_person.Address.Line1"></VTTextBox>
+            <VTTextBox Name="Address 2" Class="col-12" @bind-Value="_person.Address.Line2"></VTTextBox>
+            <VTTextBox Name="City" Class="col-12" @bind-Value="_person.Address.City"></VTTextBox>
+            <VTTextBox Name="State" Class="col-12" @bind-Value="_person.Address.State"></VTTextBox>
+            <VTTextBox Name="Zip" Class="col-12" @bind-Value="_person.Address.Zip"></VTTextBox>
         </div>
         <div class="col-lg-6 col-md-12 p-3 ml-lg-2">
 
-            @foreach (var phone in _person.Phones)
+            @foreach (Phone phone in _person.Phones)
             {
                 <div class="col-12">
                     <div class="row">
-                        <div class="col-3">
-                            <label for="@($"ptype{++_phoneIndex}")" class="control-label">Type</label>
-                            <select id="@($"ptype{_phoneIndex}")" type="text" class="form-control " @bind="phone.Type">
-
-                                @foreach (var phoneType in _phoneTypes)
-                                {
-                                    <option value="@phoneType">@phoneType</option>
-                                }
-                            </select>
-                        </div>
-                        <div class="col-8">
-                            <label for="@($"ph{_phoneIndex}")" class="control-label">Number</label>
-                            <input id="@($"ph{_phoneIndex}")" type="tel" class="form-control" @bind="phone.Number" />
-                        </div>
-                        <div class="col-1">
-                            <label for="@($"php{_phoneIndex}")" class="control-label">P</label>
-                            <input id="@($"php{_phoneIndex}")" type="checkbox" @bind="phone.IsPrimary" />
-                        </div>
+                        <VTDropdown Name="Type" Class="col-3" Options="_phoneTypes" @bind-Value="phone.Type"></VTDropdown>
+                        <VTTextBox Name="Number" Class="col-7" @bind-Value="@phone.Number"></VTTextBox>
+                        <VTCheckbox Name="Primary" Class="col-2" @bind-Value="@phone.IsPrimary"></VTCheckbox>
                     </div>
                 </div>
             }

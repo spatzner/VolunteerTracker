@@ -36,6 +36,7 @@ public partial class IndividualEdit
             Context.Persons.Add(_person);
 
         Context.SaveChanges();
+        Close();
     }
 
     private void Close()

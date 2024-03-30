@@ -1,0 +1,28 @@
+﻿@inherits VTComponentBase
+
+<div class="@Class">
+    <label for="@Id" class="control-label">@Name</label>
+    <input id="@Id" type="text" class="form-control" @bind-value="Value" />
+</div>
+
+@code {
+    private string? _value;
+
+    [Parameter]
+    public string? Value
+    {
+        get => _value;
+        set
+        {
+            if (_value == value)
+                return;
+            
+            ValueChanged.InvokeAsync(value);
+            _value = value;
+        }
+    }
+
+    [Parameter]
+    public EventCallback<string> ValueChanged { get; set; }
+
+}
