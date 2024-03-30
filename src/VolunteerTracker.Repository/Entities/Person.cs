@@ -50,5 +50,15 @@ public class Person
     
     public override string ToString() => $"{LastName}, {FirstName}";
 
-
+    public static Person Create()
+    {
+        return new Person
+        {
+            FirstName = string.Empty,
+            LastName = string.Empty,
+            Address = new Address(),
+            Phones = new List<Phone>(),
+            Emails = new List<Email>()
+        };
+    }
 }

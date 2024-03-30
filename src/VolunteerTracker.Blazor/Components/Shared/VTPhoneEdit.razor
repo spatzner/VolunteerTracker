@@ -1,0 +1,45 @@
+﻿@using VolunteerTracker.Repository.Entities
+@using VolunteerTracker.Common.DataAnnotations
+
+@foreach (Phone phone in List.OrderByDescending(x => x.IsPrimary))
+{
+    <div class="row">
+        <VTDropdown Label="Type" Class="col-3 pe-1" Options="_phoneTypes" @bind-Value="phone.Type"></VTDropdown>
+        <VTTextBox Label="Number" Class="col-6 ps-1 pe-1" @bind-Value="@phone.Number"></VTTextBox>
+        <VTRadio Label="Main" Group="phonePrimary" Class="col-2 ps-1" @bind-Value="@phone.IsPrimary"></VTRadio>
+        <div class="col-1 mb-1 ps-1 d-flex align-items-center ">
+            <button type="button" class="btn btn-outline-danger" @onclick="() => DeletePhone(phone.Id)"><i class="bi bi-trash3"></i></button>
+        </div>
+    </div>
+}                    
+<div class="row">
+    <div class="col-11 mb-1 pe-1"></div>
+    <div class="col-1 mb-1 ps-1">
+        <button type="button" class="btn btn-outline-success" @onclick="AddPhone"><i class="bi bi-plus-lg"></i></button>
+    </div>
+</div>
+@code {
+
+    [Parameter]
+    public ICollection<Phone> List { get; set; } = null!;
+
+    [Parameter]
+    public EventCallback<ICollection<Phone>> ListChanged { get; set; }
+
+    private readonly List<string> _phoneTypes = typeof(Phone).GetAllowedValues(nameof(Phone.Type));
+
+    protected override void OnInitialized()
+    {
+        List ??= new List<Phone>();
+    }
+
+    private void DeletePhone(Guid phoneId)
+    {
+        List.Remove(List.First(x => x.Id == phoneId));
+    }
+    private void AddPhone(MouseEventArgs e)
+    {
+
+        List.Add(new Phone { Type = _phoneTypes.First(), IsPrimary = !List.Any() });
+    }
+}

@@ -6,7 +6,7 @@
 @inject IndividualDataProvider IndividualDataProvider
 
 <h3>Individuals</h3>
-<VTButton Class="my-2" ButtonClass="btn btn-outline-primary" Tooltip="Add" @onclick="async () => await EditModal(null)"><i class="bi bi-plus-lg"></i></VTButton>
+<VTButton Class="my-2" ButtonClass="btn btn-success" Tooltip="Add" @onclick="async () => await EditModal(null)"><i class="bi bi-plus-lg pe-1"></i>Add</VTButton>
 <Grid TItem="Individual"
       Class="table table-hover table-bordered table-striped"
       DataProvider="IndividualProvider"
@@ -14,10 +14,10 @@
       AllowPaging="true">
     <GridColumn TItem="Individual" HeaderText="Actions" Filterable="false" TextNoWrap="true">
         <VTButton Class="d-inline" ButtonClass="btn btn-outline-primary" Tooltip="View" @onclick="async () => await ViewModal(context.Id)"><i class="bi bi-binoculars"></i></VTButton>
-        <VTButton Class="d-inline" ButtonClass="btn btn-outline-primary" Tooltip="Edit" @onclick="async () => await EditModal(context.Id)"><i class="bi bi-pencil"></i></VTButton>
+        <VTButton Class="d-inline" ButtonClass="btn btn-outline-warning" Tooltip="Edit" @onclick="async () => await EditModal(context.Id)"><i class="bi bi-pencil"></i></VTButton>
     </GridColumn>
     <GridColumn TItem="Individual" PropertyName="@nameof(Individual.FullName)" HeaderText="FullName" FilterOperator="FilterOperator.StartsWith">
-        @context.FullName
+        <b>@context.FullName</b>
     </GridColumn>
     <GridColumn TItem="Individual" PropertyName="@nameof(Individual.Location)" HeaderText="Location" FilterOperator="FilterOperator.StartsWith">
         @context.Location

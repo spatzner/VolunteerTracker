@@ -1,6 +1,7 @@
 ﻿@using VolunteerTracker.Blazor.Components.Shared
 @using VolunteerTracker.Repository.Entities
 
+
 <div class="px-2">
     <div class="row">
         <VTTextBox Label="Title" Class="col-md-4 col-lg-1 pe-lg-1" @bind-Value="_person.Title"></VTTextBox>
@@ -20,25 +21,8 @@
             <VTTextBox Label="Zip" Class="col-12" @bind-Value="_person.Address.Zip"></VTTextBox>
         </div>
         <div class="col-lg-6 col-md-12 p-3 ml-lg-2">
-
-            @foreach (Phone phone in _person.Phones)
-            {
-                <div class="row">
-                    <VTDropdown Label="Type" Class="col-3 pe-1" Options="_phoneTypes" @bind-Value="phone.Type"></VTDropdown>
-                    <VTTextBox Label="Number" Class="col-6 ps-1 pe-1" @bind-Value="@phone.Number"></VTTextBox>
-                    <VTRadio Label="Main" Group="phonePrimary" Class="col-2 ps-1" @bind-Value="@phone.IsPrimary"></VTRadio>
-                    <div class="col-1 mb-1 ps-1 d-flex align-items-center ">
-                        <button type="button" class="btn btn-outline-danger"><i class="bi bi-trash3"></i></button>
-                    </div>
-                </div>
-            }                    
-            <div class="row">
-                <div class="col-11 mb-1 pe-1"></div>
-                <div class="col-1 mb-1 ps-1">
-                    <button type="button" class="btn btn-outline-success"><i class="bi bi-plus-lg"></i></button>
-                </div>
-            </div>
-        </div>
+            <VTPhoneEdit @bind-List="_person.Phones"></VTPhoneEdit>
+        </div> 
     </div>
 
     <div class="row py-3">
@@ -46,7 +30,7 @@
             <button type="submit" class="btn btn-primary" @onclick="Save">Save</button>
         </div>
         <div class="col-md-2 col-lg-1">
-            <button type="button" class="btn btn-secondary" @onclick="Close">Close</button>
+            <button type="button" class="btn btn-light" @onclick="Close">Close</button>
         </div>
     </div>
 </div>

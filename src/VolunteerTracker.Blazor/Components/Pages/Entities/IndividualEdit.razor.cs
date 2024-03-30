@@ -20,12 +20,11 @@ public partial class IndividualEdit
     private Person _person = new();
     
     private readonly List<string> _phoneTypes = typeof(Phone).GetAllowedValues(nameof(Phone.Type));
-    private int _phoneIndex = 0;
     protected override void OnInitialized()
     {
         _person = PersonGuid.HasValue
-            ? Context.Persons.Include(x => x.Emails).Include(x => x.Phones).Include(x => x.Address).FirstOrDefault(p => p.Id == PersonGuid) ?? new Person()
-            : new Person();
+            ? Context.Persons.Include(x => x.Emails).Include(x => x.Phones).Include(x => x.Address).FirstOrDefault(p => p.Id == PersonGuid) ?? Person.Create()
+            : Person.Create();
 
         base.OnInitialized();
     }
@@ -42,5 +41,15 @@ public partial class IndividualEdit
     private void Close()
     {
         OnClose.InvokeAsync();
+    }
+
+    private void DeletePhone(Guid id)
+    {
+        _person.Phones.Remove(_person.Phones.First(x => x.Id == id));
+    }
+
+    private void AddPhone()
+    {
+        _person.Phones.Add(new Phone { Type = _phoneTypes.First() });
     }
 }

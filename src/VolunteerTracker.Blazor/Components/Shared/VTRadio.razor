@@ -2,7 +2,7 @@
 
 <div class="@($"d-flex align-items-center {Class}")">
     <div class="form-check">
-        <input id="@Id" name="@Group" type="radio" class="form-check-input" @bind="Value" />
+        <input id="@Id" name="@Group" type="radio" class="form-check-input" checked="@Value" @onchange="OnChange" />
         <label for="@Id" class="form-check-label">@Label</label><br>
     </div>
 </div>
@@ -29,5 +29,11 @@
 
     [Parameter]
     public string Group { get; set; }
+
+    private void OnChange(ChangeEventArgs args)
+    {
+        bool.TryParse((string?)args.Value, out bool val);
+        Value = val;
+    }
 
 }
