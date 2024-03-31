@@ -2,6 +2,8 @@
 
 @using VolunteerTracker.Blazor.Services
 @using VolunteerTracker.Blazor.Components.Shared;
+@using VolunteerTracker.Blazor.Models
+@using VolunteerTracker.Common
 
 @inject IndividualDataProvider IndividualDataProvider
 
@@ -16,14 +18,17 @@
         <VTButton Class="d-inline" ButtonClass="btn btn-outline-primary" Tooltip="View" @onclick="async () => await ViewModal(context.Id)"><i class="bi bi-binoculars"></i></VTButton>
         <VTButton Class="d-inline" ButtonClass="btn btn-outline-warning" Tooltip="Edit" @onclick="async () => await EditModal(context.Id)"><i class="bi bi-pencil"></i></VTButton>
     </GridColumn>
-    <GridColumn TItem="Individual" PropertyName="@nameof(Individual.FullName)" HeaderText="FullName" FilterOperator="FilterOperator.StartsWith">
-        <b>@context.FullName</b>
+    <GridColumn TItem="Individual" PropertyName="@nameof(Individual.FirstName)" HeaderText="First Name" FilterOperator="FilterOperator.StartsWith">
+        <b>@context.FirstName</b>
+    </GridColumn>    
+    <GridColumn TItem="Individual" PropertyName="@nameof(Individual.LastName)" HeaderText="Last Name" FilterOperator="FilterOperator.StartsWith">
+        <b>@context.LastName</b>
     </GridColumn>
-    <GridColumn TItem="Individual" PropertyName="@nameof(Individual.Location)" HeaderText="Location" FilterOperator="FilterOperator.StartsWith">
+    <GridColumn TItem="Individual" PropertyName="@nameof(Individual.Location)" HeaderText="Location" Filterable="false">
         @context.Location
     </GridColumn>
     <GridColumn TItem="Individual" PropertyName="@nameof(Individual.Phone)" HeaderText="Phone" FilterOperator="FilterOperator.StartsWith">
-        @context.Phone
+        @PhoneNumberFormatter.Format(context.Phone)
     </GridColumn>
     <GridColumn TItem="Individual" PropertyName="@nameof(Individual.Email)" HeaderText="Email" FilterOperator="FilterOperator.StartsWith">
         @context.Email
@@ -37,6 +42,9 @@
 
     [Inject]
     protected PreloadService PreloadService { get; set; } = default!;
+
+    [Inject]
+    public PhoneNumberFormatter PhoneNumberFormatter { get; set; }
 
     private Modal _editModal = default!;
 

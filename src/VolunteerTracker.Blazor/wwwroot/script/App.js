@@ -1,3 +1,3 @@
-﻿window.isElementChecked = function (element) {
+﻿window.vtIsElementChecked = function (element) {
     return !!element.checked
 };

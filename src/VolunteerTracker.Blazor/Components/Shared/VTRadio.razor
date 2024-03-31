@@ -39,7 +39,7 @@
 
     private async Task OnChange()
     {
-        Value = await JSRuntime.InvokeAsync<bool>("isElementChecked", _input);
+        Value = await JSRuntime.InvokeAsync<bool>("vtIsElementChecked", _input);
     }
 
 }

@@ -1,0 +1,12 @@
+Todo
+
+Add email address
+reload grid on save
+paging colors
+phone main radio group on first add defaults to yes
+match primary color btn-primary, grid selected page, etc to sidebar blue
+
+========
+Later:
+========
+Add Phone auto format, save to database as numeric only

@@ -24,25 +24,27 @@ public static class QueryExtensions
             _ => query
         };
     }
+    
     private static IQueryable<T> FilterDecimal<T>(IQueryable<T> query, FilterItem filter)
     {
         return filter.Operator switch
         {
-            FilterOperator.Equals =>
+            FilterOperator.Equals => 
                 query.Where(p => p != null && Equals(EF.Property<DateTime>(p, filter.PropertyName), DateTime.Parse(filter.Value))),
-            FilterOperator.NotEquals =>
+            FilterOperator.NotEquals => 
                 query.Where(p => p != null && !Equals(EF.Property<DateTime>(p, filter.PropertyName), DateTime.Parse(filter.Value))),
-            FilterOperator.LessThan =>
+            FilterOperator.LessThan => 
                 query.Where(p => p != null && EF.Property<DateTime>(p, filter.PropertyName) < DateTime.Parse(filter.Value)),
-            FilterOperator.LessThanOrEquals =>
+            FilterOperator.LessThanOrEquals => 
                 query.Where(p => p != null && EF.Property<DateTime>(p, filter.PropertyName) <= DateTime.Parse(filter.Value)),
-            FilterOperator.GreaterThan =>
+            FilterOperator.GreaterThan => 
                 query.Where(p => p != null && EF.Property<DateTime>(p, filter.PropertyName) > DateTime.Parse(filter.Value)),
-            FilterOperator.GreaterThanOrEquals =>
+            FilterOperator.GreaterThanOrEquals => 
                 query.Where(p => p != null && EF.Property<DateTime>(p, filter.PropertyName) >= DateTime.Parse(filter.Value)),
             _ => throw new ArgumentOutOfRangeException(nameof(filter.Operator), filter.Operator, null)
         };
     }
+
     private static IQueryable<T> FilterDateTime<T>(IQueryable<T> query, FilterItem filter)
     {
         if (filter.Value == string.Empty)
@@ -57,24 +59,25 @@ public static class QueryExtensions
 
         if (decimal.TryParse(filter.Value, out decimal value))
             return query.Where(x => false);
-            
+
         return filter.Operator switch
         {
-            FilterOperator.Equals =>
+            FilterOperator.Equals => 
                 query.Where(p => p != null && Equals(EF.Property<DateTime>(p, filter.PropertyName), DateTime.Parse(filter.Value))),
             FilterOperator.NotEquals =>
                 query.Where(p => p != null && !Equals(EF.Property<DateTime>(p, filter.PropertyName), DateTime.Parse(filter.Value))),
             FilterOperator.LessThan =>
                 query.Where(p => p != null && EF.Property<DateTime>(p, filter.PropertyName) < DateTime.Parse(filter.Value)),
-            FilterOperator.LessThanOrEquals =>
+            FilterOperator.LessThanOrEquals => 
                 query.Where(p => p != null && EF.Property<DateTime>(p, filter.PropertyName) <= DateTime.Parse(filter.Value)),
-            FilterOperator.GreaterThan =>
+            FilterOperator.GreaterThan => 
                 query.Where(p => p != null && EF.Property<DateTime>(p, filter.PropertyName) > DateTime.Parse(filter.Value)),
-            FilterOperator.GreaterThanOrEquals =>
+            FilterOperator.GreaterThanOrEquals => 
                 query.Where(p => p != null && EF.Property<DateTime>(p, filter.PropertyName) >= DateTime.Parse(filter.Value)),
             _ => throw new ArgumentOutOfRangeException(nameof(filter.Operator), filter.Operator, null)
         };
     }
+
     private static IQueryable<T> FilterInt<T>(IQueryable<T> query, FilterItem filter)
     {
         if (filter.Value == null)
@@ -92,31 +95,26 @@ public static class QueryExtensions
 
         return filter.Operator switch
         {
-            FilterOperator.Equals =>
+            FilterOperator.Equals => 
                 query.Where(p => p != null && Equals(EF.Property<int>(p, filter.PropertyName), value)),
             FilterOperator.NotEquals =>
                 query.Where(p => p != null && !Equals(EF.Property<int>(p, filter.PropertyName), value)),
-            FilterOperator.LessThan =>
+            FilterOperator.LessThan => 
                 query.Where(p => p != null && EF.Property<int>(p, filter.PropertyName) < value),
-            FilterOperator.LessThanOrEquals =>
+            FilterOperator.LessThanOrEquals => 
                 query.Where(p => p != null && EF.Property<int>(p, filter.PropertyName) <= value),
-            FilterOperator.GreaterThan =>
+            FilterOperator.GreaterThan => 
                 query.Where(p => p != null && EF.Property<int>(p, filter.PropertyName) > value),
-            FilterOperator.GreaterThanOrEquals =>
+            FilterOperator.GreaterThanOrEquals => 
                 query.Where(p => p != null && EF.Property<int>(p, filter.PropertyName) >= value),
             _ => throw new ArgumentOutOfRangeException(nameof(filter.Operator), filter.Operator, null)
         };
     }
+
     private static IQueryable<T> FilterString<T>(IQueryable<T> query, FilterItem filter)
     {
-        bool ignoreCase = filter.StringComparison switch
-        {
-            StringComparison.CurrentCultureIgnoreCase => true,
-            StringComparison.InvariantCultureIgnoreCase => true,
-            StringComparison.OrdinalIgnoreCase => true,
-            _ => false
-        };
-        
+        bool ignoreCase = filter.StringComparison.IsIgnoreCase();
+
         return filter.Operator switch
         {
             FilterOperator.Equals when ignoreCase => query.Where(p => p != null && EF.Functions.ILike(EF.Property<string>(p, filter.PropertyName), filter.Value)),
@@ -138,17 +136,19 @@ public static class QueryExtensions
             _ => throw new ArgumentOutOfRangeException(nameof(filter.Operator), filter.Operator, null)
         };
     }
+
     public static IQueryable<T> BootstrapSortEF<T>(this IQueryable<T> query, IEnumerable<SortingItem<T>> sorting)
     {
         var filteredSorts = sorting.Where(s => s.SortDirection != SortDirection.None).ToList();
 
         IOrderedQueryable<T> sortedQuery = null!;
-        
+
         foreach (var sort in filteredSorts)
             sortedQuery = sortedQuery == null ? query.BootstrapSortEF(sort) : sortedQuery.BootstrapSortEF(sort);
-        
+
         return sortedQuery;
     }
+
     private static IOrderedQueryable<T> BootstrapSortEF<T>(this IQueryable<T> query, SortingItem<T> sort)
     {
         return sort.SortDirection switch

@@ -7,6 +7,7 @@ using VolunteerTracker.Blazor.Components.Account;
 using VolunteerTracker.Blazor.Data;
 using VolunteerTracker.Blazor.Services;
 using VolunteerTracker.Blazor.Settings;
+using VolunteerTracker.Common;
 using VolunteerTracker.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -59,6 +60,7 @@ builder.Services.AddBlazorBootstrap();
 builder.Services.AddSingleton<IEmailSender<ApplicationUser>, EmailSender>();
 builder.Services.AddTransient<PersonsDataProvider>();
 builder.Services.AddTransient<IndividualDataProvider>();
+builder.Services.AddTransient<PhoneNumberFormatter>();
 
 
 if (builder.Environment.IsDevelopment())

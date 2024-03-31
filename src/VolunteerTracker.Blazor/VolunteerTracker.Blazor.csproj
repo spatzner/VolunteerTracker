@@ -22,9 +22,11 @@
   <ItemGroup>
     <Folder Include="Components\Pages\Donations\" />
     <Folder Include="Data\Migrations\" />
+    <Folder Include="Models\" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\VolunteerTracker.Common\VolunteerTracker.Common.csproj" />
     <ProjectReference Include="..\VolunteerTracker.Repository\VolunteerTracker.Repository.csproj" />
   </ItemGroup>
 
