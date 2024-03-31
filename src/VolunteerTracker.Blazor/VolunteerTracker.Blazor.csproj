@@ -29,13 +29,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="wwwroot\script\bootstrap.bundle.5.3.2.min.js">
+    <Content Update="wwwroot\script\thirdparty\bootstrap.bundle.5.3.2.min.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Update="wwwroot\script\chart.4.0.1.umd.js">
+    <Content Update="wwwroot\script\thirdparty\chart.4.0.1.umd.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Update="wwwroot\script\chartjs-plugin-datalabels.2.2.0.min.js">
+    <Content Update="wwwroot\script\thirdparty\chartjs-plugin-datalabels.2.2.0.min.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Update="wwwroot\style\bootstrap-icons.5.3.2.min.css">

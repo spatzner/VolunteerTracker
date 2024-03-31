@@ -1,14 +1,21 @@
-﻿@inherits VTComponentBase
+﻿@using System.Runtime.InteropServices.JavaScript
+@inherits VTComponentBase
 
 <div class="@($"d-flex align-items-center {Class}")">
     <div class="form-check">
-        <input id="@Id" name="@Group" type="radio" class="form-check-input" checked="@Value" @onchange="OnChange" />
+
+        <input @ref="_input" id="@Id" name="@Group" type="radio" class="form-check-input" checked="@Value" @onclick="OnChange" />
         <label for="@Id" class="form-check-label">@Label</label><br>
     </div>
 </div>
 
 @code {
     private bool _value;
+
+    private ElementReference _input;
+
+    [Inject]
+    IJSRuntime JSRuntime { get; set; } = null!;
 
     [Parameter]
     public bool Value
@@ -19,8 +26,8 @@
             if (_value == value)
                 return;
 
-            ValueChanged.InvokeAsync(value);
             _value = value;
+            ValueChanged.InvokeAsync(value);
         }
     }
 
@@ -30,10 +37,9 @@
     [Parameter]
     public string Group { get; set; }
 
-    private void OnChange(ChangeEventArgs args)
+    private async Task OnChange()
     {
-        bool.TryParse((string?)args.Value, out bool val);
-        Value = val;
+        Value = await JSRuntime.InvokeAsync<bool>("isElementChecked", _input);
     }
 
 }
