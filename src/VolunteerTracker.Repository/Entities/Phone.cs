@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using VolunteerTracker.Repository.Attributes;
 
 namespace VolunteerTracker.Repository.Entities;
 
@@ -20,6 +21,7 @@ public class Phone
 
     [Required]
     [Phone]
+    [NotWhitespace]
     [MaxLength(25)]
     public string Number { get; set; }
 

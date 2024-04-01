@@ -55,8 +55,7 @@
     private async Task EditModal(Guid? id)
     {
         var onCloseCallback = new EventCallback(this, (Func<Task>)CloseModal);
-        var parameters = new Dictionary<string, object> { { "PersonGuid", id! }, { "OnClose", onCloseCallback } };
-        await _editModal.ShowAsync<IndividualEdit>(title: "Individual Details", parameters: parameters);
+        var parameters = new Dictionary<string, object> { { "PersonGuid", id! }, { "OnClose", onCloseCallback } }; await _editModal.ShowAsync<IndividualEdit>(title: "Individual Details", parameters: parameters);
     }
 
     private async Task ViewModal(Guid id)

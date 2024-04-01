@@ -1,10 +1,13 @@
 ﻿@using VolunteerTracker.Blazor.Components.Shared
+@using VolunteerTracker.Repository.Entities
 
 <div class="container">
-    <EditForm EditContext="editContext" Model="_person" OnValidSubmit="OnSubmit" FormName="Individual" >
+    <EditForm EditContext="@EditContext" OnValidSubmit="OnValidSubmit" FormName="Individual">
+        
+        <CascadingValue Value="@EditContext"></CascadingValue>
         <AntiforgeryToken/>
-        <DataAnnotationsValidator />
-        <ValidationSummary />
+        <ObjectGraphDataAnnotationsValidator/>
+        <ValidationSummary/>
         <div class="row">
             <VTTextBox Label="Title" Class="col-md-4 col-lg-1 pe-lg-1" @bind-Value="_person.Title"></VTTextBox>
             <VTTextBox Label="First Name" Class="col-md-12 col-lg-2 ps-lg-1 pe-lg-1" @bind-Value="_person.FirstName"></VTTextBox>

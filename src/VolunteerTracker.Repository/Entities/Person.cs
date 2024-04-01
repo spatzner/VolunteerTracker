@@ -40,11 +40,14 @@ public class Person
     [MaxLength(1000)]
     public string? Notes { get; set; }
 
+    [ValidateComplexType]
     public virtual Address Address { get; set; }
 
+    [ValidateComplexType]
     [ExactlyOneMember<Phone>(nameof(Phone.IsPrimary), true)]
     public virtual ICollection<Phone> Phones { get; set; }
 
+    [ValidateComplexType]
     [ExactlyOneMember<Email>(nameof(Email.IsPrimary), true)]
     public virtual ICollection<Email> Emails { get; set; }
     

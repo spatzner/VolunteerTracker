@@ -17,10 +17,12 @@ public partial class IndividualEdit
     [Inject]
     public required VolunteerContext Context { get; set; }
 
+    public EditContext? EditContext { get; set; }
+
     private Person _person = null!;
     
     private static readonly Person PlaceholderPerson = new();
-    private EditContext? editContext;
+
     protected override void OnParametersSet()
     {
         LoadPerson();
@@ -30,10 +32,10 @@ public partial class IndividualEdit
     private void LoadPerson()
     {
         _person = PlaceholderPerson;
-        Task.Delay(500);
         _person = PersonGuid.HasValue
             ? Context.Persons.Include(x => x.Emails).Include(x => x.Phones).Include(x => x.Address).FirstOrDefault(p => p.Id == PersonGuid) ?? Person.Create()
             : Person.Create();
+        EditContext = new EditContext(_person);
     }
 
     private async Task Save()
@@ -50,8 +52,9 @@ public partial class IndividualEdit
         OnClose.InvokeAsync();
     }
 
-    private async Task OnSubmit(EditContext arg)
+    private async Task OnValidSubmit(EditContext arg)
     {
-        await Save();
+            await Save();
+
     }
 }
