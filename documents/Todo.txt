@@ -1,12 +1,14 @@
 Todo
 
-Add email address
-reload grid on save
-paging colors
+Add groupings to edit Individual
 phone main radio group on first add defaults to yes
 match primary color btn-primary, grid selected page, etc to sidebar blue
+implement cancellation tokens
+move textarea to its own component
 
 ========
 Later:
 ========
 Add Phone auto format, save to database as numeric only
+Address search on Individuals Grid
+Fix VTTextArea Title so it's always top left and grey like textbox, 

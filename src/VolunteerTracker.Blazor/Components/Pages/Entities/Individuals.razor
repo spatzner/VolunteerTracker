@@ -9,11 +9,13 @@
 
 <h3>Individuals</h3>
 <VTButton Class="my-2" ButtonClass="btn btn-success" Tooltip="Add" @onclick="async () => await EditModal(null)"><i class="bi bi-plus-lg pe-1"></i>Add</VTButton>
-<Grid TItem="Individual"
+
+<Grid @ref="dataGrid"TItem="Individual"
       Class="table table-hover table-bordered table-striped"
       DataProvider="IndividualProvider"
       AllowFiltering="true"
-      AllowPaging="true">
+      AllowPaging="true"
+      Reload>
     <GridColumn TItem="Individual" HeaderText="Actions" Filterable="false" TextNoWrap="true">
         <VTButton Class="d-inline" ButtonClass="btn btn-outline-primary" Tooltip="View" @onclick="async () => await ViewModal(context.Id)"><i class="bi bi-binoculars"></i></VTButton>
         <VTButton Class="d-inline" ButtonClass="btn btn-outline-warning" Tooltip="Edit" @onclick="async () => await EditModal(context.Id)"><i class="bi bi-pencil"></i></VTButton>
@@ -41,12 +43,14 @@
 @code {
 
     [Inject]
-    protected PreloadService PreloadService { get; set; } = default!;
+    protected PreloadService PreloadService { get; set; } = null!;
 
     [Inject]
-    public PhoneNumberFormatter PhoneNumberFormatter { get; set; }
+    public PhoneNumberFormatter PhoneNumberFormatter { get; set; } = null!;
 
-    private Modal _editModal = default!;
+
+    private Modal _editModal = null!;
+    private Grid<Individual> dataGrid = null!;
 
     private async Task EditModal(Guid? id)
     {
@@ -65,6 +69,7 @@
     private async Task CloseModal()
     {
         await _editModal.HideAsync();
+        await dataGrid.RefreshDataAsync();
     }
 
     private async Task<GridDataProviderResult<Individual>> IndividualProvider(GridDataProviderRequest<Individual> request)

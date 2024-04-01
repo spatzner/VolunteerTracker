@@ -17,8 +17,8 @@ public class ExactlyOneMemberAttribute<T>(string propertyName, object uniqueValu
 
         var list = ((IEnumerable)value).Cast<T>();
 
-        return list.Count(p => Equals(PropertyInfo.GetValue(p), UniqueValue)) == 1
-            ? new ValidationResult("Only one phone number can be primary")
+        return list.Count(p => Equals(PropertyInfo.GetValue(p), UniqueValue)) != 1
+            ? new ValidationResult($"Must have exactly one element with {propertyName} = {UniqueValue}")
             : ValidationResult.Success;
     }
 }

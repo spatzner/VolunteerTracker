@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.EntityFrameworkCore;
 using VolunteerTracker.Repository;
 using VolunteerTracker.Repository.Entities;
@@ -16,27 +17,41 @@ public partial class IndividualEdit
     [Inject]
     public required VolunteerContext Context { get; set; }
 
-    private Person _person = new();
-    protected override void OnInitialized()
+    private Person _person = null!;
+    
+    private static readonly Person PlaceholderPerson = new();
+    private EditContext? editContext;
+    protected override void OnParametersSet()
     {
+        LoadPerson();
+        base.OnParametersSet();
+    }
+
+    private void LoadPerson()
+    {
+        _person = PlaceholderPerson;
+        Task.Delay(500);
         _person = PersonGuid.HasValue
             ? Context.Persons.Include(x => x.Emails).Include(x => x.Phones).Include(x => x.Address).FirstOrDefault(p => p.Id == PersonGuid) ?? Person.Create()
             : Person.Create();
-
-        base.OnInitialized();
     }
 
-    private void Save()
+    private async Task Save()
     {
         if (!PersonGuid.HasValue)
             Context.Persons.Add(_person);
 
-        Context.SaveChanges();
+        await Context.SaveChangesAsync();
         Close();
     }
 
     private void Close()
     {
         OnClose.InvokeAsync();
+    }
+
+    private async Task OnSubmit(EditContext arg)
+    {
+        await Save();
     }
 }

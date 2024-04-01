@@ -2,7 +2,7 @@
 
 <div class="@($"mb-1 {Class}")">
     <div class="form-floating">
-        <input id="@Id" type="text" class="form-control" @bind-value="Value"/>
+        <input id="@Id" type="@InputStringFromEnum()" class="form-control" @bind-value="Value"/>
         <label for="@Id" class="control-label">@Label</label>
     </div>
 </div>
@@ -26,5 +26,42 @@
 
     [Parameter]
     public EventCallback<string> ValueChanged { get; set; }
+
+    [Parameter]
+    public Type InputType { get; set; } = Type.Text;
+
+    public enum Type
+    {
+        Date,
+        DatetimeLocal,
+        Email,
+        Month,
+        Number,
+        Password,
+        Search,
+        Tel,
+        Text,
+        Time,
+        Url,
+        Week
+    }
+
+    private string InputStringFromEnum() =>
+        InputType switch
+        {
+            Type.Date => "date",
+            Type.DatetimeLocal => "datetime-local",
+            Type.Email => "email",
+            Type.Month => "month",
+            Type.Number => "number",
+            Type.Password => "password",
+            Type.Search => "search",
+            Type.Tel => "tel",
+            Type.Text => "text",
+            Type.Time => "time",
+            Type.Url => "url",
+            Type.Week => "week",
+            _ => throw new ArgumentException("Invalid input type")
+        };
 
 }

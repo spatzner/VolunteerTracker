@@ -1,34 +1,48 @@
 ﻿@using VolunteerTracker.Blazor.Components.Shared
 
-<div class="px-2">
-    <div class="row">
-        <VTTextBox Label="Title" Class="col-md-4 col-lg-1 pe-lg-1" @bind-Value="_person.Title"></VTTextBox>
-        <VTTextBox Label="First Name" Class="col-md-12 col-lg-2 ps-lg-1 pe-lg-1" @bind-Value="_person.FirstName"></VTTextBox>
-        <VTTextBox Label="Middle Name" Class="col-md-12 col-lg-2 ps-lg-1 pe-lg-1 " @bind-Value="_person.MiddleName"></VTTextBox>
-        <VTTextBox Label="Last Name" Class="col-md-12 col-lg-2 ps-lg-1 pe-lg-1" @bind-Value="_person.LastName"></VTTextBox>
-        <VTTextBox Label="Suffix" Class="col-md-4 col-lg-1 ps-lg-1" @bind-Value="_person.Suffix"></VTTextBox>
-        <div class="col-lg-4"></div>
-    </div>
+<div class="container">
+    <EditForm EditContext="editContext" Model="_person" OnValidSubmit="OnSubmit" FormName="Individual" >
+        <AntiforgeryToken/>
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <div class="row">
+            <VTTextBox Label="Title" Class="col-md-4 col-lg-1 pe-lg-1" @bind-Value="_person.Title"></VTTextBox>
+            <VTTextBox Label="First Name" Class="col-md-12 col-lg-2 ps-lg-1 pe-lg-1" @bind-Value="_person.FirstName"></VTTextBox>
+            <VTTextBox Label="Middle Name" Class="col-md-12 col-lg-2 ps-lg-1 pe-lg-1 " @bind-Value="_person.MiddleName"></VTTextBox>
+            <VTTextBox Label="Last Name" Class="col-md-12 col-lg-2 ps-lg-1 pe-lg-1" @bind-Value="_person.LastName"></VTTextBox>
+            <VTTextBox Label="Suffix" Class="col-md-4 col-lg-1 ps-lg-1" @bind-Value="_person.Suffix"></VTTextBox>
+            <div class="col-lg-4"></div>
+        </div>
 
-    <div class="row py-3">
-        <div class="col-lg-6 col-md-12 p-3 mr-lg-2">
-            <VTTextBox Label="Address 1" Class="col-12" @bind-Value="_person.Address.Line1"></VTTextBox>
-            <VTTextBox Label="Address 2" Class="col-12" @bind-Value="_person.Address.Line2"></VTTextBox>
-            <VTTextBox Label="City" Class="col-12" @bind-Value="_person.Address.City"></VTTextBox>
-            <VTTextBox Label="State" Class="col-12" @bind-Value="_person.Address.State"></VTTextBox>
-            <VTTextBox Label="Zip" Class="col-12" @bind-Value="_person.Address.Zip"></VTTextBox>
+        <div class="row py-3">
+            <div class="col-lg-6 col-md-12 p-3 mr-lg-2">
+                <VTTextBox Label="Address 1" Class="col-12" @bind-Value="_person.Address.Line1"></VTTextBox>
+                <VTTextBox Label="Address 2" Class="col-12" @bind-Value="_person.Address.Line2"></VTTextBox>
+                <VTTextBox Label="City" Class="col-12" @bind-Value="_person.Address.City"></VTTextBox>
+                <VTTextBox Label="State" Class="col-12" @bind-Value="_person.Address.State"></VTTextBox>
+                <VTTextBox Label="Zip" Class="col-12" @bind-Value="_person.Address.Zip"></VTTextBox>
+            </div>
+            <div class="col-lg-6 col-md-12 p-3 ml-lg-2">
+                <VTPhoneEdit @bind-List="_person.Phones"></VTPhoneEdit>
+                <VTEmailEdit @bind-List="_person.Emails"></VTEmailEdit>
+            </div>
         </div>
-        <div class="col-lg-6 col-md-12 p-3 ml-lg-2">
-            <VTPhoneEdit @bind-List="_person.Phones"></VTPhoneEdit>
-        </div> 
-    </div>
+        <div class="row py-3">
+            <div class="mb-1">
+                <div class="form-floating">
+                    <textarea id="notes" class="form-control" style="height:7.5em;" placeholder="Notes" @bind="_person.Notes"></textarea>
+                    <label for="notes">Notes</label>
+                </div>
+            </div>
+        </div>
 
-    <div class="row py-3">
-        <div class="col-md-2 col-lg-1">
-            <button type="submit" class="btn btn-primary" @onclick="Save">Save</button>
+        <div class="row py-3">
+            <div class="col-md-2 col-lg-1">
+                <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+            <div class="col-md-2 col-lg-1">
+                <button type="button" class="btn btn-light" @onclick="Close">Close</button>
+            </div>
         </div>
-        <div class="col-md-2 col-lg-1">
-            <button type="button" class="btn btn-light" @onclick="Close">Close</button>
-        </div>
-    </div>
+    </EditForm>
 </div>

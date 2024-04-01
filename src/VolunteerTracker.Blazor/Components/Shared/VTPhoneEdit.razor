@@ -12,6 +12,7 @@
                     ValueChanged="@((string value) => TypeChanged(phone, value))">
         </VTDropdown>
         <VTTextBox Label="Number"
+                   InputType="VTTextBox.Type.Tel"
                    Class="col-6 ps-1 pe-1"
                    Value="@phone.Number"
                    ValueChanged="@((string value) => NumberChanged(phone, value))">
