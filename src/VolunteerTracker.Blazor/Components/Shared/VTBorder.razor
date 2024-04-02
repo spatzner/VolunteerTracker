@@ -1,0 +1,14 @@
+﻿<div class="row rounded-3 border border p-2 my-2">
+    <p class="text-muted fw-bold">@Label</p>
+    @ChildContent
+</div>
+
+@code {
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    [Parameter]
+    public string? Label { get; set; }
+
+}

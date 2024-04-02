@@ -1,10 +1,11 @@
 ﻿@using VolunteerTracker.Repository.Entities
-
-<VTTextBox Label="Address 1" Class="col-12" Value="@Address.Line1" ValueChanged="Line1Changed"></VTTextBox>
-<VTTextBox Label="Address 2" Class="col-12" Value="@Address.Line2" ValueChanged="Line2Changed"></VTTextBox>
-<VTTextBox Label="City" Class="col-12" Value="@Address.City" ValueChanged="CityChanged"></VTTextBox>
-<VTTextBox Label="State" Class="col-12" Value="@Address.State" ValueChanged="StateChanged"></VTTextBox>
-<VTTextBox Label="Zip" Class="col-12" Value="@Address.Zip" ValueChanged="ZipChanged"></VTTextBox>
+<VTBorder Label="Address">
+    <VTTextBox Label="Address 1" Class="col-12" Value="@Address.Line1" ValueChanged="Line1Changed"></VTTextBox>
+    <VTTextBox Label="Address 2" Class="col-12" Value="@Address.Line2" ValueChanged="Line2Changed"></VTTextBox>
+    <VTTextBox Label="City" Class="col-12" Value="@Address.City" ValueChanged="CityChanged"></VTTextBox>
+    <VTTextBox Label="State" Class="col-12" Value="@Address.State" ValueChanged="StateChanged"></VTTextBox>
+    <VTTextBox Label="Zip" Class="col-12" Value="@Address.Zip" ValueChanged="ZipChanged"></VTTextBox>
+</VTBorder>
 
 @code {
 

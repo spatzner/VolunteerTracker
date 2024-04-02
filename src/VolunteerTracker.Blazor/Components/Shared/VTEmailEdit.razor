@@ -1,41 +1,43 @@
 ﻿@using VolunteerTracker.Repository.Entities
 @using VolunteerTracker.Common.DataAnnotations
 
-@foreach (Email email in List)
-{
+<VTBorder Label="Email">
+    @foreach (Email email in List)
+    {
+        <div class="row">
+            <VTDropdown Label="Type"
+                        Class="col-3 pe-1"
+                        Options="_emailTypes"
+                        Value="@email.Type"
+                        ValueChanged="@((string value) => TypeChanged(email, value))">
+            </VTDropdown>
+            <VTTextBox Label="Address"
+                       Class="col-6 ps-1 pe-1"
+                       Value="@email.Address"
+                       ValueChanged="@((string value) => AddressChanged(email, value))">
+            </VTTextBox>
+            <VTRadio Label="Main"
+                     Group="emailPrimary"
+                     Class="col-2 ps-1"
+                     Value="@email.IsPrimary"
+                     ValueChanged="@((bool value) => MainChanged(email, value))">
+            </VTRadio>
+            <div class="col-1 mb-1 ps-1 d-flex align-items-center ">
+                <button type="button" class="btn btn-outline-danger" @onclick="() => DeleteEmail(email.Id)">
+                    <i class="bi bi-trash3"></i>
+                </button>
+            </div>
+        </div>
+    }
     <div class="row">
-        <VTDropdown Label="Type"
-                    Class="col-3 pe-1"
-                    Options="_emailTypes"
-                    Value="@email.Type"
-                    ValueChanged="@((string value) => TypeChanged(email, value))">
-        </VTDropdown>
-        <VTTextBox Label="Address"
-                   Class="col-6 ps-1 pe-1"
-                   Value="@email.Address"
-                   ValueChanged="@((string value) => AddressChanged(email, value))">
-        </VTTextBox>
-        <VTRadio Label="Main"
-                 Group="emailPrimary"
-                 Class="col-2 ps-1"
-                 Value="@email.IsPrimary"
-                 ValueChanged="@((bool value) => MainChanged(email, value))">
-        </VTRadio>
-        <div class="col-1 mb-1 ps-1 d-flex align-items-center ">
-            <button type="button" class="btn btn-outline-danger" @onclick="() => DeleteEmail(email.Id)">
-                <i class="bi bi-trash3"></i>
+        <div class="col-11 mb-1 pe-1"></div>
+        <div class="col-1 mb-1 ps-1">
+            <button type="button" class="btn btn-outline-success" @onclick="AddEmail">
+                <i class="bi bi-plus-lg"></i>
             </button>
         </div>
     </div>
-}
-<div class="row">
-    <div class="col-11 mb-1 pe-1"></div>
-    <div class="col-1 mb-1 ps-1">
-        <button type="button" class="btn btn-outline-success" @onclick="AddEmail">
-            <i class="bi bi-plus-lg"></i>
-        </button>
-    </div>
-</div>
+</VTBorder>
 
 @code {
 

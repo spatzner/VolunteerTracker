@@ -2,119 +2,44 @@
 @using VolunteerTracker.Common.DataAnnotations
 @using System.Collections.ObjectModel
 
-@foreach (Phone phone in List)
-{
+<VTBorder Label="Phone">
+    @foreach (Phone phone in List)
+    {
+        <div class="row">
+            <VTDropdown Label="Type"
+                        Class="col-3 pe-1"
+                        Options="_phoneTypes"
+                        Value="@phone.Type"
+                        ValueChanged="@((string value) => TypeChanged(phone, value))">
+            </VTDropdown>
+            <VTTextBox Label="Number"
+                       InputType="VTTextBox.Type.Tel"
+                       Class="col-6 ps-1 pe-1"
+                       Value="@phone.Number"
+                       ValueChanged="@((string value) => NumberChanged(phone, value))">
+            </VTTextBox>
+            <VTRadio Label="Main"
+                     Group="phonePrimary"
+                     Class="col-2 ps-1"
+                     Value="@phone.IsPrimary"
+                     ValueChanged="@((bool value) => MainChanged(phone, value))">
+            </VTRadio>
+            <div class="col-1 mb-1 ps-1 d-flex align-items-center ">
+                <button type="button" class="btn btn-outline-danger" @onclick="() => DeletePhone(phone.Id)">
+                    <i class="bi bi-trash3"></i>
+                </button>
+            </div>
+            <ValidationMessage For="@(() => @phone.Type)"/>
+            <ValidationMessage For="@(() => @phone.Number)"/>
+            <ValidationMessage For="@(() => @phone.IsPrimary)"/>
+        </div>
+    }
     <div class="row">
-        <VTDropdown Label="Type"
-                    Class="col-3 pe-1"
-                    Options="_phoneTypes"
-                    Value="@phone.Type"
-                    ValueChanged="@((string value) => TypeChanged(phone, value))">
-        </VTDropdown>
-        <VTTextBox Label="Number"
-                   InputType="VTTextBox.Type.Tel"
-                   Class="col-6 ps-1 pe-1"
-                   Value="@phone.Number"
-                   ValueChanged="@((string value) => NumberChanged(phone, value))">
-        </VTTextBox>
-        <VTRadio Label="Main"
-                 Group="phonePrimary"
-                 Class="col-2 ps-1"
-                 Value="@phone.IsPrimary"
-                 ValueChanged="@((bool value) => MainChanged(phone, value))">
-        </VTRadio>
-        <div class="col-1 mb-1 ps-1 d-flex align-items-center ">
-            <button type="button" class="btn btn-outline-danger" @onclick="() => DeletePhone(phone.Id)">
-                <i class="bi bi-trash3"></i>
+        <div class="col-11 mb-1 pe-1"></div>
+        <div class="col-1 mb-1 ps-1">
+            <button type="button" class="btn btn-outline-success" @onclick="AddPhone">
+                <i class="bi bi-plus-lg"></i>
             </button>
         </div>
-        <ValidationMessage For="@(() => @phone.Type)"/>
-        <ValidationMessage For="@(() => @phone.Number)"/>
-        <ValidationMessage For="@(() => @phone.IsPrimary)"/>
     </div>
-}
-<div class="row">
-    <div class="col-11 mb-1 pe-1"></div>
-    <div class="col-1 mb-1 ps-1">
-        <button type="button" class="btn btn-outline-success" @onclick="AddPhone">
-            <i class="bi bi-plus-lg"></i>
-        </button>
-    </div>
-</div>
-
-@code {
-
-    [Parameter]
-    public required ICollection<Phone> List { get; set; }
-
-    [Parameter]
-    public EventCallback<ICollection<Phone>> ListChanged { get; set; }
-
-    [CascadingParameter]
-    public EditContext EditContext { get; set; } = null!;
-
-    private readonly List<string> _phoneTypes = typeof(Phone).GetAllowedValues(nameof(Phone.Type));
-
-    private void DeletePhone(Guid phoneId)
-    {
-        List.Remove(List.First(x => x.Id == phoneId));
-        ListChanged.InvokeAsync(List);
-    }
-
-    private void AddPhone(MouseEventArgs e)
-    {
-        List.Add(new Phone { Type = _phoneTypes.First(), IsPrimary = !List.Any() });
-        ListChanged.InvokeAsync(List);
-    }
-
-    private void NumberChanged(Phone phone, string newValue)
-    {
-        if (phone.Number == newValue)
-            return;
-
-        phone.Number = newValue;
-
-
-        Validate(phone, nameof(phone.Number));
-
-        ListChanged.InvokeAsync(List);
-
-    }
-
-    private void MainChanged(Phone phone, bool newValue)
-    {
-        if (!newValue || phone.IsPrimary == newValue)
-            return;
-
-        phone.IsPrimary = true;
-        foreach (Phone p in List.Where(x => x.Id != phone.Id))
-        {
-            p.IsPrimary = false;
-        }
-
-        Validate(phone, nameof(phone.IsPrimary));
-        ListChanged.InvokeAsync(List);
-    }
-
-    private void TypeChanged(Phone phone, string newValue)
-    {
-        if (phone.Type == newValue)
-            return;
-
-        phone.Type = newValue;
-        Validate(phone, nameof(phone.Type));
-        ListChanged.InvokeAsync(List);
-    }
-
-    private void Validate(Phone phone, string propertyName)
-    {
- 
-        var index = List.ToList().IndexOf(phone);
-        var fullPropertyName = $"{nameof(Person.Phones)}[{index}].{propertyName}";
-        var fieldIdentifier = new FieldIdentifier(EditContext.Model, fullPropertyName);
-        
-        EditContext.NotifyFieldChanged(fieldIdentifier);
-        EditContext.Validate();
-    }
-
-}
+</VTBorder>

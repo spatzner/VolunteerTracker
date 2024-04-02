@@ -17,16 +17,16 @@
             <div class="col-lg-4"></div>
         </div>
 
-        <div class="row py-3">
-            <div class="col-lg-6 col-md-12 p-3 mr-lg-2">
+        <div class="row">
+            <div class="col-lg-5 col-md-12 p-3">
                 <VTAddressEdit @bind-Address="_person.Address"></VTAddressEdit>
             </div>
-            <div class="col-lg-6 col-md-12 p-3 ml-lg-2">
+            <div class="col-lg-7 col-md-12 p-3">
                 <VTPhoneEdit @bind-List="_person.Phones"></VTPhoneEdit>
                 <VTEmailEdit @bind-List="_person.Emails"></VTEmailEdit>
             </div>
         </div>
-        <div class="row py-3">
+        <div class="row">
             <div class="mb-1">
                 <div class="form-floating">
                     <textarea id="notes" class="form-control" style="height:7.5em;" placeholder="Notes" @bind="_person.Notes"></textarea>
