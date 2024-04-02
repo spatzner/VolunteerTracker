@@ -51,7 +51,7 @@
     public EventCallback<ICollection<Phone>> ListChanged { get; set; }
 
     [CascadingParameter]
-    public EditContext EditContext { get; set; }
+    public EditContext EditContext { get; set; } = null!;
 
     private readonly List<string> _phoneTypes = typeof(Phone).GetAllowedValues(nameof(Phone.Type));
 
@@ -114,12 +114,7 @@
         var fieldIdentifier = new FieldIdentifier(EditContext.Model, fullPropertyName);
         
         EditContext.NotifyFieldChanged(fieldIdentifier);
-        
-        var isValid = EditContext.Validate();
-
-
-
-        var list = EditContext.GetValidationMessages().ToList();
+        EditContext.Validate();
     }
 
 }

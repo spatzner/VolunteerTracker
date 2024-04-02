@@ -7,6 +7,7 @@ namespace VolunteerTracker.Common.DataAnnotations;
 public class ExactlyOneMemberAttribute<T>(string propertyName, object uniqueValue) : ValidationAttribute
 {
     public object UniqueValue { get; } = uniqueValue;
+    public bool AllowEmpty { get; set; }
     public PropertyInfo PropertyInfo { get; } = typeof(T).GetProperty(propertyName) ?? 
         throw new ArgumentException("Property not found", propertyName);
 
@@ -15,10 +16,11 @@ public class ExactlyOneMemberAttribute<T>(string propertyName, object uniqueValu
         if(value == null)
             return ValidationResult.Success;
 
-        var list = ((IEnumerable)value).Cast<T>();
+        List<T> list = ((IEnumerable)value).Cast<T>().ToList();
 
-        return list.Count(p => Equals(PropertyInfo.GetValue(p), UniqueValue)) != 1
-            ? new ValidationResult($"Must have exactly one element with {propertyName} = {UniqueValue}")
-            : ValidationResult.Success;
+        return (list.Count == 0 && AllowEmpty) || list.Count(p => Equals(PropertyInfo.GetValue(p), UniqueValue)) == 1
+            ? ValidationResult.Success
+            : new ValidationResult($"Must have exactly one element with {propertyName} = {UniqueValue}");
+
     }
 }

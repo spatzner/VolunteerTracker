@@ -44,11 +44,11 @@ public class Person
     public virtual Address Address { get; set; }
 
     [ValidateComplexType]
-    [ExactlyOneMember<Phone>(nameof(Phone.IsPrimary), true)]
+    [ExactlyOneMember<Phone>(nameof(Phone.IsPrimary), true, AllowEmpty = true)]
     public virtual ICollection<Phone> Phones { get; set; }
 
     [ValidateComplexType]
-    [ExactlyOneMember<Email>(nameof(Email.IsPrimary), true)]
+    [ExactlyOneMember<Email>(nameof(Email.IsPrimary), true, AllowEmpty = true)]
     public virtual ICollection<Email> Emails { get; set; }
     
     public override string ToString() => $"{LastName}, {FirstName}";

@@ -19,11 +19,7 @@
 
         <div class="row py-3">
             <div class="col-lg-6 col-md-12 p-3 mr-lg-2">
-                <VTTextBox Label="Address 1" Class="col-12" @bind-Value="_person.Address.Line1"></VTTextBox>
-                <VTTextBox Label="Address 2" Class="col-12" @bind-Value="_person.Address.Line2"></VTTextBox>
-                <VTTextBox Label="City" Class="col-12" @bind-Value="_person.Address.City"></VTTextBox>
-                <VTTextBox Label="State" Class="col-12" @bind-Value="_person.Address.State"></VTTextBox>
-                <VTTextBox Label="Zip" Class="col-12" @bind-Value="_person.Address.Zip"></VTTextBox>
+                <VTAddressEdit @bind-Address="_person.Address"></VTAddressEdit>
             </div>
             <div class="col-lg-6 col-md-12 p-3 ml-lg-2">
                 <VTPhoneEdit @bind-List="_person.Phones"></VTPhoneEdit>

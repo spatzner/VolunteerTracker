@@ -1,0 +1,92 @@
+﻿@using VolunteerTracker.Repository.Entities
+
+<VTTextBox Label="Address 1" Class="col-12" Value="@Address.Line1" ValueChanged="Line1Changed"></VTTextBox>
+<VTTextBox Label="Address 2" Class="col-12" Value="@Address.Line2" ValueChanged="Line2Changed"></VTTextBox>
+<VTTextBox Label="City" Class="col-12" Value="@Address.City" ValueChanged="CityChanged"></VTTextBox>
+<VTTextBox Label="State" Class="col-12" Value="@Address.State" ValueChanged="StateChanged"></VTTextBox>
+<VTTextBox Label="Zip" Class="col-12" Value="@Address.Zip" ValueChanged="ZipChanged"></VTTextBox>
+
+@code {
+
+    [Parameter]
+    public Address Address { get; set; } = null!;
+
+    [Parameter]
+    public EventCallback<Address> AddressChanged { get; set; }
+
+    [CascadingParameter]
+    public EditContext EditContext { get; set; } = null!;
+
+    private void Line1Changed(string newValue)
+    {
+        if (Address.Line1 == newValue)
+            return;
+
+        Address.Line1 = newValue;
+
+        Validate(nameof(Address.Line1));
+
+        AddressChanged.InvokeAsync(Address);
+    }
+
+    private void Line2Changed(string newValue)
+    {
+        if (Address.Line2 == newValue)
+            return;
+
+        Address.Line2 = newValue;
+
+        Validate(nameof(Address.Line2));
+
+        AddressChanged.InvokeAsync(Address);
+    }
+
+    private void CityChanged(string newValue)
+    {
+        if (Address.City == newValue)
+            return;
+
+        Address.City = newValue;
+
+        Validate(nameof(Address.City));
+
+        AddressChanged.InvokeAsync(Address);
+    }
+
+    private void StateChanged(string newValue)
+    {
+        if (Address.State == newValue)
+            return;
+
+        Address.State = newValue;
+
+        Validate(nameof(Address.State));
+
+        AddressChanged.InvokeAsync(Address);
+    }
+
+    private void ZipChanged(string newValue)
+    {
+        if (Address.Zip == newValue)
+            return;
+
+        Address.Zip = newValue;
+
+        Validate(nameof(Address.Zip));
+
+        AddressChanged.InvokeAsync(Address);
+    }
+
+    private void Validate(string propertyName)
+    {
+        var fullPropertyName = $"{nameof(Person.Address)}.{propertyName}";
+        var fieldIdentifier = new FieldIdentifier(EditContext.Model, fullPropertyName);
+
+        EditContext.NotifyFieldChanged(fieldIdentifier);
+
+        var isValid = EditContext.Validate();
+
+        var list = EditContext.GetValidationMessages().ToList();
+    }
+
+}
