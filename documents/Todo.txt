@@ -1,14 +1,17 @@
 Todo
 
-Add groupings to edit Individual
-phone main radio group on first add defaults to yes
+create simple button for view, edit
+revert changes to individual on close (discard) of modal window
+move textarea to its own component
 match primary color btn-primary, grid selected page, etc to sidebar blue
 implement cancellation tokens
-move textarea to its own component
+
 
 ========
 Later:
 ========
 Add Phone auto format, save to database as numeric only
-Address search on Individuals Grid
+Add Address search on Individuals Grid
 Fix VTTextArea Title so it's always top left and grey like textbox, 
+lighten component grouping label color
+move list component add to border top
