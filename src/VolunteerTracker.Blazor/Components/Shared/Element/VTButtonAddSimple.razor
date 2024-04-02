@@ -1,0 +1,26 @@
+﻿@inherits VTComponentBase
+
+<VTButton Class="btn btn-outline-success"
+          ContainerClass="@ContainerClass"
+          ButtonType="@ButtonType"
+          OnClick="@OnClick">
+    <i class="bi bi-plus-lg"></i>
+</VTButton>
+
+
+@code
+{
+    [Parameter]
+    public VTButton.ActionType ButtonType { get; set; } = VTButton.ActionType.Button;
+
+    [Parameter]
+    public string Tooltip { get; set; } = "Add";
+
+    [Parameter]
+    public string ContainerClass { get; set; } = string.Empty;
+
+    [Parameter]
+    public EventCallback<MouseEventArgs> OnClick { get; set; }
+
+
+}

@@ -1,4 +1,5 @@
-﻿@using VolunteerTracker.Blazor.Components.Shared
+﻿@using VolunteerTracker.Blazor.Components.Shared.Element
+@using VolunteerTracker.Blazor.Components.Shared.Composite
 @using VolunteerTracker.Repository.Entities
 
 <div class="container">
@@ -7,7 +8,6 @@
         <CascadingValue Value="@EditContext"></CascadingValue>
         <AntiforgeryToken/>
         <ObjectGraphDataAnnotationsValidator/>
-        <ValidationSummary/>
         <div class="row">
             <VTTextBox Label="Title" Class="col-md-4 col-lg-1 pe-lg-1" @bind-Value="_person.Title"></VTTextBox>
             <VTTextBox Label="First Name" Class="col-md-12 col-lg-2 ps-lg-1 pe-lg-1" @bind-Value="_person.FirstName"></VTTextBox>
@@ -15,6 +15,11 @@
             <VTTextBox Label="Last Name" Class="col-md-12 col-lg-2 ps-lg-1 pe-lg-1" @bind-Value="_person.LastName"></VTTextBox>
             <VTTextBox Label="Suffix" Class="col-md-4 col-lg-1 ps-lg-1" @bind-Value="_person.Suffix"></VTTextBox>
             <div class="col-lg-4"></div>
+            <ValidationMessage For="@(() => @_person.Title)" />
+            <ValidationMessage For="@(() => @_person.FirstName)" />
+            <ValidationMessage For="@(() => @_person.MiddleName)" />
+            <ValidationMessage For="@(() => @_person.LastName)" />
+            <ValidationMessage For="@(() => @_person.Suffix)" />
         </div>
 
         <div class="row">

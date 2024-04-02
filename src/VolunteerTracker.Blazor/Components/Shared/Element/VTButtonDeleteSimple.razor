@@ -1,0 +1,26 @@
+﻿@inherits VTComponentBase
+
+<VTButton Class="btn btn-outline-danger"
+          ContainerClass="@ContainerClass"
+          ButtonType="@ButtonType"
+          OnClick="@OnClick">
+    <i class="bi bi-trash3"></i>
+</VTButton>
+
+
+@code
+{
+    [Parameter]
+    public VTButton.ActionType ButtonType { get; set; } = VTButton.ActionType.Button;
+
+    [Parameter]
+    public string Tooltip { get; set; } = "Delete";
+
+    [Parameter]
+    public string ContainerClass { get; set; } = string.Empty;
+
+    [Parameter]
+    public EventCallback<MouseEventArgs> OnClick { get; set; }
+
+
+}

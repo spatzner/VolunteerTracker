@@ -1,6 +1,7 @@
 ﻿@using VolunteerTracker.Repository.Entities
 @using VolunteerTracker.Common.DataAnnotations
 @using System.Collections.ObjectModel
+@using VolunteerTracker.Blazor.Components.Shared.Element
 
 <VTBorder Label="Phone">
     @foreach (Phone phone in List)
@@ -24,11 +25,7 @@
                      Value="@phone.IsPrimary"
                      ValueChanged="@((bool value) => MainChanged(phone, value))">
             </VTRadio>
-            <div class="col-1 mb-1 ps-1 d-flex align-items-center ">
-                <button type="button" class="btn btn-outline-danger" @onclick="() => DeletePhone(phone.Id)">
-                    <i class="bi bi-trash3"></i>
-                </button>
-            </div>
+            <VTButtonDeleteSimple ContainerClass="col-1 ps-1 d-flex align-items-center" OnClick="() => DeletePhone(phone.Id)"></VTButtonDeleteSimple>
             <ValidationMessage For="@(() => @phone.Type)"/>
             <ValidationMessage For="@(() => @phone.Number)"/>
             <ValidationMessage For="@(() => @phone.IsPrimary)"/>
@@ -36,10 +33,6 @@
     }
     <div class="row">
         <div class="col-11 mb-1 pe-1"></div>
-        <div class="col-1 mb-1 ps-1">
-            <button type="button" class="btn btn-outline-success" @onclick="AddPhone">
-                <i class="bi bi-plus-lg"></i>
-            </button>
-        </div>
+        <VTButtonAddSimple ContainerClass="col-1 ps-1" OnClick="AddPhone"></VTButtonAddSimple>
     </div>
 </VTBorder>

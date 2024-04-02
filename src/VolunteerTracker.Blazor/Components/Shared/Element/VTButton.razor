@@ -1,7 +1,7 @@
 ﻿@inherits VTComponentBase
 
-<div class="@($"mb-1 {Class}")">
-    <button type="@BtnType" class="@ButtonClass" title="@Tooltip" @onclick="OnClick">
+<div class="@($"mb-1 {ContainerClass}")">
+    <button type="@BtnType" class="@Class" title="@Tooltip" @onclick="OnClick">
         @ChildContent
     </button>
 </div>
@@ -12,10 +12,10 @@
 
 
     [Parameter]
-    public BtnActionType ButtonType { get; set; } = BtnActionType.Button;
+    public ActionType ButtonType { get; set; } = ActionType.Button;
 
     [Parameter]
-    public string ButtonClass { get; set; } = "btn btn-primary";
+    public string ContainerClass { get; set; } = "btn btn-primary";
 
     [Parameter]
     public string? Tooltip { get; set; }
@@ -26,7 +26,7 @@
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
 
-    public enum BtnActionType
+    public enum ActionType
     {
         Button,
         Submit,

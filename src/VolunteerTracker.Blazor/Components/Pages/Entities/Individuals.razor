@@ -1,14 +1,14 @@
 ﻿@page "/individuals"
 
 @using VolunteerTracker.Blazor.Services
-@using VolunteerTracker.Blazor.Components.Shared;
+@using VolunteerTracker.Blazor.Components.Shared.Element;
 @using VolunteerTracker.Blazor.Models
 @using VolunteerTracker.Common
 
 @inject IndividualDataProvider IndividualDataProvider
 
 <h3>Individuals</h3>
-<VTButton Class="my-2" ButtonClass="btn btn-success" Tooltip="Add" @onclick="async () => await EditModal(null)"><i class="bi bi-plus-lg pe-1"></i>Add</VTButton>
+<VTButton Class="btn btn-success" ContainerClass="my-2" Tooltip="Add" @onclick="async () => await EditModal(null)"><i class="bi bi-plus-lg pe-1"></i>Add</VTButton>
 
 <Grid @ref="dataGrid"TItem="Individual"
       Class="table table-hover table-bordered table-striped"
@@ -17,8 +17,8 @@
       AllowPaging="true"
       Reload>
     <GridColumn TItem="Individual" HeaderText="Actions" Filterable="false" TextNoWrap="true">
-        <VTButton Class="d-inline" ButtonClass="btn btn-outline-primary" Tooltip="View" @onclick="async () => await ViewModal(context.Id)"><i class="bi bi-binoculars"></i></VTButton>
-        <VTButton Class="d-inline" ButtonClass="btn btn-outline-warning" Tooltip="Edit" @onclick="async () => await EditModal(context.Id)"><i class="bi bi-pencil"></i></VTButton>
+        <VTButton Class="btn btn-outline-primary" ContainerClass="d-inline" Tooltip="View" @onclick="async () => await ViewModal(context.Id)"><i class="bi bi-binoculars"></i></VTButton>
+        <VTButton Class="btn btn-outline-warning" ContainerClass="d-inline" Tooltip="Edit" @onclick="async () => await EditModal(context.Id)"><i class="bi bi-pencil"></i></VTButton>
     </GridColumn>
     <GridColumn TItem="Individual" PropertyName="@nameof(Individual.FirstName)" HeaderText="First Name" FilterOperator="FilterOperator.StartsWith">
         <b>@context.FirstName</b>

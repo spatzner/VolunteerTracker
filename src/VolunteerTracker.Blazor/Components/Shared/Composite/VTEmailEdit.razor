@@ -1,5 +1,7 @@
 ﻿@using VolunteerTracker.Repository.Entities
 @using VolunteerTracker.Common.DataAnnotations
+@using VolunteerTracker.Blazor.Components.Shared.Element
+
 
 <VTBorder Label="Email">
     @foreach (Email email in List)
@@ -22,20 +24,15 @@
                      Value="@email.IsPrimary"
                      ValueChanged="@((bool value) => MainChanged(email, value))">
             </VTRadio>
-            <div class="col-1 mb-1 ps-1 d-flex align-items-center ">
-                <button type="button" class="btn btn-outline-danger" @onclick="() => DeleteEmail(email.Id)">
-                    <i class="bi bi-trash3"></i>
-                </button>
-            </div>
+            <VTButtonDeleteSimple ContainerClass="col-1 ps-1 d-flex align-items-center" OnClick="() => DeleteEmail(email.Id)"></VTButtonDeleteSimple>
+            <ValidationMessage For="@(() => @email.Type)" />
+            <ValidationMessage For="@(() => @email.Address)" />
+            <ValidationMessage For="@(() => @email.IsPrimary)" />
         </div>
     }
     <div class="row">
-        <div class="col-11 mb-1 pe-1"></div>
-        <div class="col-1 mb-1 ps-1">
-            <button type="button" class="btn btn-outline-success" @onclick="AddEmail">
-                <i class="bi bi-plus-lg"></i>
-            </button>
-        </div>
+        <div class=" col-11 mb-1 pe-1"></div>
+        <VTButtonAddSimple ContainerClass="col-1 ps-1" OnClick="AddEmail"></VTButtonAddSimple>
     </div>
 </VTBorder>
 

@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Components.Web;
 using VolunteerTracker.Common.DataAnnotations;
 using VolunteerTracker.Repository.Entities;
 
-namespace VolunteerTracker.Blazor.Components.Shared;
+namespace VolunteerTracker.Blazor.Components.Shared.Composite;
 
 public partial class VTPhoneEdit
 {

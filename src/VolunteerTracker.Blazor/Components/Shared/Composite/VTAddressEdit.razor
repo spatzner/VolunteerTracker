@@ -1,10 +1,17 @@
-﻿@using VolunteerTracker.Repository.Entities
+﻿@using VolunteerTracker.Blazor.Components.Shared.Element
+
+@using VolunteerTracker.Repository.Entities
 <VTBorder Label="Address">
     <VTTextBox Label="Address 1" Class="col-12" Value="@Address.Line1" ValueChanged="Line1Changed"></VTTextBox>
+    <ValidationMessage For="@(() => @Address.Line1)" />
     <VTTextBox Label="Address 2" Class="col-12" Value="@Address.Line2" ValueChanged="Line2Changed"></VTTextBox>
+    <ValidationMessage For="@(() => @Address.Line2)" />
     <VTTextBox Label="City" Class="col-12" Value="@Address.City" ValueChanged="CityChanged"></VTTextBox>
+    <ValidationMessage For="@(() => @Address.City)" />
     <VTTextBox Label="State" Class="col-12" Value="@Address.State" ValueChanged="StateChanged"></VTTextBox>
+    <ValidationMessage For="@(() => @Address.State)" />
     <VTTextBox Label="Zip" Class="col-12" Value="@Address.Zip" ValueChanged="ZipChanged"></VTTextBox>
+    <ValidationMessage For="@(() => @Address.Zip)" />
 </VTBorder>
 
 @code {
@@ -85,9 +92,7 @@
 
         EditContext.NotifyFieldChanged(fieldIdentifier);
 
-        var isValid = EditContext.Validate();
-
-        var list = EditContext.GetValidationMessages().ToList();
+        EditContext.Validate();
     }
 
 }
