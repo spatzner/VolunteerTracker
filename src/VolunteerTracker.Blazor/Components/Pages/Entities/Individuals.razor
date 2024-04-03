@@ -7,8 +7,7 @@
 
 @inject IndividualDataProvider IndividualDataProvider
 
-<h3>Individuals</h3>
-<VTButton Class="btn btn-success" ContainerClass="my-2" Tooltip="Add" @onclick="async () => await EditModal(null)"><i class="bi bi-plus-lg pe-1"></i>Add</VTButton>
+<h3>Individuals <VTButtonAddSimple ContainerClass="ms-2 mb-2 flex d-inline" @onclick="async () => await EditModal(null)"></VTButtonAddSimple></h3>
 
 <Grid @ref="dataGrid"TItem="Individual"
       Class="table table-hover table-bordered table-striped"

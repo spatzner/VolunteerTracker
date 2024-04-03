@@ -47,7 +47,11 @@ builder
    .Bind(aspNetDatabaseSettings, options => options.ErrorOnUnknownConfiguration = true);
 
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(aspNetDatabaseSettings.ConnectionString));
-builder.Services.AddDbContext<VolunteerContext>(options => options.UseNpgsql(volunteerDatabaseSettings.ConnectionString), ServiceLifetime.Scoped);
+//builder.Services.AddDbContext<VolunteerContext>(options => options.UseNpgsql(volunteerDatabaseSettings.ConnectionString), ServiceLifetime.Scoped);
+builder.Services.AddDbContextFactory<VolunteerContext>(options =>
+{
+    options.UseNpgsql(volunteerDatabaseSettings.ConnectionString);
+});
 
 builder
    .Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
