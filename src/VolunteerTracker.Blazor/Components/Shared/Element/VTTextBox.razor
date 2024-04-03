@@ -1,8 +1,8 @@
-﻿@inherits VTComponentBase
+﻿@inherits VTElementBase
 
-<div class="@($"mb-1 {Class}")">
+<div class="@($"mb-1 {ContainerClass}")">
     <div class="form-floating">
-        <input id="@Id" type="@InputStringFromEnum()" class="form-control" @bind-value="Value"/>
+        <input id="@Id" type="@InputStringFromEnum()" class="@($"form-control {Class}")" @bind-value="Value"/>
         <label for="@Id" class="control-label">@Label</label>
     </div>
 </div>

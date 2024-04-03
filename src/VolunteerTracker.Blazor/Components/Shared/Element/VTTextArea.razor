@@ -1,0 +1,19 @@
+﻿@inherits VTElementBase
+
+<div class="mb-1">
+    <div class="form-floating">
+        <textarea id="@Id" class="@($"form-control {Class}")" style="@($"height:{Height}")" @bind="Value"></textarea>
+        <label for="@Id">@Label</label>
+    </div>
+</div>
+
+@code{
+    [Parameter]
+    public required string Value { get; set; }
+
+    [Parameter]
+    EventCallback<string> ValueChanged { get; set; }
+
+    [Parameter]
+    public string Height { get; set; } = "7.5em";
+}

@@ -1,25 +1,27 @@
 ﻿@using VolunteerTracker.Blazor.Components.Shared.Element
 @using VolunteerTracker.Blazor.Components.Shared.Composite
+@using VolunteerTracker.Repository
 @using VolunteerTracker.Repository.Entities
+@using Microsoft.EntityFrameworkCore
 
 <div class="container">
     <EditForm EditContext="@EditContext" OnValidSubmit="OnValidSubmit" FormName="Individual">
-        
+
         <CascadingValue Value="@EditContext"></CascadingValue>
         <AntiforgeryToken/>
         <ObjectGraphDataAnnotationsValidator/>
         <div class="row">
-            <VTTextBox Label="Title" Class="col-md-4 col-lg-1 pe-lg-1" @bind-Value="_person.Title"></VTTextBox>
-            <VTTextBox Label="First Name" Class="col-md-12 col-lg-2 ps-lg-1 pe-lg-1" @bind-Value="_person.FirstName"></VTTextBox>
-            <VTTextBox Label="Middle Name" Class="col-md-12 col-lg-2 ps-lg-1 pe-lg-1 " @bind-Value="_person.MiddleName"></VTTextBox>
-            <VTTextBox Label="Last Name" Class="col-md-12 col-lg-2 ps-lg-1 pe-lg-1" @bind-Value="_person.LastName"></VTTextBox>
-            <VTTextBox Label="Suffix" Class="col-md-4 col-lg-1 ps-lg-1" @bind-Value="_person.Suffix"></VTTextBox>
+            <VTTextBox Label="Title" ContainerClass="col-md-4 col-lg-1 pe-lg-1" @bind-Value="_person.Title"></VTTextBox>
+            <VTTextBox Label="First Name" ContainerClass="col-md-12 col-lg-2 ps-lg-1 pe-lg-1" @bind-Value="_person.FirstName"></VTTextBox>
+            <VTTextBox Label="Middle Name" ContainerClass="col-md-12 col-lg-2 ps-lg-1 pe-lg-1 " @bind-Value="_person.MiddleName"></VTTextBox>
+            <VTTextBox Label="Last Name" ContainerClass="col-md-12 col-lg-2 ps-lg-1 pe-lg-1" @bind-Value="_person.LastName"></VTTextBox>
+            <VTTextBox Label="Suffix" ContainerClass="col-md-4 col-lg-1 ps-lg-1" @bind-Value="_person.Suffix"></VTTextBox>
             <div class="col-lg-4"></div>
-            <ValidationMessage For="@(() => @_person.Title)" />
-            <ValidationMessage For="@(() => @_person.FirstName)" />
-            <ValidationMessage For="@(() => @_person.MiddleName)" />
-            <ValidationMessage For="@(() => @_person.LastName)" />
-            <ValidationMessage For="@(() => @_person.Suffix)" />
+            <ValidationMessage For="@(() => @_person.Title)"/>
+            <ValidationMessage For="@(() => @_person.FirstName)"/>
+            <ValidationMessage For="@(() => @_person.MiddleName)"/>
+            <ValidationMessage For="@(() => @_person.LastName)"/>
+            <ValidationMessage For="@(() => @_person.Suffix)"/>
         </div>
 
         <div class="row">
@@ -34,7 +36,7 @@
         <div class="row">
             <div class="mb-1">
                 <div class="form-floating">
-                    <textarea id="notes" class="form-control" style="height:7.5em;" placeholder="Notes" @bind="_person.Notes"></textarea>
+                    <textarea id="notes" class="form-control" style="height:7.5em;" @bind="_person.Notes"></textarea>
                     <label for="notes">Notes</label>
                 </div>
             </div>
@@ -50,3 +52,60 @@
         </div>
     </EditForm>
 </div>
+
+@code{
+
+    [Parameter]
+    public required Guid? PersonGuid { get; set; }
+
+    [Parameter]
+    public EventCallback OnClose { get; set; }
+
+    [Inject]
+    public required VolunteerContext Context { get; set; }
+
+    public EditContext? EditContext { get; set; }
+
+    private Person _person = null!;
+
+    private static readonly Person PlaceholderPerson = new();
+
+    protected override void OnParametersSet()
+    {
+        LoadPerson();
+        base.OnParametersSet();
+    }
+
+    private void LoadPerson()
+    {
+        _person = PlaceholderPerson;
+        _person = PersonGuid.HasValue 
+            ? Context.Persons
+               .Include(x => x.Emails)
+               .Include(x => x.Phones)
+               .Include(x => x.Address)
+               .FirstOrDefault(p => p.Id == PersonGuid) ?? Person.Create() 
+            : Person.Create();
+
+        EditContext = new EditContext(_person);
+    }
+
+    private async Task Save()
+    {
+        if (!PersonGuid.HasValue)
+            Context.Persons.Add(_person);
+
+        await Context.SaveChangesAsync();
+        Close();
+    }
+
+    private void Close()
+    {
+        OnClose.InvokeAsync();
+    }
+
+    private async Task OnValidSubmit(EditContext arg)
+    {
+        await Save();
+    }
+}

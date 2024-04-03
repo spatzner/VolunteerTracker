@@ -1,4 +1,4 @@
-﻿@inherits VTComponentBase
+﻿@inherits VTElementBase
 
 <div class="@($"mb-1 {ContainerClass}")">
     <button type="@BtnType" class="@Class" title="@Tooltip" @onclick="OnClick">
@@ -8,14 +8,21 @@
 
 @code {
 
-    private string BtnType => ButtonType.ToString().ToLower();
 
+    protected override void OnParametersSet()
+    {
+        if (ButtonType == ActionType.Submit && Class.Contains("btn-outline-"))
+            throw new ArgumentException("Submit buttons should not be outline");
+
+        if(Class.Length == 0)
+            Class = "btn btn-primary";
+        
+    }
+
+    private string BtnType => ButtonType.ToString().ToLower();
 
     [Parameter]
     public ActionType ButtonType { get; set; } = ActionType.Button;
-
-    [Parameter]
-    public string ContainerClass { get; set; } = "btn btn-primary";
 
     [Parameter]
     public string? Tooltip { get; set; }

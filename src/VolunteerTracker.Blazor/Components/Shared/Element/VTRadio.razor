@@ -1,10 +1,10 @@
 ﻿@using System.Runtime.InteropServices.JavaScript
-@inherits VTComponentBase
+@inherits VTElementBase
 
-<div class="@($"d-flex align-items-center {Class}")">
+<div class="@($"d-flex align-items-center {ContainerClass}")">
     <div class="form-check">
 
-        <input @ref="_input" id="@Id" name="@Group" type="radio" class="form-check-input" checked="@Value" @onclick="OnChange" />
+        <input @ref="_input" id="@Id" name="@Group" type="radio" class="@($"form-check-input {Class}")" checked="@Value" @onclick="OnChange" />
         <label for="@Id" class="form-check-label">@Label</label><br>
     </div>
 </div>

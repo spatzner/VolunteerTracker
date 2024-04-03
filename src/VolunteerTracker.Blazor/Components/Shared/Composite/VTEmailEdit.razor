@@ -8,19 +8,19 @@
     {
         <div class="row">
             <VTDropdown Label="Type"
-                        Class="col-3 pe-1"
+                        ContainerClass="col-3 pe-1"
                         Options="_emailTypes"
                         Value="@email.Type"
                         ValueChanged="@((string value) => TypeChanged(email, value))">
             </VTDropdown>
             <VTTextBox Label="Address"
-                       Class="col-6 ps-1 pe-1"
+                       ContainerClass="col-6 ps-1 pe-1"
                        Value="@email.Address"
                        ValueChanged="@((string value) => AddressChanged(email, value))">
             </VTTextBox>
             <VTRadio Label="Main"
                      Group="emailPrimary"
-                     Class="col-2 ps-1"
+                     ContainerClass="col-2 ps-1"
                      Value="@email.IsPrimary"
                      ValueChanged="@((bool value) => MainChanged(email, value))">
             </VTRadio>

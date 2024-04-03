@@ -17,8 +17,8 @@
       AllowPaging="true"
       Reload>
     <GridColumn TItem="Individual" HeaderText="Actions" Filterable="false" TextNoWrap="true">
-        <VTButton Class="btn btn-outline-primary" ContainerClass="d-inline" Tooltip="View" @onclick="async () => await ViewModal(context.Id)"><i class="bi bi-binoculars"></i></VTButton>
-        <VTButton Class="btn btn-outline-warning" ContainerClass="d-inline" Tooltip="Edit" @onclick="async () => await EditModal(context.Id)"><i class="bi bi-pencil"></i></VTButton>
+        <VTButtonViewSimple ContainerClass="d-inline" OnClick="async () => await ViewModal(context.Id)"></VTButtonViewSimple>
+        <VTButtonEditSimple ContainerClass="d-inline" OnClick="async () => await EditModal(context.Id)"></VTButtonEditSimple>
     </GridColumn>
     <GridColumn TItem="Individual" PropertyName="@nameof(Individual.FirstName)" HeaderText="First Name" FilterOperator="FilterOperator.StartsWith">
         <b>@context.FirstName</b>

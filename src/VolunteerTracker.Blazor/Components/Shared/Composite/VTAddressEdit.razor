@@ -2,15 +2,15 @@
 
 @using VolunteerTracker.Repository.Entities
 <VTBorder Label="Address">
-    <VTTextBox Label="Address 1" Class="col-12" Value="@Address.Line1" ValueChanged="Line1Changed"></VTTextBox>
+    <VTTextBox Label="Address 1" ContainerClass="col-12" Value="@Address.Line1" ValueChanged="Line1Changed"></VTTextBox>
     <ValidationMessage For="@(() => @Address.Line1)" />
-    <VTTextBox Label="Address 2" Class="col-12" Value="@Address.Line2" ValueChanged="Line2Changed"></VTTextBox>
+    <VTTextBox Label="Address 2" ContainerClass="col-12" Value="@Address.Line2" ValueChanged="Line2Changed"></VTTextBox>
     <ValidationMessage For="@(() => @Address.Line2)" />
-    <VTTextBox Label="City" Class="col-12" Value="@Address.City" ValueChanged="CityChanged"></VTTextBox>
+    <VTTextBox Label="City" ContainerClass="col-12" Value="@Address.City" ValueChanged="CityChanged"></VTTextBox>
     <ValidationMessage For="@(() => @Address.City)" />
-    <VTTextBox Label="State" Class="col-12" Value="@Address.State" ValueChanged="StateChanged"></VTTextBox>
+    <VTTextBox Label="State" ContainerClass="col-12" Value="@Address.State" ValueChanged="StateChanged"></VTTextBox>
     <ValidationMessage For="@(() => @Address.State)" />
-    <VTTextBox Label="Zip" Class="col-12" Value="@Address.Zip" ValueChanged="ZipChanged"></VTTextBox>
+    <VTTextBox Label="Zip" ContainerClass="col-12" Value="@Address.Zip" ValueChanged="ZipChanged"></VTTextBox>
     <ValidationMessage For="@(() => @Address.Zip)" />
 </VTBorder>
 

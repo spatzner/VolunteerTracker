@@ -1,11 +1,10 @@
 Todo
 
-create simple button for view, edit
 revert changes to individual on close (discard) of modal window
 move textarea to its own component
 match primary color btn-primary, grid selected page, etc to sidebar blue
 implement cancellation tokens
-
+bunit / playwright
 
 ========
 Later:
