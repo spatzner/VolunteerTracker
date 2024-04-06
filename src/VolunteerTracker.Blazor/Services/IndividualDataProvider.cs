@@ -10,7 +10,7 @@ namespace VolunteerTracker.Blazor.Services;
 
 public class IndividualDataProvider(VolunteerContext volunteerContext)
 {
-    public async Task<GridDataProviderResult<Individual>> Provide(GridDataProviderRequest<Individual> request)
+    public async Task<GridDataProviderResult<IndividualModel>> Provide(GridDataProviderRequest<IndividualModel> request)
     {
         IQueryable<Person> query = volunteerContext.Persons.Include(x => x.Address).Include(x => x.Emails).Include(x => x.Phones);
 
@@ -18,16 +18,16 @@ public class IndividualDataProvider(VolunteerContext volunteerContext)
         {
             switch (individualFilter.PropertyName)
             {
-                case nameof(Individual.FirstName):
+                case nameof(IndividualModel.FirstName):
                     query = query.Where(p => EF.Functions.ILike(p.FirstName, $"{individualFilter.Value}%"));
                     break;
-                case nameof(Individual.LastName):
+                case nameof(IndividualModel.LastName):
                     query = query.Where(p => EF.Functions.ILike(p.LastName, $"{individualFilter.Value}%"));
                     break;
-                case nameof(Individual.Email):
+                case nameof(IndividualModel.Email):
                     query = query.Where(p => p.Emails.Any(e => EF.Functions.ILike(e.Address, $"{individualFilter.Value}%")));
                     break;
-                case nameof(Individual.Phone):
+                case nameof(IndividualModel.Phone):
                     string search = GeneratedRegex.NonPhoneCharacter().Replace(individualFilter.Value, string.Empty);
                     query = query.Where(p => p.Phones.Any(ph => EF.Functions.ILike(ph.Number, $"{search}%")));
                     break;
@@ -40,10 +40,10 @@ public class IndividualDataProvider(VolunteerContext volunteerContext)
 
         query = query.BootstrapPaginateEF(request.PageSize, request.PageNumber);
 
-        return new GridDataProviderResult<Individual>
+        return new GridDataProviderResult<IndividualModel>
         {
             TotalCount = countQuery.AsNoTracking().Count(), 
-            Data = await query.AsNoTracking().Select(p => new Individual(p)).ToListAsync()
+            Data = await query.AsNoTracking().Select(p => new IndividualModel(p)).ToListAsync()
         };
     }
 }

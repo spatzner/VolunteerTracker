@@ -2,7 +2,7 @@
 
 namespace VolunteerTracker.Blazor.Models;
 
-public class Individual(Person person)
+public class IndividualModel(Person person)
 {
     public Guid Id => person.Id;
     public string FirstName => person.FirstName;
@@ -10,4 +10,8 @@ public class Individual(Person person)
     public string Location => person.Address.ToString();
     public string? Phone => person.Phones.FirstOrDefault(x => x.IsPrimary)?.Number;
     public string? Email => person.Emails.FirstOrDefault(x => x.IsPrimary)?.Address;
+    
+    public Person Person => person;
+
+    public bool ShowDetails { get; set; }
 }

@@ -1,10 +1,62 @@
-﻿<h3>IndividualView</h3>
+﻿@using VolunteerTracker.Repository.Entities
+@using VolunteerTracker.Common
+
+@if (Person == null)
+{
+    <div class="alert alert-danger">Person not found</div>
+}
+else
+{
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3">
+                <fieldset>
+                    <legend>Name</legend>
+                    <div>@Person.FullName</div>
+                </fieldset>
+            </div>
+            <div class="col-lg-3">
+                <fieldset>
+                    <legend>Address</legend>
+                    <div>@Person.Address.Line1</div>
+                    @if (!string.IsNullOrWhiteSpace(Person.Address.Line2))
+                    {
+                        <div>@Person.Address.Line2</div>
+                    }
+                    <div>@Person.Address.City, @Person.Address.State @Person.Address.Zip</div>
+                </fieldset>
+            </div>
+            <div class="col-lg-3">
+                <fieldset>
+                    <legend>Email</legend>
+                    @foreach (var email in Person.Emails.OrderByDescending(e => e.IsPrimary))
+                    {
+                        <div>@($"{email.Type}: {email.Address} {(email.IsPrimary ? "[Main]" : string.Empty)}")</div>
+                    }
+                </fieldset>
+            </div>
+            <div class="col-lg-3">
+                <fieldset>
+                    <legend>Phone</legend>
+                    @foreach (var phone in Person.Phones.OrderByDescending(e => e.IsPrimary))
+                    {
+                        <div>@($"{phone.Type}: {PhoneNumberFormatter.Format(phone.Number)} {(phone.IsPrimary ? "[Main]" : string.Empty)}")</div>
+                    }
+                </fieldset>
+            </div>
+        </div>
+    </div>
+}
 
 @code {
 
+    [Inject]
+    public PhoneNumberFormatter PhoneNumberFormatter { get; set; } = null!;
+
     [Parameter]
-    public required Guid? PersonGuid { get; set; }
+    public required Person Person { get; set; }
 
     [Parameter]
     public EventCallback OnClose { get; set; }
+
 }
