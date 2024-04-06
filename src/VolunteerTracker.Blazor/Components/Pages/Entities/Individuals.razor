@@ -7,7 +7,7 @@
 
 @inject IndividualDataProvider IndividualDataProvider
 
-<h3>Individuals <VTButtonAddSimple ContainerClass="ms-2 mb-2 flex d-inline" @onclick="async () => await EditModal(null)"></VTButtonAddSimple></h3>
+<h3 class="mt-2">Individuals <VTButtonAddSimple ContainerClass="ms-2 mb-2 flex d-inline" @onclick="async () => await EditModal(null)"></VTButtonAddSimple></h3>
 
 <Grid @ref="dataGrid"TItem="Individual"
       Class="table table-hover table-bordered table-striped"
@@ -19,11 +19,11 @@
         <VTButtonViewSimple ContainerClass="d-inline" OnClick="async () => await ViewModal(context.Id)"></VTButtonViewSimple>
         <VTButtonEditSimple ContainerClass="d-inline" OnClick="async () => await EditModal(context.Id)"></VTButtonEditSimple>
     </GridColumn>
-    <GridColumn TItem="Individual" PropertyName="@nameof(Individual.FirstName)" HeaderText="First Name" FilterOperator="FilterOperator.StartsWith">
-        <b>@context.FirstName</b>
-    </GridColumn>    
     <GridColumn TItem="Individual" PropertyName="@nameof(Individual.LastName)" HeaderText="Last Name" FilterOperator="FilterOperator.StartsWith">
         <b>@context.LastName</b>
+    </GridColumn>
+    <GridColumn TItem="Individual" PropertyName="@nameof(Individual.FirstName)" HeaderText="First Name" FilterOperator="FilterOperator.StartsWith">
+        <b>@context.FirstName</b>
     </GridColumn>
     <GridColumn TItem="Individual" PropertyName="@nameof(Individual.Location)" HeaderText="Location" Filterable="false">
         @context.Location
@@ -54,7 +54,8 @@
     private async Task EditModal(Guid? id)
     {
         var onCloseCallback = new EventCallback(this, (Func<Task>)CloseModal);
-        var parameters = new Dictionary<string, object> { { "PersonGuid", id! }, { "OnClose", onCloseCallback } }; await _editModal.ShowAsync<IndividualEdit>(title: "Individual Details", parameters: parameters);
+        var parameters = new Dictionary<string, object> { { "PersonGuid", id! }, { "OnClose", onCloseCallback } };
+        await _editModal.ShowAsync<IndividualEdit>(title: "Individual Details", parameters: parameters);
     }
 
     private async Task ViewModal(Guid id)

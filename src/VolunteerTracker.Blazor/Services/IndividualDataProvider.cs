@@ -19,10 +19,10 @@ public class IndividualDataProvider(VolunteerContext volunteerContext)
             switch (individualFilter.PropertyName)
             {
                 case nameof(Individual.FirstName):
-                    query = query.Where(p => EF.Functions.ILike(p.FirstName, $"{individualFilter.Value}"));
+                    query = query.Where(p => EF.Functions.ILike(p.FirstName, $"{individualFilter.Value}%"));
                     break;
                 case nameof(Individual.LastName):
-                    query = query.Where(p => EF.Functions.ILike(p.LastName, $"{individualFilter.Value}"));
+                    query = query.Where(p => EF.Functions.ILike(p.LastName, $"{individualFilter.Value}%"));
                     break;
                 case nameof(Individual.Email):
                     query = query.Where(p => p.Emails.Any(e => EF.Functions.ILike(e.Address, $"{individualFilter.Value}%")));

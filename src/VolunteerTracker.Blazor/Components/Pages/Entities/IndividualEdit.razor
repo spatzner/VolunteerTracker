@@ -1,8 +1,6 @@
-﻿@using VolunteerTracker.Blazor.Components.Shared.Element
+﻿@using Microsoft.AspNetCore.Components.Forms
+@using VolunteerTracker.Blazor.Components.Shared.Element
 @using VolunteerTracker.Blazor.Components.Shared.Composite
-@using VolunteerTracker.Repository
-@using VolunteerTracker.Repository.Entities
-@using Microsoft.EntityFrameworkCore
 
 <div class="container">
     <EditForm EditContext="@EditContext" OnValidSubmit="OnValidSubmit" FormName="Individual">
@@ -34,12 +32,14 @@
             </div>
         </div>
         <div class="row">
-            <div class="mb-1">
+            <VTTextArea Label="Notes" @bind-Value="_person.Notes"></VTTextArea>
+            <ValidationMessage For="@(() => @_person.Notes)" />
+    @*         <div class="mb-1">
                 <div class="form-floating">
                     <textarea id="notes" class="form-control" style="height:7.5em;" @bind="_person.Notes"></textarea>
                     <label for="notes">Notes</label>
                 </div>
-            </div>
+            </div> *@
         </div>
 
         <div class="row py-3">

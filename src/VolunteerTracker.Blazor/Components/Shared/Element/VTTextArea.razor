@@ -1,18 +1,31 @@
 ﻿@inherits VTElementBase
 
-<div class="mb-1">
+<div class="@($"mb-1 {ContainerClass}")">
     <div class="form-floating">
-        <textarea id="@Id" class="@($"form-control {Class}")" style="@($"height:{Height}")" @bind="Value"></textarea>
+        <textarea id="@Id" class="@($"form-control {Class}")" style="@($"height:{Height}")" @bind="@Value"></textarea>
         <label for="@Id">@Label</label>
     </div>
 </div>
 
 @code{
-    [Parameter]
-    public required string Value { get; set; }
+    private string? _value;
 
     [Parameter]
-    EventCallback<string> ValueChanged { get; set; }
+    public string? Value
+    {
+        get => _value;
+        set
+        {
+            if (_value == value)
+                return;
+
+            ValueChanged.InvokeAsync(value);
+            _value = value;
+        }
+    }
+
+    [Parameter]
+    public EventCallback<string> ValueChanged { get; set; }
 
     [Parameter]
     public string Height { get; set; } = "7.5em";
