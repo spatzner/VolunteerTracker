@@ -22,7 +22,7 @@
                      Group="emailPrimary"
                      ContainerClass="col-2 ps-1"
                      Value="@email.IsPrimary"
-                     ValueChanged="@((bool value) => MainChanged(email, value))">
+                     OnSelected="() => MainSelected(email)">
             </VTRadio>
             <VTButtonDeleteSimple ContainerClass="col-1 ps-1 d-flex align-items-center" OnClick="() => DeleteEmail(email.Id)"></VTButtonDeleteSimple>
             <ValidationMessage For="@(() => @email.Type)" />
@@ -44,11 +44,16 @@
     [Parameter]
     public EventCallback<ICollection<Email>> ListChanged { get; set; }
 
+    [CascadingParameter]
+    public EditContext EditContext { get; set; } = null!;
+
     private readonly List<string> _emailTypes = typeof(Email).GetAllowedValues(nameof(Email.Type));
 
     private void DeleteEmail(Guid id)
     {
         List.Remove(List.First(x => x.Id == id));
+        if (List.All(x => !x.IsPrimary))
+            List.First().IsPrimary = true;
         ListChanged.InvokeAsync(List);
     }
 
@@ -64,20 +69,20 @@
             return;
 
         email.Address = newValue;
+        Validate(email, nameof(email.Address));
         ListChanged.InvokeAsync(List);
     }
 
-    private void MainChanged(Email email, bool newValue)
+    private void MainSelected(Email email)
     {
-        if (!newValue || email.IsPrimary == newValue)
-            return;
-
         email.IsPrimary = true;
-        foreach (Email e in List.Where(x => x.Id != email.Id))
+
+        foreach (Email e in List.Where(p => p != email))
         {
             e.IsPrimary = false;
         }
 
+        Validate(email, nameof(email.IsPrimary));
         ListChanged.InvokeAsync(List);
     }
 
@@ -87,7 +92,18 @@
             return;
 
         email.Type = newValue;
+        Validate(email, nameof(email.Type));
         ListChanged.InvokeAsync(List);
+    }
+
+    private void Validate(Email email, string propertyName)
+    {
+        var index = List.ToList().IndexOf(email);
+        var fullPropertyName = $"{nameof(Person.Emails)}[{index}].{propertyName}";
+        var fieldIdentifier = new FieldIdentifier(EditContext.Model, fullPropertyName);
+
+        EditContext.NotifyFieldChanged(fieldIdentifier);
+        EditContext.Validate();
     }
 
 }

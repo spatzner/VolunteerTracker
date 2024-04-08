@@ -4,7 +4,7 @@
 <div class="@($"d-flex align-items-center {ContainerClass}")">
     <div class="form-check">
 
-        <input @ref="_input" id="@Id" name="@Group" type="radio" class="@($"form-check-input {Class}")" checked="@Value" @onclick="OnChange" />
+        <input @ref="_input" id="@Id" name="@Group" type="radio" class="@($"form-check-input {Class}")" checked="@Value" @onclick="Selected" />
         <label for="@Id" class="form-check-label">@Label</label><br>
     </div>
 </div>
@@ -18,28 +18,18 @@
     IJSRuntime JSRuntime { get; set; } = null!;
 
     [Parameter]
-    public bool Value
-    {
-        get => _value;
-        set
-        {
-            if (_value == value)
-                return;
-
-            _value = value;
-            ValueChanged.InvokeAsync(value);
-        }
-    }
+    public bool Value { get; set; }
 
     [Parameter]
-    public EventCallback<bool> ValueChanged { get; set; }
+    public EventCallback OnSelected { get; set; }
 
     [Parameter]
     public string Group { get; set; }
 
-    private async Task OnChange()
+    //@onclick also handles selected via keyboard
+    private async Task Selected()
     {
-        Value = await JSRuntime.InvokeAsync<bool>("vtIsElementChecked", _input);
+        await OnSelected.InvokeAsync();
     }
 
 }

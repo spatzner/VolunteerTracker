@@ -23,7 +23,7 @@
                      Group="phonePrimary"
                      ContainerClass="col-2 ps-1"
                      Value="@phone.IsPrimary"
-                     ValueChanged="@((bool value) => MainChanged(phone, value))">
+                     OnSelected="() => MainSelected(phone)">
             </VTRadio>
             <VTButtonDeleteSimple ContainerClass="col-1 ps-1 d-flex align-items-center" OnClick="() => DeletePhone(phone.Id)"></VTButtonDeleteSimple>
             <ValidationMessage For="@(() => @phone.Type)"/>

@@ -22,6 +22,8 @@ public partial class VTPhoneEdit
     private void DeletePhone(Guid phoneId)
     {
         List.Remove(List.First(x => x.Id == phoneId));
+        if(List.All(p => !p.IsPrimary))
+            List.First().IsPrimary = true;
         ListChanged.InvokeAsync(List);
     }
 
@@ -43,13 +45,11 @@ public partial class VTPhoneEdit
         ListChanged.InvokeAsync(List);
     }
 
-    private void MainChanged(Phone phone, bool newValue)
+    private void MainSelected(Phone phone)
     {
-        if (!newValue || phone.IsPrimary == newValue)
-            return;
-
         phone.IsPrimary = true;
-        foreach (Phone p in List.Where(x => x.Id != phone.Id))
+
+        foreach (Phone p in List.Where(p => p != phone))
         {
             p.IsPrimary = false;
         }
