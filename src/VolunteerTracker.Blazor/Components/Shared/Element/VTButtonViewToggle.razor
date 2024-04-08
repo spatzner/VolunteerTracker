@@ -1,0 +1,57 @@
+﻿@inherits VTElementBase
+
+<VTButton Class="@($"btn {(_show ? "btn-primary" : "btn-outline-primary")}")"
+          ContainerClass="d-inline"
+          Tooltip="@_tooltip"
+          @onclick="ToggleShow">
+    @if (_show)
+    {
+        <i class="bi bi-binoculars-fill"></i>
+    }
+    else
+    {
+        <i class="bi bi-binoculars"></i>
+    }
+</VTButton>
+
+
+@code
+{
+
+    [Parameter]
+    public VTButton.ActionType ButtonType { get; set; } = VTButton.ActionType.Button;
+
+    [Parameter]
+    public string Tooltip { get; set; } = "Details";
+
+    [Parameter]
+    public EventCallback<MouseEventArgs> OnShow { get; set; }
+
+    [Parameter]
+    public EventCallback<MouseEventArgs> OnHide { get; set; }
+
+    private bool _show;
+    private string _tooltip = null!;
+
+    protected override void OnInitialized() { }
+
+    private void UpdateTooltip()
+    {
+        _tooltip = _show ? $"Hide {Tooltip}" : $"Show {Tooltip}";
+    }
+
+    private void ToggleShow(MouseEventArgs e)
+    {
+        _show = !_show;
+
+        UpdateTooltip();
+        if (_show)
+        {
+            OnShow.InvokeAsync(e);
+        }
+        else
+        {
+            OnHide.InvokeAsync(e);
+        }
+    }
+}

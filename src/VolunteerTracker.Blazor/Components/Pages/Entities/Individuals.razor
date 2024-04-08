@@ -15,19 +15,19 @@
       DataProvider="IndividualProvider"
       AllowFiltering="true"
       AllowPaging="true"
-      Reload>
+      FiltersRowCssClass="btn-hidden">
     <GridColumn TItem="IndividualModel" HeaderText="Actions" Filterable="false" TextNoWrap="true">
         <VTButtonViewSimple ContainerClass="d-inline" OnClick="async () => await ViewModal(context.Id)"></VTButtonViewSimple>
         <VTButtonEditSimple ContainerClass="d-inline" OnClick="async () => await EditModal(context.Id)"></VTButtonEditSimple>
     </GridColumn>
-    <GridColumn TItem="IndividualModel" PropertyName="@nameof(IndividualModel.LastName)" HeaderText="Last Name" FilterOperator="FilterOperator.StartsWith">
+    <GridColumn TItem="IndividualModel" PropertyName="@nameof(IndividualModel.LastName)" HeaderText="Last Name" FilterOperator="FilterOperator.StartsWith" >
         <b>@context.LastName</b>
     </GridColumn>
     <GridColumn TItem="IndividualModel" PropertyName="@nameof(IndividualModel.FirstName)" HeaderText="First Name" FilterOperator="FilterOperator.StartsWith">
         <b>@context.FirstName</b>
     </GridColumn>
     <GridColumn TItem="IndividualModel" PropertyName="@nameof(IndividualModel.Location)" HeaderText="Location" Filterable="false">
-        @context.Location
+        @FormatAddress(context.Person.Address)
     </GridColumn>
     <GridColumn TItem="IndividualModel" PropertyName="@nameof(IndividualModel.Phone)" HeaderText="Phone" FilterOperator="FilterOperator.StartsWith">
         @PhoneNumberFormatter.Format(context.Phone)
@@ -85,4 +85,14 @@
         return data;
     }
 
+    private MarkupString FormatAddress(Address? address)
+    {
+        if (address == null)
+            return (MarkupString)string.Empty;
+
+        var address2 = string.IsNullOrWhiteSpace(address.Line2) ? string.Empty : $", {address.Line2}";
+
+        return (MarkupString)$"{address.Line1}{address2}<br />{address.City}, {address.State}, {address.Zip}";
+
+    }
 }

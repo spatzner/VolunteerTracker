@@ -1,10 +1,10 @@
 Todo
 
 consistent async usage in razor components
-move textarea to its own component
 match primary color btn-primary, grid selected page, etc to sidebar blue
 implement cancellation tokens
 bunit / playwright
+
 
 ========
 Later:
@@ -15,3 +15,4 @@ Fix VTTextArea Title so it's always top left and grey like textbox,
 lighten component grouping label color
 move list component add to border top
 change modal 'close' to 'discard' on any changes
+improve IndividualView presentation or drop in favor of full data in grid
