@@ -22,19 +22,20 @@ public partial class IndividualEdit : IDisposable, IAsyncDisposable
     private Person _person = null!;
     private static readonly Person PlaceholderPerson = new();
 
-    protected override void OnParametersSet()
+    protected override async Task OnParametersSetAsync()
     {
-        LoadPerson();
-        base.OnParametersSet();
+        await LoadPersonAsync();
+        await base.OnParametersSetAsync();
     }
-
-    private void LoadPerson()
+    
+    private async Task LoadPersonAsync()
     {
-        _context?.Dispose();
-        _context = ContextFactory.CreateDbContext();
+        if(_context != null)
+            await _context.DisposeAsync();
+        _context = await ContextFactory.CreateDbContextAsync();
         _person = PlaceholderPerson;
         _person = PersonGuid.HasValue
-            ? _context.Persons.Include(x => x.Emails).Include(x => x.Phones).Include(x => x.Address).FirstOrDefault(p => p.Id == PersonGuid) ?? Person.Create()
+            ? await _context.Persons.Include(x => x.Emails).Include(x => x.Phones).Include(x => x.Address).FirstOrDefaultAsync(p => p.Id == PersonGuid) ?? Person.Create()
             : Person.Create();
 
         EditContext = new EditContext(_person);
@@ -47,13 +48,16 @@ public partial class IndividualEdit : IDisposable, IAsyncDisposable
 
         await _context!.SaveChangesAsync();
         await _context.DisposeAsync();
+        EditContext = null;
         await OnClose.InvokeAsync();
     }
 
-    private void Close()
+    private async Task Close()
     {
-        _context?.Dispose();
-        OnClose.InvokeAsync();
+        if(_context != null)
+            await _context.DisposeAsync();
+        EditContext = null;
+        await OnClose.InvokeAsync();
     }
 
     private async Task OnValidSubmit(EditContext arg)

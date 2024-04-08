@@ -46,8 +46,6 @@
     [Parameter]
     public EventCallback<bool> ShowChanged { get; set; }
 
-    protected override void OnInitialized() { }
-
     private void UpdateTooltip()
     {
         Tooltip = Show ? "Hide Details" : "Show Details";

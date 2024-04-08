@@ -33,8 +33,6 @@
     private bool _show;
     private string _tooltip = null!;
 
-    protected override void OnInitialized() { }
-
     private void UpdateTooltip()
     {
         _tooltip = _show ? $"Hide {Tooltip}" : $"Show {Tooltip}";
