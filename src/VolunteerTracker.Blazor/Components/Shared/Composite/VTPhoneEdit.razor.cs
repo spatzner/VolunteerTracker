@@ -22,7 +22,7 @@ public partial class VTPhoneEdit
     private void DeletePhone(Guid phoneId)
     {
         List.Remove(List.First(x => x.Id == phoneId));
-        if(List.All(p => !p.IsPrimary))
+        if(List.All(p => !p.IsPrimary) && List.Count != 0)
             List.First().IsPrimary = true;
         ListChanged.InvokeAsync(List);
     }

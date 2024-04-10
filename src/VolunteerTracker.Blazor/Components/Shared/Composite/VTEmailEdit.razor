@@ -52,7 +52,7 @@
     private void DeleteEmail(Guid id)
     {
         List.Remove(List.First(x => x.Id == id));
-        if (List.All(x => !x.IsPrimary))
+        if (List.All(x => !x.IsPrimary) && List.Any())
             List.First().IsPrimary = true;
         ListChanged.InvokeAsync(List);
     }
