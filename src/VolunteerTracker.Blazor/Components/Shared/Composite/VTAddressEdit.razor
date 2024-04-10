@@ -2,22 +2,40 @@
 
 @using VolunteerTracker.Repository.Entities
 <VTBorder Label="Address">
-    <VTTextBox Label="Address 1" ContainerClass="col-12" Value="@Address.Line1" ValueChanged="Line1Changed"></VTTextBox>
-    <ValidationMessage For="@(() => @Address.Line1)" />
-    <VTTextBox Label="Address 2" ContainerClass="col-12" Value="@Address.Line2" ValueChanged="Line2Changed"></VTTextBox>
-    <ValidationMessage For="@(() => @Address.Line2)" />
-    <VTTextBox Label="City" ContainerClass="col-12" Value="@Address.City" ValueChanged="CityChanged"></VTTextBox>
-    <ValidationMessage For="@(() => @Address.City)" />
-    <VTTextBox Label="State" ContainerClass="col-12" Value="@Address.State" ValueChanged="StateChanged"></VTTextBox>
-    <ValidationMessage For="@(() => @Address.State)" />
-    <VTTextBox Label="Zip" ContainerClass="col-12" Value="@Address.Zip" ValueChanged="ZipChanged"></VTTextBox>
-    <ValidationMessage For="@(() => @Address.Zip)" />
+    @if (Address is not null)
+    {
+        <div class="row">
+            <VTTextBox Label="Address 1" ContainerClass="col-12" Value="@Address.Line1" ValueChanged="Line1Changed"></VTTextBox>
+            <ValidationMessage For="@(() => @Address.Line1)"/>
+            <VTTextBox Label="Address 2" ContainerClass="col-12" Value="@Address.Line2" ValueChanged="Line2Changed"></VTTextBox>
+            <ValidationMessage For="@(() => @Address.Line2)"/>
+            <VTTextBox Label="City" ContainerClass="col-12" Value="@Address.City" ValueChanged="CityChanged"></VTTextBox>
+            <ValidationMessage For="@(() => @Address.City)"/>
+            <VTTextBox Label="State" ContainerClass="col-12" Value="@Address.State" ValueChanged="StateChanged"></VTTextBox>
+            <ValidationMessage For="@(() => @Address.State)"/>
+            <VTTextBox Label="Zip" ContainerClass="col-12" Value="@Address.Zip" ValueChanged="ZipChanged"></VTTextBox>
+            <ValidationMessage For="@(() => @Address.Zip)"/>
+        </div>
+        <div class="row">
+            <div class="float-end">
+                <VTButtonDeleteSimple ContainerClass="float-end" OnClick="RemoveAddress"></VTButtonDeleteSimple>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            <div class="float-end">
+                <VTButtonAddSimple ContainerClass="float-end" OnClick="AddAddress"></VTButtonAddSimple>
+            </div>
+        </div>
+    }
 </VTBorder>
 
 @code {
 
     [Parameter]
-    public Address Address { get; set; } = null!;
+    public Address? Address { get; set; } = null!;
 
     [Parameter]
     public EventCallback<Address> AddressChanged { get; set; }
@@ -27,7 +45,7 @@
 
     private void Line1Changed(string newValue)
     {
-        if (Address.Line1 == newValue)
+        if (Address!.Line1 == newValue)
             return;
 
         Address.Line1 = newValue;
@@ -39,7 +57,7 @@
 
     private void Line2Changed(string newValue)
     {
-        if (Address.Line2 == newValue)
+        if (Address!.Line2 == newValue)
             return;
 
         Address.Line2 = newValue;
@@ -51,7 +69,7 @@
 
     private void CityChanged(string newValue)
     {
-        if (Address.City == newValue)
+        if (Address!.City == newValue)
             return;
 
         Address.City = newValue;
@@ -63,7 +81,7 @@
 
     private void StateChanged(string newValue)
     {
-        if (Address.State == newValue)
+        if (Address!.State == newValue)
             return;
 
         Address.State = newValue;
@@ -75,7 +93,7 @@
 
     private void ZipChanged(string newValue)
     {
-        if (Address.Zip == newValue)
+        if (Address!.Zip == newValue)
             return;
 
         Address.Zip = newValue;
@@ -93,6 +111,18 @@
         EditContext.NotifyFieldChanged(fieldIdentifier);
 
         EditContext.Validate();
+    }
+
+    private void RemoveAddress()
+    {
+        Address = null;
+        AddressChanged.InvokeAsync(Address);
+    }
+
+    private void AddAddress(MouseEventArgs obj)
+    {
+        Address = new Address();
+        AddressChanged.InvokeAsync(Address);
     }
 
 }

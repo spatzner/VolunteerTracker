@@ -41,7 +41,7 @@ public class Person
     public string? Notes { get; set; }
 
     [ValidateComplexType]
-    public virtual Address Address { get; set; }
+    public virtual Address? Address { get; set; }
 
     [ValidateComplexType]
     [ExactlyOneMember<Phone>(nameof(Phone.IsPrimary), true, AllowEmpty = true)]
