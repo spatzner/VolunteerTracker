@@ -16,7 +16,7 @@ namespace VolunteerTracker.Database.DataGen
 
         public async Task GenerateDataToDatabase()
         {
-            List<Person> persons = [.. new PersonFaker().Generate(100)];
+            List<Person> persons = [.. new PersonFaker().Generate(1000)];
             _volunteerContext.Persons.AddRange(persons);
 
             await _volunteerContext.SaveChangesAsync();
@@ -29,7 +29,6 @@ namespace VolunteerTracker.Database.DataGen
         {
             AddressFaker addressFaker = new AddressFaker();
             PhoneFaker phoneFaker = new PhoneFaker();
-            EmailFaker emailFaker = new EmailFaker();
             
             RuleFor(p => p.Title, f => f.Name.Prefix().OrNull(f, .8f));
             RuleFor(p => p.FirstName, f => f.Name.FirstName());
@@ -56,8 +55,9 @@ namespace VolunteerTracker.Database.DataGen
                     return phones;
                 });
             RuleFor(p => p.Emails,
-                _ =>
+                (_, p) =>
                 {
+                    EmailFaker emailFaker = new EmailFaker(p);
                     ICollection<Email> emails = emailFaker.Generate(1, PhoneFaker.Primary);
 
                     if (Random.Shared.Next(0, 100) < 10)
@@ -139,14 +139,14 @@ namespace VolunteerTracker.Database.DataGen
         
         readonly Random _random = new();
         
-        public EmailFaker()
+        public EmailFaker(Person person)
         {
 
             RuleSet(Primary,
                 set =>
                 {
                     set.RuleFor(p => p.IsPrimary, _ => true);
-                    RuleFor(e => e.Address, f => f.Internet.Email());
+                    RuleFor(e => e.Address, f => f.Internet.Email(person.FirstName, person.LastName));
                     RuleFor(p => p.Type,
                         _ =>
                         {
