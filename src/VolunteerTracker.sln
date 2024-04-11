@@ -17,6 +17,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VolunteerTracker.Blazor.Pla
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{82DED676-F1C9-45F6-AD43-E25F43971C96}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VolunteerTracker.Tests.Common", "Tests\VolunteerTracker.Tests.Common\VolunteerTracker.Tests.Common.csproj", "{FF166168-B755-44FD-A092-CD123C63D9FD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,12 +49,17 @@ Global
 		{B6E37DC9-D77E-4707-8DF7-3BBC67B3A6E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B6E37DC9-D77E-4707-8DF7-3BBC67B3A6E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B6E37DC9-D77E-4707-8DF7-3BBC67B3A6E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF166168-B755-44FD-A092-CD123C63D9FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF166168-B755-44FD-A092-CD123C63D9FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF166168-B755-44FD-A092-CD123C63D9FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF166168-B755-44FD-A092-CD123C63D9FD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{B6E37DC9-D77E-4707-8DF7-3BBC67B3A6E3} = {82DED676-F1C9-45F6-AD43-E25F43971C96}
+		{FF166168-B755-44FD-A092-CD123C63D9FD} = {82DED676-F1C9-45F6-AD43-E25F43971C96}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8A5C66D5-B231-4575-B9FD-38D81D90C03D}
