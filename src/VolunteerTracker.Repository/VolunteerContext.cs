@@ -31,4 +31,13 @@ public class VolunteerContext(DbContextOptions<VolunteerContext> options) : DbCo
     //dbo
     public DbSet<ListValue> ListValues { get; set; }
     public DbSet<ListType> ListTypes { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<Person>().HasOne(p => p.Address).WithOne(a => a.Person).OnDelete(DeleteBehavior.Cascade);
+
+
+    }
 }
