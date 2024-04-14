@@ -83,15 +83,16 @@ public class IndividualsPresentationTests : PageTest
     }
 }
 
+//TODO: View shows all data
+
 [TestClass]
-public class IndividualsActionTests : PageTest
+public class IndividualPresentationTests : PageTest
 {
-    //TODO: remove ignore
     [TestMethod]
     [TestCategory(TestType.Integration)]
-    [Ignore]
     public async Task CanAddNewIndividual()
     {
+        //Add
         await Page.GotoAsync("https://localhost:7231/individuals");
         await Page.GetByRole(AriaRole.Button, new() { Name = "" }).ClickAsync();
         await Page.GetByLabel("Title").ClickAsync();
@@ -101,7 +102,7 @@ public class IndividualsActionTests : PageTest
         await Page.GetByLabel("First Name").PressAsync("Tab");
         await Page.GetByLabel("Middle Name").FillAsync("A");
         await Page.GetByLabel("Middle Name").PressAsync("Tab");
-        await Page.GetByLabel("Last Name").FillAsync("Armstrong");
+        await Page.GetByLabel("Last Name").FillAsync("Warren");
         await Page.GetByLabel("Last Name").PressAsync("Tab");
         await Page.GetByLabel("Suffix").FillAsync("Jr");
         await Page.GetByLabel("Suffix").PressAsync("Tab");
@@ -117,25 +118,50 @@ public class IndividualsActionTests : PageTest
         await Page.GetByLabel("Zip").PressAsync("Tab");
         await Page.GetByRole(AriaRole.Button, new() { Name = "" }).PressAsync("Tab");
         await Page.GetByRole(AriaRole.Group, new() { Name = "Phone" }).GetByRole(AriaRole.Button).ClickAsync();
+        await Page.GetByRole(AriaRole.Group, new() { Name = "Phone" }).GetByLabel("Type").SelectOptionAsync(new[] { "Mobile" });
         await Page.GetByLabel("Number").ClickAsync();
         await Page.GetByLabel("Number").FillAsync("2315236998");
         await Page.GetByRole(AriaRole.Group, new() { Name = "Email" }).GetByRole(AriaRole.Button).ClickAsync();
+        await Page.GetByRole(AriaRole.Group, new() { Name = "Email" }).GetByLabel("Type").SelectOptionAsync(new[] { "Work" });
         await Page.GetByLabel("Address", new() { Exact = true }).ClickAsync();
         await Page.GetByLabel("Address", new() { Exact = true }).FillAsync("CArmstrong@gmail.com");
+        await Page.GetByLabel("Notes").ClickAsync();
+        await Page.GetByLabel("Notes").FillAsync("Notes for Chaz");
         await Page.GetByRole(AriaRole.Button, new() { Name = "Save" }).ClickAsync();
+        
+        //Refresh data and target new entry
+        await Page.GotoAsync("https://localhost:7231/individuals"); 
+        await Page.GetByRole(AriaRole.Textbox).First.ClickAsync();
+        await Page.GetByRole(AriaRole.Textbox).First.FillAsync("Warren");
+        await Page.GetByRole(AriaRole.Row, new() { Name = "  Warren Cheddar 1234" }).GetByRole(AriaRole.Button).Nth(1).ClickAsync();
 
-        await Expect(Page.Locator("tbody")).ToContainTextAsync("Armstrong");
-        await Expect(Page.Locator("tbody")).ToContainTextAsync("Cheddar");
-        await Expect(Page.Locator("tbody")).ToContainTextAsync("1234 Main St, Ste 2Provo, Virginia, 33525");
-        await Expect(Page.Locator("tbody")).ToContainTextAsync("231-523-6998");
-        await Expect(Page.Locator("tbody")).ToContainTextAsync("CArmstrong@gmail.com");
+        //Verify data
+        await Expect(Page.GetByLabel("Title")).ToHaveValueAsync("Mr");
+        await Expect(Page.GetByLabel("First Name")).ToHaveValueAsync("Cheddar");
+        await Expect(Page.GetByLabel("Middle Name")).ToHaveValueAsync("A");
+        await Expect(Page.GetByLabel("Last Name")).ToHaveValueAsync("Warren");
+        await Expect(Page.GetByLabel("Suffix")).ToHaveValueAsync("Jr");
+        
+        await Expect(Page.GetByLabel("Address 1")).ToHaveValueAsync("1234 Main St");
+        await Expect(Page.GetByLabel("Address 2")).ToHaveValueAsync("Ste 2");
+        await Expect(Page.GetByLabel("City")).ToHaveValueAsync("Provo");
+        await Expect(Page.GetByLabel("State")).ToHaveValueAsync("Virginia");
+        await Expect(Page.GetByLabel("Zip")).ToHaveValueAsync("33525");
+        
+        await Expect(Page.GetByRole(AriaRole.Group, new() { Name = "Phone" }).GetByLabel("Type")).ToHaveValueAsync("Mobile");
+        await Expect(Page.GetByRole(AriaRole.Group, new() { Name = "Phone" }).GetByLabel("Number")).ToHaveValueAsync("2315236998");
+        await Expect(Page.GetByRole(AriaRole.Group, new() { Name = "Phone" }).GetByLabel("Main")).ToBeCheckedAsync();
+
+        await Expect(Page.GetByRole(AriaRole.Group, new() { Name = "Email" }).GetByLabel("Type")).ToHaveValueAsync("Work");
+        await Expect(Page.GetByRole(AriaRole.Group, new() { Name = "Email" }).GetByLabel("Address")).ToHaveValueAsync("CArmstrong@gmail.com");
+        await Expect(Page.GetByRole(AriaRole.Group, new() { Name = "Email" }).GetByLabel("Main")).ToBeCheckedAsync();
+
+        await Expect(Page.GetByLabel("Notes")).ToHaveValueAsync("Notes for Chaz");
 
     }
-    }
-
 }
 
-    //TODO: View shows all data
+
     //TODO: Can Edit Each field, including add / delete child entities
     //TODO: Required fields are enforced
 
