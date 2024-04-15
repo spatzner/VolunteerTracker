@@ -88,6 +88,11 @@ public class IndividualsPresentationTests : PageTest
 [TestClass]
 public class IndividualPresentationTests : PageTest
 {
+    [ClassInitialize]
+    public static async Task SetupAsync(TestContext context)
+    {
+    }
+    
     [TestMethod]
     [TestCategory(TestType.Integration)]
     public async Task CanAddNewIndividual()
