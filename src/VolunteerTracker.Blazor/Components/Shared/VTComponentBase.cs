@@ -2,7 +2,7 @@
 
 namespace VolunteerTracker.Blazor.Components.Shared
 {
-    public class VTComponentBase : ComponentBase
+    public abstract class VTComponentBase : ComponentBase
     {
         [Parameter]
         public string Class { get; set; } = string.Empty;
@@ -18,4 +18,4 @@ namespace VolunteerTracker.Blazor.Components.Shared
             Id ??= Guid.NewGuid().ToString().Replace("-", "");
         }
     }
-}
+} 

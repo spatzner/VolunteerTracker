@@ -1,0 +1,25 @@
+﻿@inherits BunitTestContext
+@using VolunteerTracker.Blazor.Components.Shared.Element
+@using VolunteerTracker.Tests.Common
+@attribute [TestClass]
+
+
+@code {
+
+    [TestMethod]
+    [TestCategory(TestType.Unit)]
+    public void VTBorderRendersChildContent()
+    {
+        // Act
+        var cut = Render(@<VTBorder Label="TLabel">
+            <h3>VTBorder Test</h3>
+        </VTBorder>);
+
+        // Assert
+        cut.MarkupMatches(@<fieldset class="row rounded-3 border border p-2 my-2">
+            <legend class="text-muted">TLabel</legend>
+            <h3>VTBorder Test</h3>
+        </fieldset>);
+    }
+
+}
