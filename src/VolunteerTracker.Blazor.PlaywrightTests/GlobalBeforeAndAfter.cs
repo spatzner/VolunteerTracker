@@ -51,6 +51,8 @@ namespace VolunteerTracker.Blazor.PlaywrightTests
             using var context = ContextFactory.CreateDbContext();
 
             context.Persons.RemoveRange(context.Persons.Where(p => p.FirstName == "Cheddar"));
+            context.Persons.RemoveRange(context.Persons.Where(p => p.LastName == "VanCheddar"));
+            context.Persons.RemoveRange(context.Persons.Where(p => p.LastName == "VonCheddar"));
 
             context.Persons.Add(new Person
             {
@@ -89,7 +91,8 @@ namespace VolunteerTracker.Blazor.PlaywrightTests
             using var context = ContextFactory.CreateDbContext();
 
             context.Persons.RemoveRange(context.Persons.Where(p => p.FirstName == "Cheddar"));
-            context.Persons.RemoveRange(context.Persons.Where(p => p.LastName == "VonCheddar"));
+            context.Persons.RemoveRange(context.Persons.Where(p => p.LastName == "VanCheddar"));
+            context.Persons.RemoveRange(context.Persons.Where(p => p.LastName == "VanCheddar"));
 
             context.SaveChanges();
         }

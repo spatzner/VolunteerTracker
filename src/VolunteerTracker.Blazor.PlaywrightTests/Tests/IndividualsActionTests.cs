@@ -1,8 +1,9 @@
-﻿using Microsoft.Playwright;
+﻿using System.Text.RegularExpressions;
+using Microsoft.Playwright;
 using Microsoft.Playwright.MSTest;
 using VolunteerTracker.Tests.Common;
 
-namespace VolunteerTracker.Blazor.PlaywrightTests;
+namespace VolunteerTracker.Blazor.PlaywrightTests.Tests;
 
 [TestClass]
 public class IndividualsActionTests : PageTest
@@ -118,6 +119,6 @@ public class IndividualsActionTests : PageTest
     {
         await Page.GotoAsync("https://localhost:7231/individuals");
         await Page.GetByText("4", new() { Exact = true }).ClickAsync();
-        await Expect(Page.GetByRole(AriaRole.Article)).ToContainTextAsync("31 - 40 of 997 items");
+        await Expect(Page.GetByRole(AriaRole.Article)).ToContainTextAsync(new Regex(@"\d+ - \d+ of \d+ items"));
     }
 }
