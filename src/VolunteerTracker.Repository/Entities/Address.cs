@@ -38,8 +38,8 @@ public class Address
     [MaxLength(10)]
     public string Zip { get; set; }
 
-    [ForeignKey("PersonId")]
-    public virtual Person? Person { get; set; }
+    [ForeignKey("IndividualId")]
+    public virtual Individual? Individual { get; set; }
 
     [ForeignKey("OrganizationId")]
     public virtual Organization? Organization { get; set; }

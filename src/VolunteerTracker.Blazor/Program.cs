@@ -62,7 +62,7 @@ builder
 builder.Services.AddBlazorBootstrap();
 
 builder.Services.AddSingleton<IEmailSender<ApplicationUser>, EmailSender>();
-builder.Services.AddTransient<PersonsDataProvider>();
+builder.Services.AddTransient<IndividualsDataProvider>();
 builder.Services.AddTransient<IndividualDataProvider>();
 builder.Services.AddTransient<PhoneNumberFormatter>();
 

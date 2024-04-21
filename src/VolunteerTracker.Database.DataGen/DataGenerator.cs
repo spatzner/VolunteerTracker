@@ -16,16 +16,16 @@ namespace VolunteerTracker.Database.DataGen
 
         public async Task GenerateDataToDatabase()
         {
-            List<Person> persons = [.. new PersonFaker().Generate(1000)];
-            _volunteerContext.Persons.AddRange(persons);
+            List<Individual> individuals = [.. new IndividualFaker().Generate(1000)];
+            _volunteerContext.Individuals.AddRange(individuals);
 
             await _volunteerContext.SaveChangesAsync();
         }
     }
 
-    public sealed class PersonFaker : Faker<Person>
+    public sealed class IndividualFaker : Faker<Individual>
     {
-        public PersonFaker()
+        public IndividualFaker()
         {
             AddressFaker addressFaker = new AddressFaker();
             PhoneFaker phoneFaker = new PhoneFaker();

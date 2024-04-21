@@ -7,6 +7,26 @@ using VolunteerTracker.Repository.Attributes;
 
 namespace VolunteerTracker.Repository.Entities;
 
+public class Individual : Person
+{
+    
+    [ValidateComplexType]
+    public virtual Address? Address { get; set; }
+
+    public new static Individual Create()
+    {
+        return new Individual
+        {
+            FirstName = string.Empty,
+            LastName = string.Empty,
+            Address = new Address(),
+            Phones = [],
+            Emails = []
+        };
+    }
+}
+
+
 [Table("Persons", Schema = "Entities")]
 public class Person
 {
@@ -41,9 +61,6 @@ public class Person
     public string? Notes { get; set; }
 
     [ValidateComplexType]
-    public virtual Address? Address { get; set; }
-
-    [ValidateComplexType]
     [ExactlyOneMember<Phone>(nameof(Phone.IsPrimary), true, AllowEmpty = true)]
     public virtual ICollection<Phone> Phones { get; set; }
 
@@ -59,9 +76,8 @@ public class Person
         {
             FirstName = string.Empty,
             LastName = string.Empty,
-            Address = new Address(),
-            Phones = new List<Phone>(),
-            Emails = new List<Email>()
+            Phones = [],
+            Emails = []
         };
     }
 }

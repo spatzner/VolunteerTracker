@@ -1,0 +1,57 @@
+﻿@using Microsoft.AspNetCore.Components.Forms
+@using VolunteerTracker.Blazor.Components.Shared.Element
+@using VolunteerTracker.Blazor.Components.Shared.Composite
+
+<div class="container">
+    @if (EditContext == null)
+    {
+        <VTLoading />
+    }
+    else
+    {
+        <EditForm EditContext="@EditContext" OnValidSubmit="OnValidSubmit" FormName="Individual">
+
+            <CascadingValue Value="@EditContext"></CascadingValue>
+            <AntiforgeryToken />
+            <ObjectGraphDataAnnotationsValidator />
+            <div class="row">
+                <VTTextBox Label="Title" ContainerClass="col-md-4 col-lg-1 pe-lg-1" @bind-Value="_individual.Title"></VTTextBox>
+                <VTTextBox Label="First Name" ContainerClass="col-md-12 col-lg-2 ps-lg-1 pe-lg-1" @bind-Value="_individual.FirstName"></VTTextBox>
+                <VTTextBox Label="Middle Name" ContainerClass="col-md-12 col-lg-2 ps-lg-1 pe-lg-1 " @bind-Value="_individual.MiddleName"></VTTextBox>
+                <VTTextBox Label="Last Name" ContainerClass="col-md-12 col-lg-2 ps-lg-1 pe-lg-1" @bind-Value="_individual.LastName"></VTTextBox>
+                <VTTextBox Label="Suffix" ContainerClass="col-md-4 col-lg-1 ps-lg-1" @bind-Value="_individual.Suffix"></VTTextBox>
+                <div class="col-lg-4"></div>
+                <ValidationMessage For="@(() => _individual.Title)" />
+                <ValidationMessage For="@(() => _individual.FirstName)" />
+                <ValidationMessage For="@(() => _individual.MiddleName)" />
+                <ValidationMessage For="@(() => _individual.LastName)" />
+                <ValidationMessage For="@(() => _individual.Suffix)" />
+            </div>
+
+            <div class="row">
+                <div class="col-lg-5 col-md-12 p-3">
+                    <VTAddressEdit @bind-Address="_individual.Address"></VTAddressEdit>
+                </div>
+                <div class="col-lg-7 col-md-12 p-3">
+                    <VTPhoneEdit @bind-List="_individual.Phones"></VTPhoneEdit>
+                    <ValidationMessage For="@(() => _individual.Phones)" />
+                    <VTEmailEdit @bind-List="_individual.Emails"></VTEmailEdit>
+                    <ValidationMessage For="@(() => _individual.Emails)" />
+                </div>
+            </div>
+            <div class="row">
+                <VTTextArea Label="Notes" @bind-Value="_individual.Notes"></VTTextArea>
+                <ValidationMessage For="@(() => _individual.Notes)" />
+            </div>
+
+            <div class="row py-3">
+                <div class="col-md-2 col-lg-1">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+                <div class="col-md-2 col-lg-1">
+                    <button type="button" class="btn btn-light" @onclick="Close">Close</button>
+                </div>
+            </div>
+        </EditForm>
+    }
+</div>

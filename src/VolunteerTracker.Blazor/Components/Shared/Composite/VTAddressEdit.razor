@@ -105,7 +105,7 @@
 
     private void Validate(string propertyName)
     {
-        var fullPropertyName = $"{nameof(Person.Address)}.{propertyName}";
+        var fullPropertyName = $"{nameof(Individual.Address)}.{propertyName}";
         var fieldIdentifier = new FieldIdentifier(EditContext.Model, fullPropertyName);
 
         EditContext.NotifyFieldChanged(fieldIdentifier);

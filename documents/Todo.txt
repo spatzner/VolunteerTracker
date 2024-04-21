@@ -1,8 +1,6 @@
 Todo
 
-Address TODO test in Individuals page
 break tests up between opening modals and executing on them
-bunit / playwright
 match primary color btn-primary, grid selected page, etc to sidebar blue
 implement cancellation tokens
 

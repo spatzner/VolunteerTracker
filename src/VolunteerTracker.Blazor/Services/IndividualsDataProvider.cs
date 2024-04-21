@@ -6,11 +6,11 @@ using VolunteerTracker.Repository;
 
 namespace VolunteerTracker.Blazor.Services
 {
-    public class PersonsDataProvider(VolunteerContext volunteerContext)
+    public class IndividualsDataProvider(VolunteerContext volunteerContext)
     {
-        public async Task<GridDataProviderResult<Person>> Provide(GridDataProviderRequest<Person> request)
+        public async Task<GridDataProviderResult<Individual>> Provide(GridDataProviderRequest<Individual> request)
         {
-            IQueryable<Person> query = volunteerContext.Persons;
+            IQueryable<Individual> query = volunteerContext.Individuals;
 
             query = request.Filters.Aggregate(query, (current, requestFilter) => current.BootstrapFilterEF(requestFilter));
 
@@ -25,7 +25,7 @@ namespace VolunteerTracker.Blazor.Services
 
             query = query.BootstrapPaginateEF(request.PageSize, request.PageNumber);
 
-            return new GridDataProviderResult<Person>
+            return new GridDataProviderResult<Individual>
             {
                 TotalCount = countQuery.AsNoTracking().Count(), 
                 Data = await query.AsNoTracking().ToListAsync()

@@ -19,7 +19,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{82DED676
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VolunteerTracker.Tests.Common", "Tests\VolunteerTracker.Tests.Common\VolunteerTracker.Tests.Common.csproj", "{FF166168-B755-44FD-A092-CD123C63D9FD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VolunteerTracker.Blazor.BUnit", "Tests\VolunteerTracker.Blazor.BUnit\VolunteerTracker.Blazor.BUnit.csproj", "{CB7D9E10-8C6C-4E74-A206-05B5CA4CA473}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VolunteerTracker.Blazor.BUnit", "Tests\VolunteerTracker.Blazor.BUnit\VolunteerTracker.Blazor.BUnit.csproj", "{CB7D9E10-8C6C-4E74-A206-05B5CA4CA473}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -13,6 +13,7 @@ public class VolunteerContext(DbContextOptions<VolunteerContext> options) : DbCo
 {
     // Entities
     public DbSet<Person> Persons { get; set; }
+    public DbSet<Individual> Individuals { get; set; }
     public DbSet<Organization> Organizations { get; set; }
     public DbSet<Address> Addresses { get; set; }
     public DbSet<Phone> Phones { get; set; }
@@ -36,7 +37,7 @@ public class VolunteerContext(DbContextOptions<VolunteerContext> options) : DbCo
     {
         base.OnModelCreating(modelBuilder);
 
-        modelBuilder.Entity<Person>().HasOne(p => p.Address).WithOne(a => a.Person).OnDelete(DeleteBehavior.Cascade);
+        modelBuilder.Entity<Individual>().HasOne(p => p.Address).WithOne(a => a.Individual).OnDelete(DeleteBehavior.Cascade);
 
 
     }

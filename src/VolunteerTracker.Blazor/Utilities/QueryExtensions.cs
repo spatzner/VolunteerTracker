@@ -169,7 +169,7 @@ public static class QueryExtensions
         };
     }
 
-    public static IQueryable<Person> BootstrapPaginateEF(this IQueryable<Person> query, int pageSize, int pageNumber)
+    public static IQueryable<T> BootstrapPaginateEF<T>(this IQueryable<T> query, int pageSize, int pageNumber)
     {
         return query.Skip((pageNumber - 1) * pageSize).Take(pageSize);
     }

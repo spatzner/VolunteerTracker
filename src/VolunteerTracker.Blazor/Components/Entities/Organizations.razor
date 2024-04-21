@@ -1,0 +1,25 @@
+﻿@page "/Entities/Organizations"
+@using VolunteerTracker.Blazor.Services
+
+@inject IndividualDataProvider IndividualDataProvider
+
+@* <h3 class="mt-2">
+    Organizations
+    <VTButtonAddSimple ContainerClass="ms-2 mb-2 flex d-inline" @onclick="async () => await EditModal(null)">    </VTButtonAddSimple>
+</h3>
+
+<Modal @ref="_editModal" Size="ModalSize.ExtraLarge">
+</Modal>
+
+@code {
+
+    private Modal _editModal = null!;
+
+    private async Task EditModal(Guid? id)
+    {
+        var onCloseCallback = new EventCallback(this, (Func<Task>)CloseModal);
+        var parameters = new Dictionary<string, object> { { "IndividualGuid", id! }, { "OnClose", onCloseCallback } };
+        await _editModal.ShowAsync<IndividualEdit>(title: "Individual Details", parameters: parameters);
+    }
+}
+ *@

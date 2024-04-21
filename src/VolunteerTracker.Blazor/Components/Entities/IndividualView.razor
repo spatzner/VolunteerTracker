@@ -1,9 +1,9 @@
 ﻿@using VolunteerTracker.Repository.Entities
 @using VolunteerTracker.Common
 
-@if (Person == null)
+@if (Individual == null)
 {
-    <div class="alert alert-danger">Person not found</div>
+    <div class="alert alert-danger">Individual not found</div>
 }
 else
 {
@@ -12,24 +12,24 @@ else
             <div class="col-lg-3">
                 <fieldset>
                     <legend>Name</legend>
-                    <div>@FormatFullName(Person)</div>
+                    <div>@FormatFullName(Individual)</div>
                 </fieldset>
             </div>
             <div class="col-lg-3">
                 <fieldset>
                     <legend>Address</legend>
-                    <div>@Person.Address.Line1</div>
-                    @if (!string.IsNullOrWhiteSpace(Person.Address.Line2))
+                    <div>@Individual.Address.Line1</div>
+                    @if (!string.IsNullOrWhiteSpace(Individual.Address.Line2))
                     {
-                        <div>@Person.Address.Line2</div>
+                        <div>@Individual.Address.Line2</div>
                     }
-                    <div>@Person.Address.City, @Person.Address.State @Person.Address.Zip</div>
+                    <div>@Individual.Address.City, @Individual.Address.State @Individual.Address.Zip</div>
                 </fieldset>
             </div>
             <div class="col-lg-3">
                 <fieldset>
                     <legend>Email</legend>
-                    @foreach (var email in Person.Emails.OrderByDescending(e => e.IsPrimary))
+                    @foreach (var email in Individual.Emails.OrderByDescending(e => e.IsPrimary))
                     {
                         <div>@($"{email.Type}: {email.Address} {(email.IsPrimary ? "[Main]" : string.Empty)}")</div>
                     }
@@ -38,7 +38,7 @@ else
             <div class="col-lg-3">
                 <fieldset>
                     <legend>Phone</legend>
-                    @foreach (var phone in Person.Phones.OrderByDescending(e => e.IsPrimary))
+                    @foreach (var phone in Individual.Phones.OrderByDescending(e => e.IsPrimary))
                     {
                         <div>@($"{phone.Type}: {PhoneNumberFormatter.Format(phone.Number)} {(phone.IsPrimary ? "[Main]" : string.Empty)}")</div>
                     }
@@ -54,7 +54,7 @@ else
     public PhoneNumberFormatter PhoneNumberFormatter { get; set; } = null!;
 
     [Parameter]
-    public required Person Person { get; set; }
+    public required Individual Individual { get; set; }
 
     [Parameter]
     public EventCallback OnClose { get; set; }

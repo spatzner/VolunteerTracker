@@ -1,4 +1,4 @@
-﻿@page "/individuals"
+﻿@page "/Entities/Individuals"
 
 @using VolunteerTracker.Blazor.Services
 @using VolunteerTracker.Blazor.Components.Shared.Element;
@@ -10,29 +10,29 @@
 
 <h3 class="mt-2">Individuals <VTButtonAddSimple ContainerClass="ms-2 mb-2 flex d-inline" @onclick="async () => await EditModal(null)"></VTButtonAddSimple></h3>
 
-<Grid @ref="_dataGrid" TItem="IndividualModel"
+<Grid @ref="_dataGrid" TItem="IndividualGridModel"
       Class="table table-hover table-bordered table-striped"
       DataProvider="IndividualProvider"
       AllowFiltering="true"
       AllowPaging="true"
       FiltersRowCssClass="btn-hidden">
-    <GridColumn TItem="IndividualModel" HeaderText="Actions" Filterable="false" TextNoWrap="true">
+    <GridColumn TItem="IndividualGridModel" HeaderText="Actions" Filterable="false" TextNoWrap="true">
         <VTButtonViewSimple ContainerClass="d-inline" OnClick="async () => await ViewModal(context.Id)"></VTButtonViewSimple>
         <VTButtonEditSimple ContainerClass="d-inline" OnClick="async () => await EditModal(context.Id)"></VTButtonEditSimple>
     </GridColumn>
-    <GridColumn TItem="IndividualModel" PropertyName="@nameof(IndividualModel.LastName)" HeaderText="Last Name" FilterOperator="FilterOperator.StartsWith" >
+    <GridColumn TItem="IndividualGridModel" PropertyName="@nameof(IndividualGridModel.LastName)" HeaderText="Last Name" FilterOperator="FilterOperator.StartsWith" >
         <b>@context.LastName</b>
     </GridColumn>
-    <GridColumn TItem="IndividualModel" PropertyName="@nameof(IndividualModel.FirstName)" HeaderText="First Name" FilterOperator="FilterOperator.StartsWith">
+    <GridColumn TItem="IndividualGridModel" PropertyName="@nameof(IndividualGridModel.FirstName)" HeaderText="First Name" FilterOperator="FilterOperator.StartsWith">
         <b>@context.FirstName</b>
     </GridColumn>
-    <GridColumn TItem="IndividualModel" PropertyName="@nameof(IndividualModel.Location)" HeaderText="Location" Filterable="false">
-        @FormatAddress(context.Person.Address)
+    <GridColumn TItem="IndividualGridModel" PropertyName="@nameof(IndividualGridModel.Location)" HeaderText="Location" Filterable="false">
+        @FormatAddress(context.Individual.Address)
     </GridColumn>
-    <GridColumn TItem="IndividualModel" PropertyName="@nameof(IndividualModel.Phone)" HeaderText="Phone" FilterOperator="FilterOperator.StartsWith">
+    <GridColumn TItem="IndividualGridModel" PropertyName="@nameof(IndividualGridModel.Phone)" HeaderText="Phone" FilterOperator="FilterOperator.StartsWith">
         @PhoneNumberFormatter.Format(context.Phone)
     </GridColumn>
-    <GridColumn TItem="IndividualModel" PropertyName="@nameof(IndividualModel.Email)" HeaderText="Email" FilterOperator="FilterOperator.StartsWith">
+    <GridColumn TItem="IndividualGridModel" PropertyName="@nameof(IndividualGridModel.Email)" HeaderText="Email" FilterOperator="FilterOperator.StartsWith">
         @context.Email
     </GridColumn>
 </Grid>
@@ -50,14 +50,14 @@
 
 
 
-    private List<IndividualModel> _models = null!;
+    private List<IndividualGridModel> _models = null!;
     private Modal _editModal = null!;
-    private Grid<IndividualModel> _dataGrid = null!;
+    private Grid<IndividualGridModel> _dataGrid = null!;
 
     private async Task EditModal(Guid? id)
     {
         var onCloseCallback = new EventCallback(this, (Func<Task>)CloseModal);
-        var parameters = new Dictionary<string, object> { { "PersonGuid", id! }, { "OnClose", onCloseCallback } };
+        var parameters = new Dictionary<string, object> { { "IndividualGuid", id! }, { "OnClose", onCloseCallback } };
         await _editModal.ShowAsync<IndividualEdit>(title: "Individual Details", parameters: parameters);
     }
 
@@ -66,7 +66,7 @@
         var onCloseCallback = new EventCallback(this, (Func<Task>)CloseModal);
         var parameters = new Dictionary<string, object?>
         {
-            { "Person", _models.Where(m => m.Person.Id == id).Select(m => m.Person).FirstOrDefault() },
+            { "Individual", _models.Where(m => m.Individual.Id == id).Select(m => m.Individual).FirstOrDefault() },
             { "OnClose", onCloseCallback }
         };
         await _editModal.ShowAsync<IndividualView>(title: "Individual Details", parameters: parameters);
@@ -78,7 +78,7 @@
         await _dataGrid.RefreshDataAsync();
     }
 
-    private async Task<GridDataProviderResult<IndividualModel>> IndividualProvider(GridDataProviderRequest<IndividualModel> request)
+    private async Task<GridDataProviderResult<IndividualGridModel>> IndividualProvider(GridDataProviderRequest<IndividualGridModel> request)
     {
         var data = await IndividualDataProvider.Provide(request);
         _models = data.Data?.ToList() ?? [];
