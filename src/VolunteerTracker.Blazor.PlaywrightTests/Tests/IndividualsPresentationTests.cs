@@ -13,7 +13,7 @@ public class IndividualsPresentationTests : PageTest
     [TestCategory(TestType.Integration)]
     public async Task IndividualsTableHasHeadersVisible()
     {
-        await Page.GotoAsync("https://localhost:7231/individuals");
+        await Page.GotoAsync(BlazorEndpoints.Individuals);
         await Expect(Page.GetByRole(AriaRole.Cell, new() { Name = "Actions" })).ToBeVisibleAsync();
         await Expect(Page.GetByRole(AriaRole.Cell, new() { Name = "Last Name" })).ToBeVisibleAsync();
         await Expect(Page.GetByRole(AriaRole.Cell, new() { Name = "First Name" })).ToBeVisibleAsync();
@@ -26,7 +26,7 @@ public class IndividualsPresentationTests : PageTest
     [TestCategory(TestType.Integration)]
     public async Task IndividualsTableHasFilters()
     {
-        await Page.GotoAsync("https://localhost:7231/individuals");
+        await Page.GotoAsync(BlazorEndpoints.Individuals);
         await Expect(Page.GetByRole(AriaRole.Textbox).First).ToBeVisibleAsync();
         await Expect(Page.GetByRole(AriaRole.Textbox).Nth(1)).ToBeVisibleAsync();
         await Expect(Page.GetByRole(AriaRole.Textbox).Nth(2)).ToBeVisibleAsync();
@@ -37,7 +37,7 @@ public class IndividualsPresentationTests : PageTest
     [TestCategory(TestType.Integration)]
     public async Task IndividualsTableHasRowButtons()
     {
-        await Page.GotoAsync("https://localhost:7231/individuals");
+        await Page.GotoAsync(BlazorEndpoints.Individuals);
         await Expect(Page.Locator("tbody tr:nth-child(1) td:nth-child(1)").GetByRole(AriaRole.Button).Nth(0)).ToBeVisibleAsync();
         await Expect(Page.Locator("tbody tr:nth-child(1) td:nth-child(1)").GetByRole(AriaRole.Button).Nth(1)).ToBeVisibleAsync();
     }
@@ -47,7 +47,7 @@ public class IndividualsPresentationTests : PageTest
     [TestCategory(TestType.Integration)]
     public async Task IndividualsTableHasDataOnLoad()
     {
-        await Page.GotoAsync("https://localhost:7231/individuals");
+        await Page.GotoAsync(BlazorEndpoints.Individuals);
         await Expect(Page.Locator("tbody tr:nth-child(1) td:nth-child(2)")).ToContainTextAsync("Abbott");
         await Expect(Page.Locator("tbody tr:nth-child(1) td:nth-child(3)")).ToContainTextAsync("Kiarra");
         await Expect(Page.Locator("tbody tr:nth-child(1) td:nth-child(4)")).ToContainTextAsync("19889 Mattie FieldsJansville, Colorado, 52244");
@@ -59,7 +59,7 @@ public class IndividualsPresentationTests : PageTest
     [TestCategory(TestType.Integration)]
     public async Task IndividualsLoadTenRows()
     {
-        await Page.GotoAsync("https://localhost:7231/individuals");
+        await Page.GotoAsync(BlazorEndpoints.Individuals);
         await Expect(Page.Locator("tbody tr:nth-child(1)")).ToBeVisibleAsync();
         await Expect(Page.Locator("tbody tr:nth-child(2)")).ToBeVisibleAsync();
         await Expect(Page.Locator("tbody tr:nth-child(3)")).ToBeVisibleAsync();
@@ -78,13 +78,7 @@ public class IndividualsPresentationTests : PageTest
     [TestCategory(TestType.Integration)]
     public async Task IndividualsTableHasPagination()
     {
-        await Page.GotoAsync("https://localhost:7231/individuals");
+        await Page.GotoAsync(BlazorEndpoints.Individuals);
         await Expect(Page.GetByRole(AriaRole.Button, new() { Name = "2 3 4 5" })).ToBeVisibleAsync();
     }
 }
-
-//TODO: View shows all data
-
-//TODO: Can Edit Each field, including add / delete child entities
-//TODO: Required fields are enforced
-

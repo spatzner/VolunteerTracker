@@ -12,7 +12,7 @@ public class IndividualsActionTests : PageTest
     [TestCategory(TestType.Integration)]
     public async Task SearchByLastNameIsBeginsWith()
     {
-        await Page.GotoAsync("https://localhost:7231/individuals");
+        await Page.GotoAsync(BlazorEndpoints.Individuals);
         await Page.GetByRole(AriaRole.Textbox).First.ClickAsync();
         await Page.GetByRole(AriaRole.Textbox).First.FillAsync("bart");
 
@@ -25,7 +25,7 @@ public class IndividualsActionTests : PageTest
     [TestCategory(TestType.Integration)]
     public async Task SearchByFirstNameIsBeginsWith()
     {
-        await Page.GotoAsync("https://localhost:7231/individuals");
+        await Page.GotoAsync(BlazorEndpoints.Individuals);
         await Page.GetByRole(AriaRole.Textbox).Nth(1).ClickAsync();
         await Page.GetByRole(AriaRole.Textbox).Nth(1).FillAsync("gl");
 
@@ -38,7 +38,7 @@ public class IndividualsActionTests : PageTest
     [TestCategory(TestType.Integration)]
     public async Task SearchByPhoneNumberIsBeginsWithAndSearchesSecondaryNumbersToo()
     {
-        await Page.GotoAsync("https://localhost:7231/individuals");
+        await Page.GotoAsync(BlazorEndpoints.Individuals);
         await Page.GetByRole(AriaRole.Textbox).Nth(2).ClickAsync();
         await Page.GetByRole(AriaRole.Textbox).Nth(2).FillAsync("350");
 
@@ -52,7 +52,7 @@ public class IndividualsActionTests : PageTest
     [TestCategory(TestType.Integration)]
     public async Task SearchByEmailIsBeginsWithAndSearchesSecondaryEmailsToo()
     {
-        await Page.GotoAsync("https://localhost:7231/individuals");
+        await Page.GotoAsync(BlazorEndpoints.Individuals);
         await Page.GetByRole(AriaRole.Textbox).Nth(3).ClickAsync();
         await Page.GetByRole(AriaRole.Textbox).Nth(3).FillAsync("marci");
 
@@ -65,7 +65,7 @@ public class IndividualsActionTests : PageTest
     [TestCategory(TestType.Integration)]
     public async Task LastPageButtonGoesToLastPage()
     {
-        await Page.GotoAsync("https://localhost:7231/individuals");
+        await Page.GotoAsync(BlazorEndpoints.Individuals);
         await Page.Locator("nav > ul > li:nth-child(10) > .page-link").ClickAsync();
         await Expect(Page.Locator("tbody")).ToContainTextAsync("Zulauf");
         await Expect(Page.GetByLabel("Pagination links").GetByRole(AriaRole.Button)).ToContainTextAsync("100");
@@ -75,7 +75,7 @@ public class IndividualsActionTests : PageTest
     [TestCategory(TestType.Integration)]
     public async Task FirstPageButtonGoesToFirstPage()
     {
-        await Page.GotoAsync("https://localhost:7231/individuals");
+        await Page.GotoAsync(BlazorEndpoints.Individuals);
         await Page.Locator("nav > ul > li:nth-child(10) > .page-link").ClickAsync();
         await Page.Locator(".page-link").First.ClickAsync();
         await Expect(Page.GetByLabel("Pagination links").GetByRole(AriaRole.Button)).ToContainTextAsync("1");
@@ -86,7 +86,7 @@ public class IndividualsActionTests : PageTest
     [TestCategory(TestType.Integration)]
     public async Task NextPageButtonGoesToNextPage()
     {
-        await Page.GotoAsync("https://localhost:7231/individuals");
+        await Page.GotoAsync(BlazorEndpoints.Individuals);
         await Page.Locator("li:nth-child(9) > .page-link").ClickAsync();
         await Expect(Page.Locator("tbody")).ToContainTextAsync("Aufderhar");
         await Expect(Page.GetByLabel("Pagination links").GetByRole(AriaRole.Button)).ToContainTextAsync("2");
@@ -96,7 +96,7 @@ public class IndividualsActionTests : PageTest
     [TestCategory(TestType.Integration)]
     public async Task PreviousPageButtonGoesToPreviousPage()
     {
-        await Page.GotoAsync("https://localhost:7231/individuals");
+        await Page.GotoAsync(BlazorEndpoints.Individuals);
         await Page.GetByText("3", new() { Exact = true }).ClickAsync();
         await Page.Locator("li:nth-child(2) > .page-link").ClickAsync();
         await Expect(Page.Locator("tbody")).ToContainTextAsync("Aufderhar");
@@ -107,7 +107,7 @@ public class IndividualsActionTests : PageTest
     [TestCategory(TestType.Integration)]
     public async Task ClickingPageNumberTakesYouToThatPage()
     {
-        await Page.GotoAsync("https://localhost:7231/individuals");
+        await Page.GotoAsync(BlazorEndpoints.Individuals);
         await Page.GetByText("4", new() { Exact = true }).ClickAsync();
         await Expect(Page.Locator("tbody")).ToContainTextAsync("Barton");
         await Expect(Page.GetByLabel("Pagination links").GetByRole(AriaRole.Button)).ToContainTextAsync("4");
@@ -117,7 +117,7 @@ public class IndividualsActionTests : PageTest
     [TestCategory(TestType.Integration)]
     public async Task PagingShowCurrentRecordsOutOfTotal()
     {
-        await Page.GotoAsync("https://localhost:7231/individuals");
+        await Page.GotoAsync(BlazorEndpoints.Individuals);
         await Page.GetByText("4", new() { Exact = true }).ClickAsync();
         await Expect(Page.GetByRole(AriaRole.Article)).ToContainTextAsync(new Regex(@"\d+ - \d+ of \d+ items"));
     }

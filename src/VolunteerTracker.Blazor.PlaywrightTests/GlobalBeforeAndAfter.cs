@@ -29,10 +29,12 @@ namespace VolunteerTracker.Blazor.PlaywrightTests
                 })
                .ConfigureServices((hostContext, services) =>
                 {
-
+                    var blazorEndpointSettings = new BlazorEndpointsSettings();
                     var databaseSettings = new VolunteerDatabaseSettings();
                     hostContext.Configuration.GetSection("VolunteerDatabaseSettings").Bind(databaseSettings);
-
+                    hostContext.Configuration.GetSection("BlazorEndpoints").Bind(blazorEndpointSettings);
+                    BlazorEndpoints.SetSettings(blazorEndpointSettings);
+                    
                     services.AddDbContextFactory<VolunteerContext>(options =>
                     {
                         options.UseNpgsql(databaseSettings.ConnectionString);
@@ -50,11 +52,11 @@ namespace VolunteerTracker.Blazor.PlaywrightTests
         {
             using var context = ContextFactory.CreateDbContext();
 
-            context.Persons.RemoveRange(context.Persons.Where(p => p.FirstName == "Cheddar"));
-            context.Persons.RemoveRange(context.Persons.Where(p => p.LastName == "VanCheddar"));
-            context.Persons.RemoveRange(context.Persons.Where(p => p.LastName == "VonCheddar"));
+            context.Individuals.RemoveRange(context.Individuals.Where(p => p.FirstName == "Cheddar"));
+            context.Individuals.RemoveRange(context.Individuals.Where(p => p.LastName == "VanCheddar"));
+            context.Individuals.RemoveRange(context.Individuals.Where(p => p.LastName == "VonCheddar"));
 
-            context.Persons.Add(new Person
+            context.Individuals.Add(new Individual
             {
                 Title = "Miss",
                 FirstName = "Janice",
@@ -90,9 +92,9 @@ namespace VolunteerTracker.Blazor.PlaywrightTests
         {
             using var context = ContextFactory.CreateDbContext();
 
-            context.Persons.RemoveRange(context.Persons.Where(p => p.FirstName == "Cheddar"));
-            context.Persons.RemoveRange(context.Persons.Where(p => p.LastName == "VanCheddar"));
-            context.Persons.RemoveRange(context.Persons.Where(p => p.LastName == "VanCheddar"));
+            context.Individuals.RemoveRange(context.Individuals.Where(p => p.FirstName == "Cheddar"));
+            context.Individuals.RemoveRange(context.Individuals.Where(p => p.LastName == "VanCheddar"));
+            context.Individuals.RemoveRange(context.Individuals.Where(p => p.LastName == "VanCheddar"));
 
             context.SaveChanges();
         }

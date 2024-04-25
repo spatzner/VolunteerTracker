@@ -1,5 +1,10 @@
 Todo
 
+Individuals Playwright
+	View shows all data
+	Can Edit Each field, including add / delete child entities
+	Required fields are enforced
+
 break tests up between opening modals and executing on them
 match primary color btn-primary, grid selected page, etc to sidebar blue
 implement cancellation tokens
