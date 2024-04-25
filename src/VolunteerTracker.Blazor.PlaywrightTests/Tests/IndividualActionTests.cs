@@ -4,6 +4,8 @@ using VolunteerTracker.Tests.Common;
 
 namespace VolunteerTracker.Blazor.PlaywrightTests.Tests;
 
+#pragma warning disable CA1861
+
 [TestClass]
 public class IndividualActionTests : PageTest
 {

@@ -1,6 +1,5 @@
 ﻿using Microsoft.Playwright;
 using Microsoft.Playwright.MSTest;
-using Microsoft.VisualStudio.TestPlatform.ObjectModel.DataCollection;
 using VolunteerTracker.Tests.Common;
 
 namespace VolunteerTracker.Blazor.PlaywrightTests.Tests;

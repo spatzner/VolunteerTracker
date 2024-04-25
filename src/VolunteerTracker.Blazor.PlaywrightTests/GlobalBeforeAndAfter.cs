@@ -48,7 +48,9 @@ namespace VolunteerTracker.Blazor.PlaywrightTests
         }
 
         [AssemblyInitialize()]
+#pragma warning disable IDE0060
         public static void MyTestInitialize(TestContext testContext)
+#pragma warning restore IDE0060
         {
             using var context = ContextFactory.CreateDbContext();
 

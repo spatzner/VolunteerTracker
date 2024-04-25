@@ -119,6 +119,7 @@ public class IndividualsActionTests : PageTest
     {
         await Page.GotoAsync(BlazorEndpoints.Individuals);
         await Page.GetByText("4", new() { Exact = true }).ClickAsync();
+#pragma warning disable SYSLIB1045
         await Expect(Page.GetByRole(AriaRole.Article)).ToContainTextAsync(new Regex(@"\d+ - \d+ of \d+ items"));
     }
 }
