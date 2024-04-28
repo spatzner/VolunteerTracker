@@ -26,10 +26,14 @@ public class Phone
     public string Number { get; set; }
 
     [ForeignKey("PersonId")]
-    [Required]
-    public Guid PersonId { get; set; }
+    public Guid? PersonId { get; set; }
     
-    public virtual Person Person { get; set; }
+    public virtual Person? Person { get; set; }
+
+    [ForeignKey("OrganizationId")]
+    public Guid? OrganizationId { get; set; }
+
+    public virtual Organization? Organization{ get; set; }
 
     public override string ToString() => $"{Type}: {Number}";
 }

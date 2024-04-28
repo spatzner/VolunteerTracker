@@ -19,17 +19,17 @@ public class IndividualDataProvider(VolunteerContext volunteerContext)
             switch (individualFilter.PropertyName)
             {
                 case nameof(IndividualGridModel.FirstName):
-                    query = query.Where(p => EF.Functions.ILike(p.FirstName, $"{individualFilter.Value}%"));
+                    query = query.Where(i => EF.Functions.ILike(i.FirstName, $"{individualFilter.Value}%"));
                     break;
                 case nameof(IndividualGridModel.LastName):
-                    query = query.Where(p => EF.Functions.ILike(p.LastName, $"{individualFilter.Value}%"));
+                    query = query.Where(i => EF.Functions.ILike(i.LastName, $"{individualFilter.Value}%"));
                     break;
                 case nameof(IndividualGridModel.Email):
-                    query = query.Where(p => p.Emails.Any(e => EF.Functions.ILike(e.Address, $"{individualFilter.Value}%")));
+                    query = query.Where(i => i.Emails.Any(e => EF.Functions.ILike(e.Address, $"{individualFilter.Value}%")));
                     break;
                 case nameof(IndividualGridModel.Phone):
                     string search = GeneratedRegex.NonPhoneCharacter().Replace(individualFilter.Value, string.Empty);
-                    query = query.Where(p => p.Phones.Any(ph => EF.Functions.ILike(ph.Number, $"{search}%")));
+                    query = query.Where(i => i.Phones.Any(ph => EF.Functions.ILike(ph.Number, $"{search}%")));
                     break;
             }
         }
@@ -38,7 +38,7 @@ public class IndividualDataProvider(VolunteerContext volunteerContext)
 
         query = query.OrderBy(p => p.LastName).ThenBy(p => p.FirstName);
 
-        query = query.BootstrapPaginateEF(request.PageSize, request.PageNumber);
+        query = query.Paginate(request.PageSize, request.PageNumber);
 
         return new GridDataProviderResult<IndividualGridModel>
         {

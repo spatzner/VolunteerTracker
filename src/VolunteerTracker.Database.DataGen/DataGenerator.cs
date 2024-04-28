@@ -5,21 +5,71 @@ using Person = VolunteerTracker.Repository.Entities.Person;
 
 namespace VolunteerTracker.Database.DataGen
 {
-    public class DataGenerator
+    public class DataGenerator(VolunteerContext volunteerContext)
     {
-        private readonly VolunteerContext _volunteerContext;
-
-        public DataGenerator(VolunteerContext volunteerContext)
-        {
-            _volunteerContext = volunteerContext;
-        }
-
         public async Task GenerateDataToDatabase()
         {
-            List<Individual> individuals = [.. new IndividualFaker().Generate(1000)];
-            _volunteerContext.Individuals.AddRange(individuals);
+            await GenerateIndividuals();
+            await GenerateOrganizations();
+        }
 
-            await _volunteerContext.SaveChangesAsync();
+        public async Task GenerateIndividuals()
+        {
+            List<Individual> individuals = [.. new IndividualFaker().Generate(1000)];
+            volunteerContext.Individuals.AddRange(individuals);
+
+            await volunteerContext.SaveChangesAsync();
+        }
+
+        public async Task GenerateOrganizations()
+        {
+            List<Organization> organizations = [.. new OrganizationFaker().Generate(1000)];
+            volunteerContext.Organizations.AddRange(organizations);
+
+            await volunteerContext.SaveChangesAsync();
+        }
+    }
+
+    public sealed class OrganizationFaker : Faker<Organization>
+    {
+        public OrganizationFaker()
+        {
+            AddressFaker addressFaker = new();
+            PhoneFaker phoneFaker = new();
+
+            RuleFor(o => o.Name, f => f.Company.CompanyName());
+            RuleFor(o => o.Address, f => addressFaker.Generate().OrNull(f, .05f));
+            RuleFor(o => o.MainPhone, f => phoneFaker.Generate(PhoneFaker.Primary).OrNull(f, .1f));
+            RuleFor(o => o.Contact, f => new PersonFaker().Generate().OrNull(f, .1f));
+        }
+    }
+
+    public sealed class PersonFaker : Faker<Person>
+    {
+        public PersonFaker()
+        {
+            PhoneFaker phoneFaker = new();
+
+            RuleFor(p => p.Title, f => f.Name.Prefix().OrNull(f, .8f));
+            RuleFor(p => p.FirstName, f => f.Name.FirstName());
+            RuleFor(p => p.MiddleName,
+                f =>
+                {
+                    var middle = f.Name.FirstName().OrNull(f, .7f);
+                    if (middle is not null)
+                        middle = Random.Shared.Next(0, 5) % 5 == 0 ? middle : middle[..1];
+                    return middle;
+                });
+            RuleFor(p => p.LastName, f => f.Name.LastName());
+            RuleFor(p => p.Suffix, f => f.Name.Suffix().OrNull(f, .95f));
+            RuleFor(p => p.Notes, f => f.Lorem.Sentence().OrNull(f, .8f));
+            RuleFor(p => p.Phones, _ => phoneFaker.Generate(1, PhoneFaker.Primary));
+            RuleFor(p => p.Emails,
+                (_, p) =>
+                {
+                    EmailFaker emailFaker = new EmailFaker(p);
+                    return emailFaker.Generate(1, PhoneFaker.Primary);
+                });
         }
     }
 

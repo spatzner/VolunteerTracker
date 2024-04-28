@@ -38,6 +38,9 @@ public class VolunteerContext(DbContextOptions<VolunteerContext> options) : DbCo
         base.OnModelCreating(modelBuilder);
 
         modelBuilder.Entity<Individual>().HasOne(p => p.Address).WithOne(a => a.Individual).OnDelete(DeleteBehavior.Cascade);
+        modelBuilder.Entity<Person>().HasMany(p => p.Phones).WithOne(a => a.Person).OnDelete(DeleteBehavior.Cascade);
+        modelBuilder.Entity<Organization>().HasOne(p => p.Address).WithOne(a => a.Organization).OnDelete(DeleteBehavior.Cascade);
+        modelBuilder.Entity<Organization>().HasOne(p => p.MainPhone).WithOne(a => a.Organization).OnDelete(DeleteBehavior.Cascade);
 
 
     }

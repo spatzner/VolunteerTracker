@@ -12,6 +12,4 @@ public class IndividualGridModel(Individual individual)
     public string? Email => individual.Emails.FirstOrDefault(x => x.IsPrimary)?.Address;
     
     public Individual Individual => individual;
-
-    public bool ShowDetails { get; set; }
 }

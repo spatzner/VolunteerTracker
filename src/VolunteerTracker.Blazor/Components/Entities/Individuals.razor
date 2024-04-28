@@ -3,10 +3,8 @@
 @using VolunteerTracker.Blazor.Services
 @using VolunteerTracker.Blazor.Components.Shared.Element;
 @using VolunteerTracker.Blazor.Models
+@using VolunteerTracker.Blazor.Utilities
 @using VolunteerTracker.Common
-@using VolunteerTracker.Repository.Entities
-
-@inject IndividualDataProvider IndividualDataProvider
 
 <h3 class="mt-2">Individuals <VTButtonAddSimple ContainerClass="ms-2 mb-2 flex d-inline" @onclick="async () => await EditModal(null)"></VTButtonAddSimple></h3>
 
@@ -27,7 +25,7 @@
         <b>@context.FirstName</b>
     </GridColumn>
     <GridColumn TItem="IndividualGridModel" PropertyName="@nameof(IndividualGridModel.Location)" HeaderText="Location" Filterable="false">
-        @FormatAddress(context.Individual.Address)
+        @AddressFormatter.Format(context.Individual.Address)
     </GridColumn>
     <GridColumn TItem="IndividualGridModel" PropertyName="@nameof(IndividualGridModel.Phone)" HeaderText="Phone" FilterOperator="FilterOperator.StartsWith">
         @PhoneNumberFormatter.Format(context.Phone)
@@ -41,6 +39,9 @@
 </Modal>
 
 @code {
+    
+    [Inject]
+    public IndividualDataProvider IndividualDataProvider { get; set; } = null!;
 
     [Inject]
     protected PreloadService PreloadService { get; set; } = null!;
@@ -48,7 +49,8 @@
     [Inject]
     public PhoneNumberFormatter PhoneNumberFormatter { get; set; } = null!;
 
-
+    [Inject]
+    public AddressFormatter AddressFormatter { get; set; } = null!;
 
     private List<IndividualGridModel> _models = null!;
     private Modal _editModal = null!;
@@ -58,7 +60,7 @@
     {
         var onCloseCallback = new EventCallback(this, (Func<Task>)CloseModal);
         var parameters = new Dictionary<string, object> { { "IndividualGuid", id! }, { "OnClose", onCloseCallback } };
-        await _editModal.ShowAsync<IndividualEdit>(title: "Individual Details", parameters: parameters);
+        await _editModal.ShowAsync<IndividualEdit>(title: "Edit Individual", parameters: parameters);
     }
 
     private async Task ViewModal(Guid id)
@@ -83,16 +85,5 @@
         var data = await IndividualDataProvider.Provide(request);
         _models = data.Data?.ToList() ?? [];
         return data;
-    }
-
-    private MarkupString FormatAddress(Address? address)
-    {
-        if (address == null)
-            return (MarkupString)string.Empty;
-
-        var address2 = string.IsNullOrWhiteSpace(address.Line2) ? string.Empty : $", {address.Line2}";
-
-        return (MarkupString)$"{address.Line1}{address2}<br />{address.City}, {address.State}, {address.Zip}";
-
     }
 }

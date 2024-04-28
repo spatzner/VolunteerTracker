@@ -1,25 +1,87 @@
 ﻿@page "/Entities/Organizations"
+@using VolunteerTracker.Blazor.Components.Shared.Element
 @using VolunteerTracker.Blazor.Services
+@using VolunteerTracker.Blazor.Models
+@using VolunteerTracker.Blazor.Utilities
+@using VolunteerTracker.Common
 
-@inject IndividualDataProvider IndividualDataProvider
-
-@* <h3 class="mt-2">
+<h3 class="mt-2">
     Organizations
-    <VTButtonAddSimple ContainerClass="ms-2 mb-2 flex d-inline" @onclick="async () => await EditModal(null)">    </VTButtonAddSimple>
+    <VTButtonAddSimple ContainerClass="ms-2 mb-2 flex d-inline" @onclick="async () => await EditModal(null)"></VTButtonAddSimple>
 </h3>
+
+<Grid @ref="_dataGrid"
+      TItem="OrganizationGridModel"
+      Class="table table-hover table-bordered table-striped"
+      DataProvider="OrganizationProvider"
+      AllowFiltering="true"
+      AllowPaging="true"
+      FiltersRowCssClass="btn-hidden">
+    <GridColumn TItem="OrganizationGridModel" HeaderText="Actions" Filterable="false" TextNoWrap="true">
+        <VTButtonViewSimple ContainerClass="d-inline" OnClick="async () => await ViewModal(context.Id)"></VTButtonViewSimple>
+        <VTButtonEditSimple ContainerClass="d-inline" OnClick="async () => await EditModal(context.Id)"></VTButtonEditSimple>
+    </GridColumn>
+    <GridColumn TItem="OrganizationGridModel" PropertyName="@nameof(OrganizationGridModel.Name)" HeaderText="Name" FilterOperator="FilterOperator.StartsWith" >
+        <b>@context.Name</b>
+    </GridColumn>
+    <GridColumn TItem="OrganizationGridModel" PropertyName="@nameof(OrganizationGridModel.Location)" HeaderText="Location" Filterable="false">
+        @AddressFormatter.Format(context.Organization.Address)
+    </GridColumn>
+    <GridColumn TItem="OrganizationGridModel" PropertyName="@nameof(OrganizationGridModel.MainPhone)" HeaderText="Main Phone" Filterable="false">
+        @context.MainPhone?.ToString()
+    </GridColumn>
+    <GridColumn TItem="OrganizationGridModel" PropertyName="@nameof(OrganizationGridModel.Contact)" HeaderText="Contact" Filterable="false">
+        @PersonFormatter.Format(context.Organization.Contact)
+    </GridColumn>
+</Grid>
 
 <Modal @ref="_editModal" Size="ModalSize.ExtraLarge">
 </Modal>
 
 @code {
 
+    [Inject]
+    public OrganizationDataProvider OrganizationDataProvider { get; set; } = null!;
+
+    [Inject]
+    public PhoneNumberFormatter PhoneNumberFormatter { get; set; } = null!;
+
+    [Inject]
+    public AddressFormatter AddressFormatter { get; set; } = null!;
+
+    [Inject]
+    public PersonFormatter PersonFormatter { get; set; } = null!;
+
     private Modal _editModal = null!;
+    private Grid<OrganizationGridModel> _dataGrid = null!;
+    private List<OrganizationGridModel> _models = null!;
 
     private async Task EditModal(Guid? id)
     {
         var onCloseCallback = new EventCallback(this, (Func<Task>)CloseModal);
-        var parameters = new Dictionary<string, object> { { "IndividualGuid", id! }, { "OnClose", onCloseCallback } };
-        await _editModal.ShowAsync<IndividualEdit>(title: "Individual Details", parameters: parameters);
+        var parameters = new Dictionary<string, object> { { "OrganizationGuid", id! }, { "OnClose", onCloseCallback } };
+        await _editModal.ShowAsync<OrganizationEdit>(title: "Edit Organization", parameters: parameters);
+    }
+
+    private async Task ViewModal(Guid id)
+    {
+        var onCloseCallback = new EventCallback(this, (Func<Task>)CloseModal);
+        var parameters = new Dictionary<string, object?> { 
+            { "Organization", _models.Where(m => m.Organization.Id == id).Select(m => m.Organization).FirstOrDefault() },
+            { "OnClose", onCloseCallback } };
+        await _editModal.ShowAsync<OrganizationView>(title: "Individual Details", parameters: parameters);
+    }
+
+    private async Task CloseModal()
+    {
+        await _editModal.HideAsync();
+        await _dataGrid.RefreshDataAsync();
+    }
+
+    private async Task<GridDataProviderResult<OrganizationGridModel>> OrganizationProvider(GridDataProviderRequest<OrganizationGridModel> request)
+    {
+        var data = await OrganizationDataProvider.Provide(request);
+        _models = data.Data?.ToList() ?? [];
+        return data;
     }
 }
- *@

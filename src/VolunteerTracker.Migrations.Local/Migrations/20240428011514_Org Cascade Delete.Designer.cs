@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using VolunteerTracker.Repository;
@@ -11,9 +12,11 @@ using VolunteerTracker.Repository;
 namespace VolunteerTracker.Migrations.Local.Migrations
 {
     [DbContext(typeof(VolunteerContext))]
-    partial class VolunteerContextModelSnapshot : ModelSnapshot
+    [Migration("20240428011514_Org Cascade Delete")]
+    partial class OrgCascadeDelete
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -252,7 +255,7 @@ namespace VolunteerTracker.Migrations.Local.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("ContactId")
+                    b.Property<Guid>("ContactId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("Name")
@@ -482,7 +485,9 @@ namespace VolunteerTracker.Migrations.Local.Migrations
                 {
                     b.HasOne("VolunteerTracker.Repository.Entities.Person", "Contact")
                         .WithMany()
-                        .HasForeignKey("ContactId");
+                        .HasForeignKey("ContactId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Contact");
                 });
@@ -496,8 +501,7 @@ namespace VolunteerTracker.Migrations.Local.Migrations
 
                     b.HasOne("VolunteerTracker.Repository.Entities.Person", "Person")
                         .WithMany("Phones")
-                        .HasForeignKey("PersonId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("PersonId");
 
                     b.Navigation("Organization");
 

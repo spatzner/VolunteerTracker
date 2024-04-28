@@ -19,16 +19,19 @@ public class Organization
     [MaxLength(50)]
     public string Name { get; set; }
 
-    [ForeignKey("AddressId")]
-    [Required]
-    public Guid AddressId { get; set; }
-    [Required]
-    public Address Address { get; set; }
+    public virtual Phone? MainPhone { get; set; }
 
     [Required]
-    public Guid ContactId { get; set; }
+    public virtual Address Address { get; set; }
+
+    public Guid? ContactId { get; set; }
 
     [ForeignKey("ContactId")]
-    [Required]
-    public virtual Person Contact { get; set; }
+    public virtual Person? Contact { get; set; }
+
+    [NotWhitespace]
+    [MaxLength(1000)]
+    public string? Notes { get; set; }
+
+
 }

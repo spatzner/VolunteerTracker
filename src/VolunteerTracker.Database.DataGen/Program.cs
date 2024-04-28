@@ -30,4 +30,6 @@ var builder = Host
 
 var app = builder.Build();
 
-await app.Services.GetRequiredService<DataGenerator>().GenerateDataToDatabase();
+Console.WriteLine("Generate data to database? Press any key to continue");
+Console.ReadKey();
+await app.Services.GetRequiredService<DataGenerator>().GenerateOrganizations();
