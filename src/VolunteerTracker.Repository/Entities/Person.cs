@@ -7,26 +7,6 @@ using VolunteerTracker.Repository.Attributes;
 
 namespace VolunteerTracker.Repository.Entities;
 
-public class Individual : Person
-{
-    
-    [ValidateComplexType]
-    public virtual Address? Address { get; set; }
-
-    public new static Individual Create()
-    {
-        return new Individual
-        {
-            FirstName = string.Empty,
-            LastName = string.Empty,
-            Address = new Address(),
-            Phones = [],
-            Emails = []
-        };
-    }
-}
-
-
 [Table("Persons", Schema = "Entities")]
 public class Person
 {
@@ -70,14 +50,4 @@ public class Person
     
     public override string ToString() => $"{LastName}, {FirstName}";
 
-    public static Person Create()
-    {
-        return new Person
-        {
-            FirstName = string.Empty,
-            LastName = string.Empty,
-            Phones = [],
-            Emails = []
-        };
-    }
 }

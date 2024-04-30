@@ -1,5 +1,111 @@
-﻿<h3>OrganizationEdit</h3>
+﻿@using VolunteerTracker.Blazor.Components.Shared.Composite
+@using VolunteerTracker.Blazor.Components.Shared.Element
+@using VolunteerTracker.Repository
+@using Microsoft.EntityFrameworkCore
+@using VolunteerTracker.Repository.Entities
+<div class="container">
+    @if (EditContext == null)
+    {
+        <VTLoading/>
+    }
+    else
+    {
+        <EditForm EditContext="@EditContext" OnValidSubmit="OnValidSubmit" FormName="Organization">
+            <CascadingValue Value="@EditContext"></CascadingValue>
+            <AntiforgeryToken/>
+            <ObjectGraphDataAnnotationsValidator/>
+            <div class="row">
+                <VTTextBox Label="Name" ContainerClass="col-md-12 col-lg-4" @bind-Value="_organization.Name"></VTTextBox>
+                <ValidationMessage For="@(() => _organization.Name)"/>
+            </div>
+            <div class="row">
+                <VTAddressEdit @bind-Address="_organization.Address"></VTAddressEdit>
+            </div>
+            <div class="row">
+                @* <VTPhoneEdit @bind-List="_organization.MainPhone"></VTPhoneEdit> *@
+                <ValidationMessage For="@(() => _organization.MainPhone)"/>
+            </div>
+            <div class="row">
+                <VTTextArea Label="Notes" @bind-Value="_organization.Notes"></VTTextArea>
+                <ValidationMessage For="@(() => _organization.Notes)"/>
+            </div>
+            <div class="row py-3">
+                <div class="col-md-2 col-lg-1">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+                <div class="col-md-2 col-lg-1">
+                    <button type="button" class="btn btn-light" @onclick="Close">Close</button>
+                </div>
+            </div>
+        </EditForm>
+    }
+</div>
 
 @code {
+
+    [Parameter]
+    public required Guid? OrganizationGuid { get; set; }
+
+    [Parameter]
+    public EventCallback OnClose { get; set; }
+
+    [Inject]
+    public required IDbContextFactory<VolunteerContext> ContextFactory { get; set; }
+
+    private VolunteerContext? _context;
+    public EditContext? EditContext { get; set; }
+    private Organization _organization = null!;
+    private static readonly Organization OrganizationPlaceholder = new();
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await LoadOrganizationAsync();
+        await base.OnParametersSetAsync();
+    }
+
+    private async Task LoadOrganizationAsync()
+    {
+        if (_context != null)
+            await _context.DisposeAsync();
+        _context = await ContextFactory.CreateDbContextAsync();
+        _organization = OrganizationPlaceholder;
+
+        _organization = OrganizationGuid.HasValue
+            ? await _context.Organizations.Include(x => x.Address).Include(x => x.MainPhone).Include(x => x.Contact).ThenInclude(c => c.Emails).Include(x => x.Contact).ThenInclude(c => c.Phones).FirstAsync(p => p.Id == OrganizationGuid)
+            : new Organization
+            {
+                Name = string.Empty,
+                Address = new Address(),
+                Contact = new Person(),
+                MainPhone = new Phone(),
+                Notes = string.Empty
+            };
+
+        EditContext = new EditContext(_organization);
+    }
+
+    private async Task Save()
+    {
+        if (!OrganizationGuid.HasValue)
+            _context!.Organizations.Add(_organization);
+
+        await _context!.SaveChangesAsync();
+        await _context.DisposeAsync();
+        EditContext = null;
+        await OnClose.InvokeAsync();
+    }
+
+    private async Task Close()
+    {
+        if (_context != null)
+            await _context.DisposeAsync();
+        EditContext = null;
+        await OnClose.InvokeAsync();
+    }
+
+    private async Task OnValidSubmit(EditContext arg)
+    {
+        await Save();
+    }
 
 }

@@ -40,7 +40,7 @@ public partial class VTPhoneEdit
 
         phone.Number = newValue;
 
-        Validate(phone, nameof(phone.Number));
+        NotifyContext(phone, nameof(phone.Number));
 
         ListChanged.InvokeAsync(List);
     }
@@ -54,7 +54,7 @@ public partial class VTPhoneEdit
             p.IsPrimary = false;
         }
 
-        Validate(phone, nameof(phone.IsPrimary));
+        NotifyContext(phone, nameof(phone.IsPrimary));
         ListChanged.InvokeAsync(List);
     }
 
@@ -64,17 +64,16 @@ public partial class VTPhoneEdit
             return;
 
         phone.Type = newValue;
-        Validate(phone, nameof(phone.Type));
+        NotifyContext(phone, nameof(phone.Type));
         ListChanged.InvokeAsync(List);
     }
 
-    private void Validate(Phone phone, string propertyName)
+    private void NotifyContext(Phone phone, string propertyName)
     {
         var index = List.ToList().IndexOf(phone);
         var fullPropertyName = $"{nameof(Person.Phones)}[{index}].{propertyName}";
         var fieldIdentifier = new FieldIdentifier(EditContext.Model, fullPropertyName);
 
         EditContext.NotifyFieldChanged(fieldIdentifier);
-        EditContext.Validate();
     }
 }

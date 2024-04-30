@@ -1,5 +1,4 @@
-﻿@using Microsoft.AspNetCore.Components.Forms
-@using VolunteerTracker.Blazor.Components.Shared.Element
+﻿@using VolunteerTracker.Blazor.Components.Shared.Element
 @using VolunteerTracker.Blazor.Components.Shared.Composite
 
 <div class="container">
@@ -9,7 +8,7 @@
     }
     else
     {
-        <EditForm EditContext="@EditContext" OnValidSubmit="OnValidSubmit" FormName="Individual">
+        <EditForm EditContext="@EditContext" OnSubmit="OnSubmitAsync"  FormName="Individual">
 
             <CascadingValue Value="@EditContext"></CascadingValue>
             <AntiforgeryToken />
@@ -49,7 +48,7 @@
                     <button type="submit" class="btn btn-primary">Save</button>
                 </div>
                 <div class="col-md-2 col-lg-1">
-                    <button type="button" class="btn btn-light" @onclick="Close">Close</button>
+                    <button type="button" class="btn btn-light" @onclick="CloseAsync">Close</button>
                 </div>
             </div>
         </EditForm>

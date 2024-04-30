@@ -50,7 +50,7 @@
 
         Address.Line1 = newValue;
 
-        Validate(nameof(Address.Line1));
+        NotifyContext(nameof(Address.Line1));
 
         AddressChanged.InvokeAsync(Address);
     }
@@ -62,7 +62,7 @@
 
         Address.Line2 = newValue;
 
-        Validate(nameof(Address.Line2));
+        NotifyContext(nameof(Address.Line2));
 
         AddressChanged.InvokeAsync(Address);
     }
@@ -74,7 +74,7 @@
 
         Address.City = newValue;
 
-        Validate(nameof(Address.City));
+        NotifyContext(nameof(Address.City));
 
         AddressChanged.InvokeAsync(Address);
     }
@@ -86,7 +86,7 @@
 
         Address.State = newValue;
 
-        Validate(nameof(Address.State));
+        NotifyContext(nameof(Address.State));
 
         AddressChanged.InvokeAsync(Address);
     }
@@ -98,19 +98,17 @@
 
         Address.Zip = newValue;
 
-        Validate(nameof(Address.Zip));
+        NotifyContext(nameof(Address.Zip));
 
         AddressChanged.InvokeAsync(Address);
     }
 
-    private void Validate(string propertyName)
+    private void NotifyContext(string propertyName)
     {
         var fullPropertyName = $"{nameof(Individual.Address)}.{propertyName}";
         var fieldIdentifier = new FieldIdentifier(EditContext.Model, fullPropertyName);
 
         EditContext.NotifyFieldChanged(fieldIdentifier);
-
-        EditContext.Validate();
     }
 
     private void RemoveAddress()

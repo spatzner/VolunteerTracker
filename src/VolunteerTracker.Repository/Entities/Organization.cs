@@ -32,6 +32,4 @@ public class Organization
     [NotWhitespace]
     [MaxLength(1000)]
     public string? Notes { get; set; }
-
-
 }

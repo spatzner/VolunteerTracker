@@ -17,7 +17,7 @@ public class IndividualActionTests : PageTest
         await Page.GotoAsync(BlazorEndpoints.Individuals);
         await Expect(Page.GetByRole(AriaRole.Button, new() { Name = "" })).ToBeVisibleAsync();
         await Page.GetByRole(AriaRole.Button, new() { Name = "" }).ClickAsync(); 
-        await Expect(Page.GetByText("Individual Details Title")).ToBeVisibleAsync();
+        await Expect(Page.GetByText("Edit Individual Title First")).ToBeVisibleAsync();
         await Page.GetByLabel("Title").FillAsync("Mr");
         await Page.GetByLabel("First Name").FillAsync("Cheddar");
         await Page.GetByLabel("Middle Name").FillAsync("A");
@@ -29,12 +29,8 @@ public class IndividualActionTests : PageTest
         await Page.GetByLabel("State").FillAsync("Virginia");
         await Page.GetByLabel("Zip").FillAsync("33525");
 
-        await Page.GetByRole(AriaRole.Group, new() { Name = "Phone" }).GetByRole(AriaRole.Button).ClickAsync();
-        await Expect(Page.GetByRole(AriaRole.Group, new() { Name = "Phone" }).GetByLabel("Type")).ToBeVisibleAsync();
         await Page.GetByRole(AriaRole.Group, new() { Name = "Phone" }).GetByLabel("Type").SelectOptionAsync(new[] { "Mobile" });
         await Page.GetByLabel("Number").FillAsync("2315236998");
-        await Page.GetByRole(AriaRole.Group, new() { Name = "Email" }).GetByRole(AriaRole.Button).ClickAsync();
-        await Expect(Page.GetByRole(AriaRole.Group, new() { Name = "Email" }).GetByLabel("Type")).ToBeVisibleAsync();
         await Page.GetByRole(AriaRole.Group, new() { Name = "Email" }).GetByLabel("Type").SelectOptionAsync(new[] { "Work" });
         await Page.GetByLabel("Address", new() { Exact = true }).FillAsync("CArmstrong@gmail.com");
         await Page.GetByLabel("Notes").FillAsync("Notes for Chaz");
@@ -83,7 +79,8 @@ public class IndividualActionTests : PageTest
         await Page.GetByRole(AriaRole.Textbox).First.FillAsync("VonCheddar");
         await Expect(Page.Locator("tbody > tr > td:nth-child(2)").GetByText("VonCheddar")).ToBeVisibleAsync();
         await Page.GetByRole(AriaRole.Button, new() { Name = "" }).ClickAsync();
-        
+        await Expect(Page.GetByText("Edit Individual Title First")).ToBeVisibleAsync();
+
         //Edit fields
         await Page.GetByLabel("Title").FillAsync("Mrs");
         await Page.GetByLabel("First Name").FillAsync("Janet");

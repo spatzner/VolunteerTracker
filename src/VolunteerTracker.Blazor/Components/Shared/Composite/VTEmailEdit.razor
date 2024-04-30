@@ -69,7 +69,7 @@
             return;
 
         email.Address = newValue;
-        Validate(email, nameof(email.Address));
+        NotifyContext(email, nameof(email.Address));
         ListChanged.InvokeAsync(List);
     }
 
@@ -82,7 +82,7 @@
             e.IsPrimary = false;
         }
 
-        Validate(email, nameof(email.IsPrimary));
+        NotifyContext(email, nameof(email.IsPrimary));
         ListChanged.InvokeAsync(List);
     }
 
@@ -92,18 +92,17 @@
             return;
 
         email.Type = newValue;
-        Validate(email, nameof(email.Type));
+        NotifyContext(email, nameof(email.Type));
         ListChanged.InvokeAsync(List);
     }
 
-    private void Validate(Email email, string propertyName)
+    private void NotifyContext(Email email, string propertyName)
     {
         var index = List.ToList().IndexOf(email);
         var fullPropertyName = $"{nameof(Person.Emails)}[{index}].{propertyName}";
         var fieldIdentifier = new FieldIdentifier(EditContext.Model, fullPropertyName);
 
         EditContext.NotifyFieldChanged(fieldIdentifier);
-        EditContext.Validate();
     }
 
 }
