@@ -16,15 +16,13 @@
             <AntiforgeryToken/>
             <ObjectGraphDataAnnotationsValidator/>
             <div class="row">
-                <VTTextBox Label="Name" ContainerClass="col-md-12 col-lg-4" @bind-Value="_organization.Name"></VTTextBox>
-                <ValidationMessage For="@(() => _organization.Name)" />
-            </div>
-            <div class="row">
                 <div class="col-lg-5 col-md-12 p-3">
-                    <VTAddressEdit @bind-Address="_organization.Address"></VTAddressEdit>
+                    <VTTextBox Label="Name" @bind-Value="_organization.Name"></VTTextBox>
+                    <ValidationMessage For="@(() => _organization.Name)" />
                     <VTTextBox Label="Main Phone" @bind-Value="_organization.MainPhone!.Number"></VTTextBox>
                     <ValidationMessage For="@(() => _organization.MainPhone)" />
-                    <VTTextArea Label="Notes" @bind-Value="_organization.Notes"></VTTextArea>
+                    <VTAddressEdit @bind-Address="_organization.Address"></VTAddressEdit>
+                    <VTTextArea Label="Notes" Height="14em" @bind-Value="_organization.Notes"></VTTextArea>
                     <ValidationMessage For="@(() => _organization.Notes)" />
                 </div>
                 <div class="col-lg-7 col-md-12 p-3">
