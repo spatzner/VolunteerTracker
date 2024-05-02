@@ -1,6 +1,9 @@
-﻿<fieldset class="row rounded-3 border border p-2 my-2">
-    <legend class="text-muted">@Label</legend>
-    @ChildContent
+﻿
+<fieldset class="rounded-3 border my-2">
+    <div class="p-2">
+        <legend class="text-muted">@Label</legend>
+        @ChildContent
+    </div>
 </fieldset>
 
 @code {
@@ -10,5 +13,4 @@
 
     [Parameter]
     public string? Label { get; set; }
-
 }

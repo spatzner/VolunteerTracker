@@ -1,0 +1,38 @@
+﻿@using VolunteerTracker.Blazor.Components.Shared.Element
+@using VolunteerTracker.Repository.Entities
+
+<VTBorder Label="Contact">
+    <div class="container">
+        <div class="row">
+            <VTBorder Label="Name">
+                <VTTextBox Label="Title" @bind-Value="Person.Title"></VTTextBox>
+                <ValidationMessage For="@(() => Person.Title)"/>
+                <VTTextBox Label="First Name" @bind-Value="Person.FirstName"></VTTextBox>
+                <ValidationMessage For="@(() => Person.FirstName)"/>
+                <VTTextBox Label="Middle Name" @bind-Value="Person.MiddleName"></VTTextBox>
+                <ValidationMessage For="@(() => Person.MiddleName)"/>
+                <VTTextBox Label="Last Name" @bind-Value="Person.LastName"></VTTextBox>
+                <ValidationMessage For="@(() => Person.LastName)"/>
+                <VTTextBox Label="Suffix" @bind-Value="Person.Suffix"></VTTextBox>
+                <ValidationMessage For="@(() => Person.Suffix)"/>
+            </VTBorder>
+        </div>
+
+        <div class="row">
+            <VTPhoneEdit @bind-List="Person.Phones"></VTPhoneEdit>
+            <ValidationMessage For="@(() => Person.Phones)"/>
+            <VTEmailEdit @bind-List="Person.Emails"></VTEmailEdit>
+            <ValidationMessage For="@(() => Person.Emails)"/>
+        </div>
+    </div>
+</VTBorder>
+
+@code {
+
+    [Parameter]
+    public Person Person { get; set; } = null!;
+
+    [Parameter]
+    public EventCallback<Person> PersonChanged { get; set; }
+
+}

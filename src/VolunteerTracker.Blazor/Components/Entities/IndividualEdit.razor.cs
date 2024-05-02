@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.EntityFrameworkCore;
 using VolunteerTracker.Blazor.Utilities;
+using VolunteerTracker.Common;
 using VolunteerTracker.Repository;
 using VolunteerTracker.Repository.Entities;
 
@@ -45,19 +46,24 @@ public partial class IndividualEdit : IDisposable, IAsyncDisposable
 
     private async Task OnSubmitAsync(EditContext arg)
     {
-        if (_individual.Address != null && _individual.Address.IsEmpty())
+        if (Entity.IsEmpty(_individual.Address))
             _individual.Address = null;
 
-        var phonesToRemove = _individual.Phones.Where(p => p.IsEmpty()).ToList();
+        var phonesToRemove = _individual.Phones.Where(Entity.IsEmpty).ToList();
         foreach (Phone phone in phonesToRemove)
         {
             _individual.Phones.Remove(phone);
         }
 
-        var emailsToRemove = _individual.Emails.Where(e => e.IsEmpty()).ToList();
+        var emailsToRemove = _individual.Emails.Where(Entity.IsEmpty).ToList();
         foreach (Email email in emailsToRemove)
         {
             _individual.Emails.Remove(email);
+        }
+
+        foreach (Phone phone in _individual.Phones)
+        {
+            phone.Number = GeneratedRegex.NonPhoneCharacter().Replace(phone.Number, string.Empty);
         }
 
         if (!arg.Validate())

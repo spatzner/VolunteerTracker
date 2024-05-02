@@ -32,4 +32,14 @@ public class Organization
     [NotWhitespace]
     [MaxLength(1000)]
     public string? Notes { get; set; }
+
+    public static Organization Create()
+    {
+        return new Organization
+        {
+            Address = new Address(),
+            MainPhone = new Phone(),
+            Contact = new Person()
+        };
+    }
 }

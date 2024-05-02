@@ -6,7 +6,7 @@
 <VTBorder Label="Email">
     @foreach (Email email in List)
     {
-        <div class="row">
+        <div class="row pe-sm-4 pe-md-4 pe-lg-4 pe-xl-2">
             <VTDropdown Label="Type"
                         ContainerClass="col-3 pe-1"
                         Options="_emailTypes"
@@ -30,7 +30,7 @@
             <ValidationMessage For="@(() => @email.IsPrimary)" />
         </div>
     }
-    <div class="row">
+    <div class="row pe-sm-4 pe-md-4 pe-lg-4 pe-xl-2">
         <div class=" col-11 mb-1 pe-1"></div>
         <VTButtonAddSimple ContainerClass="col-1 ps-1" OnClick="AddEmail"></VTButtonAddSimple>
     </div>

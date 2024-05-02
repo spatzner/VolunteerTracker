@@ -2,6 +2,7 @@
 @using VolunteerTracker.Blazor.Components.Shared.Element
 @using VolunteerTracker.Repository
 @using Microsoft.EntityFrameworkCore
+@using VolunteerTracker.Blazor.Utilities
 @using VolunteerTracker.Repository.Entities
 <div class="container">
     @if (EditContext == null)
@@ -10,31 +11,32 @@
     }
     else
     {
-        <EditForm EditContext="@EditContext" OnValidSubmit="OnValidSubmit" FormName="Organization">
+        <EditForm EditContext="@EditContext" OnSubmit="OnSubmitAsync" FormName="Organization">
             <CascadingValue Value="@EditContext"></CascadingValue>
             <AntiforgeryToken/>
             <ObjectGraphDataAnnotationsValidator/>
             <div class="row">
                 <VTTextBox Label="Name" ContainerClass="col-md-12 col-lg-4" @bind-Value="_organization.Name"></VTTextBox>
-                <ValidationMessage For="@(() => _organization.Name)"/>
+                <ValidationMessage For="@(() => _organization.Name)" />
             </div>
             <div class="row">
-                <VTAddressEdit @bind-Address="_organization.Address"></VTAddressEdit>
-            </div>
-            <div class="row">
-                @* <VTPhoneEdit @bind-List="_organization.MainPhone"></VTPhoneEdit> *@
-                <ValidationMessage For="@(() => _organization.MainPhone)"/>
-            </div>
-            <div class="row">
-                <VTTextArea Label="Notes" @bind-Value="_organization.Notes"></VTTextArea>
-                <ValidationMessage For="@(() => _organization.Notes)"/>
+                <div class="col-lg-5 col-md-12 p-3">
+                    <VTAddressEdit @bind-Address="_organization.Address"></VTAddressEdit>
+                    <VTTextBox Label="Main Phone" @bind-Value="_organization.MainPhone!.Number"></VTTextBox>
+                    <ValidationMessage For="@(() => _organization.MainPhone)" />
+                    <VTTextArea Label="Notes" @bind-Value="_organization.Notes"></VTTextArea>
+                    <ValidationMessage For="@(() => _organization.Notes)" />
+                </div>
+                <div class="col-lg-7 col-md-12 p-3">
+                    <VTPersonEdit @bind-Person="_organization.Contact"></VTPersonEdit>
+                </div>
             </div>
             <div class="row py-3">
                 <div class="col-md-2 col-lg-1">
                     <button type="submit" class="btn btn-primary">Save</button>
                 </div>
                 <div class="col-md-2 col-lg-1">
-                    <button type="button" class="btn btn-light" @onclick="Close">Close</button>
+                    <button type="button" class="btn btn-light" @onclick="CloseAsync">Close</button>
                 </div>
             </div>
         </EditForm>
@@ -55,7 +57,7 @@
     private VolunteerContext? _context;
     public EditContext? EditContext { get; set; }
     private Organization _organization = null!;
-    private static readonly Organization OrganizationPlaceholder = new();
+    private static readonly Organization OrganizationPlaceholder = Organization.Create();
 
     protected override async Task OnParametersSetAsync()
     {
@@ -70,21 +72,20 @@
         _context = await ContextFactory.CreateDbContextAsync();
         _organization = OrganizationPlaceholder;
 
-        _organization = OrganizationGuid.HasValue
-            ? await _context.Organizations.Include(x => x.Address).Include(x => x.MainPhone).Include(x => x.Contact).ThenInclude(c => c.Emails).Include(x => x.Contact).ThenInclude(c => c.Phones).FirstAsync(p => p.Id == OrganizationGuid)
-            : new Organization
-            {
-                Name = string.Empty,
-                Address = new Address(),
-                Contact = new Person(),
-                MainPhone = new Phone(),
-                Notes = string.Empty
-            };
+        var tempOrganization = OrganizationGuid.HasValue ? 
+            await _context.Organizations.Include(x => x.Address).Include(x => x.MainPhone).Include(x => x.Contact).ThenInclude(c => c.Emails).Include(x => x.Contact).ThenInclude(c => c.Phones).FirstAsync(p => p.Id == OrganizationGuid) 
+            : Organization.Create();
+
+        //Initialize values for UX then remove if empty on save
+        tempOrganization.MainPhone ??= new Phone();
+        tempOrganization.Contact ??= new Person();
+
+        _organization = tempOrganization;
 
         EditContext = new EditContext(_organization);
     }
 
-    private async Task Save()
+    private async Task SaveAsync()
     {
         if (!OrganizationGuid.HasValue)
             _context!.Organizations.Add(_organization);
@@ -95,7 +96,7 @@
         await OnClose.InvokeAsync();
     }
 
-    private async Task Close()
+    private async Task CloseAsync()
     {
         if (_context != null)
             await _context.DisposeAsync();
@@ -103,9 +104,18 @@
         await OnClose.InvokeAsync();
     }
 
-    private async Task OnValidSubmit(EditContext arg)
+    private async Task OnSubmitAsync(EditContext arg)
     {
-        await Save();
+        if (Entity.IsEmpty(_organization.MainPhone))
+            _organization.MainPhone = null;
+
+        if (Entity.IsEmpty(_organization.Contact))
+            _organization.Contact = null;
+
+        if (!arg.Validate())
+            return;
+
+        await SaveAsync();
     }
 
 }

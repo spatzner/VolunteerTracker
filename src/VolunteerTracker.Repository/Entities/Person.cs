@@ -50,4 +50,9 @@ public class Person
     
     public override string ToString() => $"{LastName}, {FirstName}";
 
+    public static Person Create()
+    {
+        return new Person { Phones = [new Phone { IsPrimary = true }], Emails = [new Email { IsPrimary = true }] };
+    }
+
 }
